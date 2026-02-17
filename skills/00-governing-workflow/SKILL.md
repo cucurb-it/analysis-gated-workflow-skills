@@ -22,40 +22,42 @@ the Implementation Plan where you describe PHASES of implementation.
 
 Every session — new or resumed — begins with the same sequence:
 
-### Step 1 — Determine session type
+### Step 1 — Ask for feature name and folder
 
-Check whether an ANALYSIS document already exists at the expected path:
+Ask the user:
+1. **Feature or refactoring name** — what are they working on?
+2. **Working folder** — where should the ANALYSIS document be stored?
+
+Set:
+- `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
+- `{{FOLDER_NAME}}` = the folder provided
+- `{{FEATURE_NAME_UPPERCASE}}` = feature name converted to SCREAMING_SNAKE_CASE
+- ANALYSIS document path = `{{FOLDER_NAME}}/{{FEATURE_NAME_UPPERCASE}}_ANALYSIS.md`
+
+### Step 2 — Check if ANALYSIS document exists
+
+Check whether an ANALYSIS document already exists at:
 `{{FOLDER_NAME}}/{{FEATURE_NAME_UPPERCASE}}_ANALYSIS.md`
-(where `{{FEATURE_NAME_UPPERCASE}}` is the feature name in SCREAMING_SNAKE_CASE)
 
-- If it **does not exist** → this is a **New Session**. Proceed to New Session Protocol.
-- If it **exists** → this is a **Resume Session**. Proceed to Resume Session Protocol.
+- If it **does not exist** → this is a **New Session**. Proceed to New Session Protocol (Step 3).
+- If it **exists** → this is a **Resume Session**. Proceed to Resume Session Protocol (Step 4).
 
 ---
 
-### New Session Protocol
+### Step 3 — New Session Protocol
 
-1. Ask the user for the **feature or refactoring name**.
-2. Ask the user for the **working folder** where the ANALYSIS document will be stored.
-3. Set:
-   - `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
-   - `{{FOLDER_NAME}}` = the folder provided
-   - ANALYSIS document path = `{{FOLDER_NAME}}/{{FEATURE_NAME_UPPERCASE}}_ANALYSIS.md`
-     where `{{FEATURE_NAME_UPPERCASE}}` is the feature name converted to SCREAMING_SNAKE_CASE
-     (spaces and hyphens replaced with underscores, all uppercase)
-     Example: "Building Information Processor" → `BUILDING_INFORMATION_PROCESSOR_ANALYSIS.md`
-4. Ask for **specifics** about the feature or refactoring:
-   - A requirements document, a class name, a pattern, a business capability, a service contract, a domain name, or similar
-5. Ask the user to **describe the required feature or expected refactoring**.
-6. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
-7. Register the phase as `PHASE 01 — IN PROGRESS` in the Workflow State block.
-8. Read the **Deep Feature Analysis skill**:
+1. Ask for **specifics** about the feature or refactoring:
+   - A class name, a pattern, a business capability, a service contract, a domain name, or similar
+2. Ask the user to **describe the required feature or expected refactoring**.
+3. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
+4. Register the phase as `PHASE 01 — IN PROGRESS` in the Workflow State block.
+5. Read the **Deep Feature Analysis skill**:
    `skills/01-deep-feature-analysis/SKILL.md`
-9. Execute Phase 01 under the governance of that skill.
+6. Execute Phase 01 under the governance of that skill.
 
 ---
 
-### Resume Session Protocol
+### Step 4 — Resume Session Protocol
 
 1. Read the ANALYSIS document at `{{FOLDER_NAME}}/{{FEATURE_NAME_UPPERCASE}}_ANALYSIS.md`
    (where `{{FEATURE_NAME_UPPERCASE}}` is the feature name in SCREAMING_SNAKE_CASE).
