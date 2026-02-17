@@ -1,0 +1,21 @@
+{
+  "name": "analysis-gated-workflow",
+  "version": "1.0.0",
+  "description": "A structured, phase-gated workflow for software development and refactoring, governed by a Software Architect and supported by AI. Enforces deep analysis before implementation through six progressive phases.",
+  "author": {
+    "name": "Cucurb IT BV"
+  },
+  "homepage": "https://github.com/cucurb-it/analysis-gated-workflow-skills",
+  "repository": "https://github.com/cucurb-it/analysis-gated-workflow-skills",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "analysis",
+    "refactoring",
+    "architecture",
+    "software-development",
+    "gated",
+    "adr"
+  ],
+  "skills": ["./skills/"]
+}
