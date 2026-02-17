@@ -45,7 +45,7 @@ Check whether an ANALYSIS document already exists at the expected path:
      (spaces and hyphens replaced with underscores, all uppercase)
      Example: "Building Information Processor" → `BUILDING_INFORMATION_PROCESSOR_ANALYSIS.md`
 4. Ask for **specifics** about the feature or refactoring:
-   - A class name, a pattern, a business capability, a service contract, a domain name, or similar
+   - A requirements document, a class name, a pattern, a business capability, a service contract, a domain name, or similar
 5. Ask the user to **describe the required feature or expected refactoring**.
 6. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
 7. Register the phase as `PHASE 01 — IN PROGRESS` in the Workflow State block.
