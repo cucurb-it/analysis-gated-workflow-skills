@@ -1,6 +1,6 @@
 {
   "name": "analysis-gated-workflow",
-  "version": "26.0218.1",
+  "version": "26.218.3",
   "description": "A structured, phase-gated workflow for software development and refactoring, governed by a Software Architect and supported by AI. Enforces deep analysis before implementation through six progressive phases.",
   "author": {
     "name": "Cucurb IT BV"
