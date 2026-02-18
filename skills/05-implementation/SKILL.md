@@ -54,8 +54,65 @@ Append the Phase 05 initiating prompt to the `## Prompt Log` section, verbatim.
 
 ### Step 2 — Confirm the Implementation Plan
 
-Before writing a single line of code, re-read the `## Implementation Plan` section
-of the ANALYSIS document. Confirm with the Architect:
+Before writing a single line of code, complete the following confirmations:
+
+#### 2.1 — Re-read project conventions in great detail
+
+The `.claude/` and `.github/` folders contain the authoritative rules for this codebase.
+**Re-read every .md file thoroughly** to refresh understanding before touching any code:
+
+- `.claude/CLAUDE.md` and all other `.md` files — read everything deeply
+- `.github/` folder — read all `.md` files, understand all coding standards and workflows
+
+Create a **Project Conventions Re-Confirmation** section in the ANALYSIS document:
+
+```markdown
+### Project Conventions Re-Confirmation (Phase 05)
+
+#### `.claude/CLAUDE.md`
+**Re-Read:** ✓  
+**CRITICAL/MANDATORY Rules Impacting This Implementation:**
+- [Any CRITICAL/MANDATORY rules that apply to files being modified — extract verbatim]
+
+**Other Rules Impacting This Implementation:**
+- [Architecture boundaries that constrain this change]
+- [Technology constraints that apply to files being modified]
+- [Naming conventions to follow]
+- [Critical workflows this implementation must respect]
+- [Hard constraints that cannot be violated]
+
+#### `.github/github-instructions.md` (or similar)
+**Re-Read:** ✓  
+**CRITICAL/MANDATORY Rules Impacting This Implementation:**
+- [extract if applicable]
+
+**Other Rules Impacting This Implementation:**
+- [List only rules directly relevant to the Implementation Plan]
+
+#### `instructions/csharp-instructions.md` (or similar)
+**Re-Read:** ✓  
+**CRITICAL/MANDATORY Rules Impacting This Implementation:**
+- [extract if applicable]
+
+**Other Rules Impacting This Implementation:**
+- [List only rules directly relevant to the Implementation Plan]
+
+[Repeat for each .md file]
+```
+
+Focus on rules that directly affect the Implementation Plan being executed.
+This is not a full re-extraction — it's a targeted confirmation of rules that
+matter for the specific code being written.
+
+**CRITICAL**: Any rule marked CRITICAL, MANDATORY, IMPORTANT, DO NOT, NEVER, ALWAYS
+that affects the code being written MUST be listed verbatim. These are non-negotiable
+constraints on the implementation.
+
+#### 2.2 — Review the Implementation Plan
+
+Re-read the `## Implementation Plan` section of the ANALYSIS document.
+
+Confirm with the Architect:
 
 > "I am about to begin implementation following the plan in the ANALYSIS document.
 > I will execute Phase 1 first: [brief description]. I will work through all phases
@@ -255,6 +312,7 @@ Pending Architect Action: none
 ## Quality Criteria
 
 ### Phase 05a complete when:
+- [ ] Project conventions re-read and re-confirmed before implementation started
 - [ ] All Implementation Plan checklist items are ticked
 - [ ] All deviations are documented with Architect decisions
 - [ ] Each phase ended with a build-and-validate step

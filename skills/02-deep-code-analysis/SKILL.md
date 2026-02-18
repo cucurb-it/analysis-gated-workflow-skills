@@ -81,14 +81,65 @@ matching the style of the example ANALYSIS document.
 - What logging or instrumentation exists?
 - Are there any project-specific practices or conventions observable in this component?
 
-**Project conventions scan:**
+**Project conventions scan — MANDATORY:**
 Before documenting coding patterns, scan the following folders in the repository root
-if they exist — they contain authoritative project-specific conventions, AI instructions,
-and workflow rules that must be respected throughout the analysis and implementation:
+if they exist. Read **every .md file in great detail** to understand the intricacies
+of the project's architectural and development guidelines:
 
-- `.claude/` — Claude Code specific instructions, project rules, and AI behaviour directives
-- `.github/` — workflow definitions, contribution guidelines, pull request templates,
-  and coding standards
+- `.claude/` — Claude Code specific instructions, project rules, AI behaviour directives
+  - `CLAUDE.md` — Read deeply, absorb every guideline
+  - Any other `.md` files — Read in full
+- `.github/` — Workflow definitions, contribution guidelines, pull request templates,
+  coding standards, and development instructions
+  - `github-instructions.md` or similar — Read thoroughly
+  - Any other `.md` files — Read everything, skip nothing
+
+After reading, **create a confirmation table** in the ANALYSIS document immediately
+after this section to prove comprehension. For each file read, extract guidelines in
+these categories (where applicable):
+
+```markdown
+### Project Conventions Confirmation
+
+#### `.claude/CLAUDE.md`
+**Read:** ✓  
+**CRITICAL/MANDATORY Rules:** [Any rules marked CRITICAL, MANDATORY, or similar — extract verbatim with emphasis]  
+**Architecture Boundaries:** [e.g., which layers can call which, strangler fig pattern rules]  
+**Technology Constraints:** [e.g., .NET versions, forbidden language features by project]  
+**Naming Conventions:** [e.g., project structure patterns, DI registration patterns]  
+**Critical Workflows:** [e.g., database migrations, code generation, build patterns]  
+**Hard Constraints:** [e.g., minimize changes to X, never edit Y, always use Z]
+
+#### `.github/github-instructions.md` (or similar)
+**Read:** ✓  
+**CRITICAL/MANDATORY Rules:** [extract if present]  
+**Architecture Boundaries:** [extract if present]  
+**Technology Constraints:** [extract if present]  
+**Naming Conventions:** [extract if present]  
+**Critical Workflows:** [extract if present]  
+**Hard Constraints:** [extract if present]
+
+#### `instructions/csharp-instructions.md` (or similar)
+**Read:** ✓  
+**CRITICAL/MANDATORY Rules:** [extract if present]  
+**Architecture Boundaries:** [extract if present]  
+**Technology Constraints:** [extract if present]  
+**Naming Conventions:** [extract if present]  
+**Critical Workflows:** [extract if present]  
+**Hard Constraints:** [extract if present]
+
+[Repeat for each .md file found in .claude/ and .github/]
+```
+
+**CRITICAL**: If any file contains rules marked with words like CRITICAL, MANDATORY, IMPORTANT,
+DO NOT, NEVER, ALWAYS — these MUST be extracted verbatim in the "CRITICAL/MANDATORY Rules"
+category. Do not paraphrase these — copy them exactly as written, including emphasis.
+
+Extract **everything relevant** — not just 3-5 items. If a category doesn't apply to a file,
+write "N/A" for that category. The table must prove the AI read the file in great detail,
+not just skimmed it.
+
+If no convention files exist, state explicitly: "No project-specific convention files found."
 
 Document any relevant conventions found. These take precedence over general coding
 assumptions.
@@ -159,7 +210,8 @@ Phase 02 output is complete when:
 - [ ] Architecture overview is documented with position in pipeline/system
 - [ ] Full behavioural analysis with all execution paths is documented
 - [ ] Data model is documented with types, properties, and typical cardinalities
-- [ ] `.claude/` and `.github/` folders scanned for project conventions
+- [ ] `.claude/` and `.github/` folders scanned — all .md files read in great detail
+- [ ] Project Conventions Confirmation table created with extracted guidelines
 - [ ] Coding patterns and project-specific practices are identified
 - [ ] Performance characteristics are analysed with complexity estimates
 - [ ] Comparison with similar components is documented

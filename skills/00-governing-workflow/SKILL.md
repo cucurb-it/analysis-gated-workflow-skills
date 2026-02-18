@@ -219,6 +219,11 @@ Sections are populated progressively as phases advance — never pre-filled.
 
 ---
 
+## Project Conventions Confirmation
+*(populated in Phase 02 — mandatory)*
+
+---
+
 ## Architecture Decision Records
 *(populated by Architect — never by AI)*
 

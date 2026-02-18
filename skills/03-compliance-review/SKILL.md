@@ -88,21 +88,28 @@ Do not speculate beyond what the evidence and ADRs support.
 
 ### Step 6 — Assess readiness for Phase 04
 
-After completing the iteration, assess whether the analysis is ready to drive
-an Implementation Plan. The analysis is ready when:
+After completing the iteration, evaluate against the **Definition of Ready** for Phase 04.
 
-- All ADRs have a compliance response
-- All open questions are resolved or explicitly escalated
-- The domain understanding is sufficient to write a detailed, phase-structured
-  Implementation Plan without further analysis
-- No unresolved ambiguities remain that could cause the Implementation Plan
-  to be wrong
+#### Definition of Ready — Gate to Phase 04
 
-If the analysis is **not yet ready**, state explicitly what is still missing
-and what the Architect needs to provide.
+The analysis is ready to proceed to Implementation Planning when ALL of the following
+criteria are met:
 
-If the analysis **is ready**, state that clearly and wait for the Architect's
-explicit go signal.
+- [ ] All ADRs in the document have a compliance response directly below them
+- [ ] All open questions from Phase 01 and Phase 02 are resolved or explicitly escalated
+- [ ] Project Conventions Confirmation table exists and is complete (from Phase 02)
+- [ ] The domain understanding is sufficient to write a detailed, phase-structured Implementation Plan without further analysis
+- [ ] No unresolved ambiguities remain that could cause the Implementation Plan to be based on incorrect assumptions
+- [ ] The Architect has explicitly signalled readiness to proceed to Phase 04
+
+**If ANY criterion is not met**, document what is missing in `## Open Questions` or
+flag it explicitly to the Architect. Do not proceed until the Definition of Ready
+is satisfied.
+
+**If ALL criteria are met**, state clearly:
+> "Definition of Ready satisfied. All criteria met. Ready for Phase 04 upon Architect approval."
+
+Then wait for the Architect's explicit go signal before advancing.
 
 ### Step 7 — Update Workflow State
 
@@ -167,5 +174,5 @@ Each Phase 03 iteration is complete when:
 - [ ] All open questions are resolved or explicitly escalated
 - [ ] Affected analysis sections are updated to reflect ADR constraints
 - [ ] Domain-specific understanding is deepened where ADRs indicate it is needed
-- [ ] Readiness for Phase 04 is explicitly assessed
+- [ ] Definition of Ready is explicitly evaluated against all six criteria
 - [ ] Workflow State reflects `AWAITING ARCHITECT REVIEW`
