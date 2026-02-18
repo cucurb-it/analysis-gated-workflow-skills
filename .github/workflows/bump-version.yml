@@ -28,17 +28,29 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Current version: $VERSION"
 
-      - name: Bump patch version
+      - name: Bump version
         id: bump
         run: |
           CURRENT="${{ steps.current.outputs.version }}"
-          MAJOR=$(echo $CURRENT | cut -d. -f1)
-          MINOR=$(echo $CURRENT | cut -d. -f2)
-          PATCH=$(echo $CURRENT | cut -d. -f3)
-          NEW_PATCH=$((PATCH + 1))
-          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          
+          # Extract date prefix (YY.MMDD) and increment
+          YEAR=$(date +%y)
+          MONTH_DAY=$(date +%m%d)
+          DATE_PREFIX="$YEAR.$MONTH_DAY"
+          
+          # Check if current version starts with today's date
+          if [[ "$CURRENT" == "$DATE_PREFIX."* ]]; then
+            # Extract increment and bump it
+            INCREMENT=$(echo $CURRENT | cut -d. -f3)
+            NEW_INCREMENT=$((INCREMENT + 1))
+          else
+            # New date, reset increment to 1
+            NEW_INCREMENT=1
+          fi
+          
+          NEW_VERSION="$DATE_PREFIX.$NEW_INCREMENT"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "New version: $NEW_VERSION"
+          echo "New version: $NEW_VERSION (previous: $CURRENT)"
 
       - name: Update plugin.json
         run: |
@@ -61,6 +73,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .claude-plugin/plugin.json .claude-plugin/marketplace.json
-          git commit -m "[chore] bump version to $NEW_VERSION [skip ci]"
+          git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
           git tag "v$NEW_VERSION"
           git push origin main --tags
