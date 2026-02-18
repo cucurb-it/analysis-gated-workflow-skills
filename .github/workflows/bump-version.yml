@@ -33,10 +33,11 @@ jobs:
         run: |
           CURRENT="${{ steps.current.outputs.version }}"
           
-          # Extract date prefix (YY.MMDD) and increment
+          # Extract date prefix (YY.MDD) - month without zero, day with zero
           YEAR=$(date +%y)
-          MONTH_DAY=$(date +%m%d)
-          DATE_PREFIX="$YEAR.$MONTH_DAY"
+          MONTH=$(date +%-m)  # %-m removes leading zero from month
+          DAY=$(date +%d)     # %d keeps leading zero on day
+          DATE_PREFIX="$YEAR.$MONTH$DAY"
           
           # Check if current version starts with today's date
           if [[ "$CURRENT" == "$DATE_PREFIX."* ]]; then
