@@ -4,13 +4,13 @@ description: Phase 01 of the Analysis-Gated Workflow. Use when capturing and str
 ---
 
 # Analysis-Gated Workflow — Deep Feature Analysis Skill
-## Phase 01
+## DEEP FEATURE ANALYSIS PHASE
 
 ---
 
 ## Purpose
 
-This skill governs Phase 01 of the Analysis-Gated Workflow. Its sole responsibility
+This skill governs the Deep Feature Analysis Phase of the Analysis-Gated Workflow. Its sole responsibility
 is to capture, structure, and document a deep understanding of **what is being requested**
 — the feature, refactoring, or capability under analysis — based entirely on information
 provided by the Architect and user.
@@ -86,10 +86,10 @@ Update the `## Workflow State` block:
 
 ### Step 5 — Notify the Architect
 
-Inform the Architect that Phase 01 is complete. Do not summarise the ANALYSIS document
+Inform the Architect that the Deep Feature Analysis Phase is complete. Do not summarise the ANALYSIS document
 in chat — direct the Architect to read it. State clearly what action is expected:
-> "Phase 01 is complete. Please review the ANALYSIS document and signal when you are
-> ready to proceed to Phase 02, or add annotations if corrections are needed."
+> "Deep Feature Analysis Phase is complete. Please review the ANALYSIS document and signal when you are
+> ready to proceed to Deep Code Analysis Phase, or add annotations if corrections are needed."
 
 ---
 

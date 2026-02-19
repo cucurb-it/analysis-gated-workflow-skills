@@ -1,16 +1,16 @@
 ---
 name: agw-implementation-planning
-description: Phase 04 of the Analysis-Gated Workflow. Use when producing a detailed, phase-structured Implementation Plan based on completed analysis. No code is written. Requires explicit Architect go signal to advance to implementation.
+description: the Implementation Planning Phase of the Analysis-Gated Workflow. Use when producing a detailed, phase-structured Implementation Plan based on completed analysis. No code is written. Requires explicit Architect go signal to advance to implementation.
 ---
 
 # Analysis-Gated Workflow — Implementation Planning Skill
-## Phase 04
+## IMPLEMENTATION PLANNING PHASE
 
 ---
 
 ## Purpose
 
-This skill governs Phase 04 of the Analysis-Gated Workflow. Its sole responsibility
+This skill governs the Implementation Planning Phase of the Analysis-Gated Workflow. Its sole responsibility
 is to produce a **detailed, phase-structured Implementation Plan** based entirely on
 the analysis accumulated in Phases 01–03.
 
@@ -31,7 +31,7 @@ The Implementation Plan is written to the ANALYSIS document only.
 
 ---
 
-## Phase 04 Execution
+## IMPLEMENTATION PLANNING PHASE Execution
 
 **The Implementation Plan is a planning artifact only. No code is written,
 no files are modified, and no implementation begins in this phase — regardless
@@ -161,7 +161,7 @@ Pending Architect Action: Review Implementation Plan.
 
 ### Step 6 — Notify the Architect
 
-> "Phase 04 is complete. The Implementation Plan is ready for review in the
+> "Implementation Planning Phase is complete. The Implementation Plan is ready for review in the
 > ANALYSIS document. Please review it carefully. Add ADR annotations if corrections
 > are needed. When you are satisfied, signal go for Phase 05 to begin implementation."
 

@@ -50,7 +50,7 @@ Check whether an ANALYSIS document already exists at:
    - A class name, a pattern, a business capability, a service contract, a domain name, or similar
 2. Ask the user to **describe the required feature or expected refactoring**.
 3. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
-4. Register the phase as `PHASE 01 — IN PROGRESS` in the Workflow State block.
+4. Register the phase as `DEEP FEATURE ANALYSIS PHASE — IN PROGRESS` in the Workflow State block.
 5. Read the **Deep Feature Analysis skill**:
    `skills/01-deep-feature-analysis/SKILL.md`
 6. Execute Phase 01 under the governance of that skill.
@@ -80,11 +80,11 @@ Check whether an ANALYSIS document already exists at:
 
 | Phase | Skill to Load | Gate to Advance |
 |---|---|---|
-| PHASE 01 — Deep Feature Analysis | `skills/01-deep-feature-analysis/SKILL.md` | Architect signals: "proceed to Phase 02" |
-| PHASE 02 — Deep Code Analysis | `skills/02-deep-code-analysis/SKILL.md` | Architect signals: "proceed to Phase 03" |
-| PHASE 03 — Compliance & Review | `skills/03-compliance-review/SKILL.md` | Architect signals: "proceed to Phase 04" |
-| PHASE 04 — Implementation Planning | `skills/04-implementation-planning/SKILL.md` | Architect signals: "proceed to Phase 05" |
-| PHASE 05 — Implementation | `skills/05-implementation/SKILL.md` | Architect signals: "implementation complete" |
+| DEEP FEATURE ANALYSIS PHASE | `skills/01-deep-feature-analysis/SKILL.md` | Architect signals: "proceed to Deep Code Analysis" |
+| DEEP CODE ANALYSIS PHASE | `skills/02-deep-code-analysis/SKILL.md` | Architect signals: "proceed to Compliance & Review" |
+| COMPLIANCE & REVIEW PHASE | `skills/03-compliance-review/SKILL.md` | Architect signals: "proceed to Implementation Planning" |
+| IMPLEMENTATION PLANNING PHASE | `skills/04-implementation-planning/SKILL.md` | Architect signals: "proceed to Implementation" |
+| IMPLEMENTATION PHASE | `skills/05-implementation/SKILL.md` | Architect signals: "implementation complete" |
 
 ---
 
@@ -110,18 +110,18 @@ The following gates are absolute and cannot be bypassed:
 
 | Gate | Condition |
 |---|---|
-| PHASE 01 → 02 | Architect has explicitly signalled readiness |
-| PHASE 02 → 03 | Architect has explicitly signalled readiness |
-| PHASE 03 → 03 (loop) | Architect has added ADR annotations — return to Phase 03 |
-| PHASE 03 → 04 | Architect has explicitly signalled: go for Implementation Planning |
-| PHASE 04 → 05 | Architect has explicitly signalled: go for Implementation |
-| PHASE 05a → 05b | Architect has rejected the implementation |
-| PHASE 05b → 05a | Architect has signalled: start next implementation iteration |
-| PHASE 05 → 06 | Architect has accepted the implementation |
+| DEEP FEATURE ANALYSIS → DEEP CODE ANALYSIS | Architect has explicitly signalled readiness |
+| DEEP CODE ANALYSIS → COMPLIANCE & REVIEW | Architect has explicitly signalled readiness |
+| COMPLIANCE & REVIEW → COMPLIANCE & REVIEW (loop) | Architect has added ADR annotations — return to Compliance & Review |
+| COMPLIANCE & REVIEW → IMPLEMENTATION PLANNING | Architect has explicitly signalled: go for Implementation Planning |
+| IMPLEMENTATION PLANNING → IMPLEMENTATION | Architect has explicitly signalled: go for Implementation |
+| IMPLEMENTATION → REJECTION & REVERT | Architect has rejected the implementation |
+| REJECTION & REVERT → IMPLEMENTATION (retry) | Architect has signalled: start next implementation iteration |
+| IMPLEMENTATION → DOCUMENTATION & CLEANUP | Architect has accepted the implementation |
 
 If the Architect attempts to skip a phase, you must flag it explicitly:
-> "The Analysis-Gated Workflow requires completing Phase [N] before advancing to Phase [N+1].
-> Please confirm you want to skip Phase [N] and take responsibility for that decision."
+> "The Analysis-Gated Workflow requires completing [PHASE_NAME] PHASE before advancing to [NEXT_PHASE_NAME] PHASE.
+> Please confirm you want to skip [PHASE_NAME] PHASE and take responsibility for that decision."
 
 Only proceed on explicit confirmation.
 
@@ -140,8 +140,8 @@ The Prompt Log is maintained as a Markdown table:
 
 | # | Date & Time | Phase | Prompt |
 |---|-------------|-------|--------|
-| 1 | YYYY-MM-DD HH:MM | PHASE 01 | [verbatim prompt text] |
-| 2 | YYYY-MM-DD HH:MM | PHASE 02 | [verbatim prompt text] |
+| 1 | YYYY-MM-DD HH:MM | DEEP FEATURE ANALYSIS PHASE | [verbatim prompt text] |
+| 2 | YYYY-MM-DD HH:MM | DEEP CODE ANALYSIS PHASE | [verbatim prompt text] |
 ```
 
 Each new prompt is appended as a new row. The sequence number (`#`) is never reused.
@@ -197,7 +197,7 @@ Sections are populated progressively as phases advance — never pre-filled.
 
 | Field | Value |
 |---|---|
-| Current Phase | PHASE 01 |
+| Current Phase | DEEP FEATURE ANALYSIS PHASE |
 | Phase Status | IN PROGRESS |
 | Last Updated | YYYY-MM-DD |
 | Pending Architect Action | none |

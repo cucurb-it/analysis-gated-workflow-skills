@@ -1,16 +1,16 @@
 ---
 name: agw-implementation
-description: Phases 05 and 06 of the Analysis-Gated Workflow. Use when executing an approved Implementation Plan, handling rejection and revert cycles, and documenting the completed implementation with deviations and learnings.
+description: the Implementation Phase and Documentation phase of the Analysis-Gated Workflow. Use when executing an approved Implementation Plan, handling rejection and revert cycles, and documenting the completed implementation with deviations and learnings.
 ---
 
 # Analysis-Gated Workflow — Implementation Skill
-## Phase 05 & 06
+## IMPLEMENTATION PHASE & DOCUMENTATION
 
 ---
 
 ## Purpose
 
-This skill governs Phases 05 and 06 of the Analysis-Gated Workflow. Phase 05 is the
+This skill governs the Implementation Phase and Documentation phase of the Analysis-Gated Workflow. Implementation Phase is the
 first phase in which the codebase is touched. The Implementation Plan produced in
 Phase 04 is the sole guide for all changes made. Phase 06 documents the completed
 implementation and all deviations from the plan.
@@ -234,7 +234,7 @@ Pending Architect Action: Review updated Implementation Plan.
 
 ## Phase 06 — Documentation & Cleanup
 
-Phase 06 is entered after the Architect accepts the implementation.
+Documentation & Cleanup phase is entered after the Architect accepts the implementation.
 
 ### Step 1 — Log the prompt
 
@@ -294,7 +294,7 @@ Pending Architect Action: none
 
 ### Step 6 — Close the workflow
 
-> "Phase 06 is complete. The ANALYSIS document is fully updated. The
+> "Documentation & Cleanup phase is complete. The ANALYSIS document is fully updated. The
 > Analysis-Gated Workflow for [FEATURE_NAME] is closed."
 
 ---

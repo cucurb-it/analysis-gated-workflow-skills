@@ -1,16 +1,16 @@
 ---
 name: agw-deep-code-analysis
-description: Phase 02 of the Analysis-Gated Workflow. Use when performing a deep analysis of an existing codebase — architecture, patterns, performance, coding style, and project conventions. No implementation.
+description: the Deep Code Analysis Phase of the Analysis-Gated Workflow. Use when performing a deep analysis of an existing codebase — architecture, patterns, performance, coding style, and project conventions. No implementation.
 ---
 
 # Analysis-Gated Workflow — Deep Code Analysis Skill
-## Phase 02
+## DEEP CODE ANALYSIS PHASE
 
 ---
 
 ## Purpose
 
-This skill governs Phase 02 of the Analysis-Gated Workflow. Its responsibility is to
+This skill governs the Deep Code Analysis Phase of the Analysis-Gated Workflow. Its responsibility is to
 produce a **deep, evidence-based understanding of the existing implementation** — how it
 works, what patterns it uses, what its performance characteristics are, how it relates
 to the rest of the codebase, and what the current state truly is before any change is made.
@@ -29,7 +29,7 @@ No implementation is proposed in this phase — only understanding is built.
 
 ---
 
-## Phase 02 Execution
+## DEEP CODE ANALYSIS PHASE Execution
 
 ### Step 1 — Log the prompt
 
@@ -187,9 +187,9 @@ Update the `## Workflow State` block:
 
 ### Step 6 — Notify the Architect
 
-> "Phase 02 is complete. Please review the ANALYSIS document. Add ADR annotations
+> "Deep Code Analysis Phase is complete. Please review the ANALYSIS document. Add ADR annotations
 > where corrections or decisions are needed, then signal when you are ready to
-> proceed to Phase 03."
+> proceed to Compliance & Review Phase."
 
 ---
 

@@ -1,16 +1,16 @@
 ---
 name: agw-compliance-review
-description: Phase 03 of the Analysis-Gated Workflow. Use when iterating analysis based on Software Architect ADR annotations. Ensures full compliance before advancing to implementation planning.
+description: the Compliance & Review Phase of the Analysis-Gated Workflow. Use when iterating analysis based on Software Architect ADR annotations. Ensures full compliance before advancing to implementation planning.
 ---
 
 # Analysis-Gated Workflow — Compliance & Review Skill
-## Phase 03
+## COMPLIANCE & REVIEW PHASE
 
 ---
 
 ## Purpose
 
-This skill governs Phase 03 of the Analysis-Gated Workflow. It is an **iterative phase**
+This skill governs the Compliance & Review Phase of the Analysis-Gated Workflow. It is an **iterative phase**
 that runs as many times as the Architect requires. Its purpose is to ensure the analysis
 fully reflects the Architect's intent — incorporating ADR annotations, resolving open
 questions, and deepening domain-specific understanding until the Architect is satisfied
@@ -28,7 +28,7 @@ Phase 03 is the gate that protects Phase 04 and Phase 05 from being entered prem
 
 ---
 
-## Phase 03 Execution
+## COMPLIANCE & REVIEW PHASE Execution
 
 ### Step 1 — Log the prompt
 
@@ -86,7 +86,7 @@ that Phase 02 may not have fully explored:
 Only go as deep as the Architect's annotations and prompts indicate is needed.
 Do not speculate beyond what the evidence and ADRs support.
 
-### Step 6 — Assess readiness for Phase 04
+### Step 6 — Assess readiness for Implementation Planning Phase
 
 After completing the iteration, evaluate against the **Definition of Ready** for Phase 04.
 
@@ -100,7 +100,7 @@ criteria are met:
 - [ ] Project Conventions Confirmation table exists and is complete (from Phase 02)
 - [ ] The domain understanding is sufficient to write a detailed, phase-structured Implementation Plan without further analysis
 - [ ] No unresolved ambiguities remain that could cause the Implementation Plan to be based on incorrect assumptions
-- [ ] The Architect has explicitly signalled readiness to proceed to Phase 04
+- [ ] The Architect has explicitly signalled readiness to proceed to Implementation Planning Phase
 
 **If ANY criterion is not met**, document what is missing in `## Open Questions` or
 flag it explicitly to the Architect. Do not proceed until the Definition of Ready
@@ -121,14 +121,14 @@ Phase Status:            AWAITING ARCHITECT REVIEW
 Last Updated:            YYYY-MM-DD
 Pending Architect Action: Review compliance updates.
                           Add further ADR annotations if needed,
-                          or signal readiness for Phase 04.
+                          or signal readiness for Implementation Planning Phase.
 ```
 
 ### Step 8 — Notify the Architect
 
-> "Phase 03 iteration is complete. All current ADRs have compliance responses.
+> "Compliance & Review Phase iteration is complete. All current ADRs have compliance responses.
 > Please review the updates. Add further ADR annotations if corrections are needed,
-> or signal when you are ready to proceed to Phase 04."
+> or signal when you are ready to proceed to Implementation Planning Phase."
 
 ---
 
@@ -141,12 +141,12 @@ Architect adds ADR annotation
        ↓
 AI reads ADR, updates analysis, adds compliance response
        ↓
-AI assesses readiness for Phase 04
+AI assesses readiness for Implementation Planning Phase
        ↓
 If not ready → notify Architect, wait for next annotation or signal
 If ready     → notify Architect, wait for explicit go signal
        ↓
-Architect signals: "proceed to Phase 04"
+Architect signals: "proceed to Implementation Planning Phase"
        ↓
 Governing Workflow advances to Phase 04
 ```
@@ -168,7 +168,7 @@ There is no limit on the number of iterations. The Architect controls the exit.
 
 ## Quality Criteria
 
-Each Phase 03 iteration is complete when:
+Each Compliance & Review Phase iteration is complete when:
 
 - [ ] All ADRs in the document have a compliance response directly below them
 - [ ] All open questions are resolved or explicitly escalated
