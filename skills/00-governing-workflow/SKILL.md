@@ -104,7 +104,7 @@ When the Architect signals a phase transition:
    - Check if git is properly configured (user.name and user.email set)
    - If both checks pass, commit the ANALYSIS document with message:
      ```
-     chore: complete [COMPLETED_PHASE_NAME] PHASE [skip ci]
+     [chore] complete [COMPLETED_PHASE_NAME] PHASE [skip ci]
      ```
    - If any check fails, continue silently without committing (no error, no interruption)
    - This creates an automatic checkpoint at each phase boundary for audit trail
