@@ -99,8 +99,17 @@ When the Architect signals a phase transition:
    - Set `Last Updated` to today's date
    - Set `Pending Architect Action` to `none`
 3. Add a **Prompt Log entry** recording the Architect's transition signal (verbatim).
-4. Load the skill for the new phase.
-5. Announce the phase transition to the Architect before proceeding.
+4. **Auto-commit phase completion** (if in git repository):
+   - Check if the ANALYSIS document is inside a git repository
+   - Check if git is properly configured (user.name and user.email set)
+   - If both checks pass, commit the ANALYSIS document with message:
+     ```
+     chore: complete [COMPLETED_PHASE_NAME] PHASE [skip ci]
+     ```
+   - If any check fails, continue silently without committing (no error, no interruption)
+   - This creates an automatic checkpoint at each phase boundary for audit trail
+5. Load the skill for the new phase.
+6. Announce the phase transition to the Architect before proceeding.
 
 ---
 
