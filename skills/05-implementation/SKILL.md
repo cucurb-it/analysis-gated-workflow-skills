@@ -32,6 +32,24 @@ A rejection triggers Phase 05b — revert, learn, and re-enter.
 
 These constraints apply throughout Phase 05 and cannot be overridden by prompt wording:
 
+- **Simplicity First** — make every change as simple as possible. Minimize code impact.
+  Choose the simplest solution that satisfies the requirements. Avoid over-engineering.
+  Prefer small, focused changes over large refactorings unless explicitly required by the
+  Implementation Plan.
+- **No Laziness** — identify root causes for the requested feature or refactoring.
+  Do not apply superficial fixes or workarounds. Understand why the change is needed and
+  address the underlying problem. If the Implementation Plan is based on symptoms rather
+  than root cause, flag it as a deviation and return to analysis.
+- **Avoid Temporary Fixes** — do not introduce TODO comments, placeholder implementations,
+  or "we'll fix this later" code. Every change must be production-ready. If a proper
+  solution cannot be implemented now, flag it as a deviation and discuss with the Architect.
+- **Senior Developer Standards** — apply the code quality, testing rigor, and engineering
+  discipline expected of a senior developer. Write code you would be proud to have reviewed
+  by your peers. Consider maintainability, readability, and long-term consequences.
+- **Minimal Impact** — touch only what is necessary to satisfy the Implementation Plan.
+  Do not refactor unrelated code, rename variables "for consistency", or apply coding
+  standards to files you're not already modifying. Every line changed increases the risk
+  of introducing new bugs. Avoid scope creep.
 - **No new dependencies** — do not introduce new NuGet packages or external libraries
   without explicit Architect approval. If a dependency appears necessary, stop and raise
   it as a deviation before proceeding.
@@ -296,6 +314,23 @@ Pending Architect Action: none
 
 > "Documentation & Cleanup phase is complete. The ANALYSIS document is fully updated. The
 > Analysis-Gated Workflow for [FEATURE_NAME] is closed."
+
+### Step 7 — Final commit (if in git repository)
+
+**Auto-commit all implementation changes** (if in git repository):
+- Check if the working directory is inside a git repository
+- Check if git is properly configured (user.name and user.email set)
+- If both checks pass, stage and commit all changes with message:
+  ```
+  [feat] [FEATURE_NAME] - complete implementation [skip ci]
+  
+  Completed via Analysis-Gated Workflow
+  See [ANALYSIS_DOCUMENT_FILENAME] for full analysis and implementation details
+  ```
+- If any check fails, notify the Architect:
+  > "Implementation complete but not committed. Please commit manually or enable git."
+- This creates the final snapshot of all code changes ready for review, PR, or handoff
+  to another agent/skill for validation.
 
 ---
 
