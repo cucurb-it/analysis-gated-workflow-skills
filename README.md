@@ -10,17 +10,17 @@ governed by a Software Architect and supported by AI (Claude Code CLI or Copilot
 | Folder | Skill | Phase |
 |---|---|---|
 | `00-governing-workflow/` | Governing Workflow | All phases — orchestrator |
-| `01-deep-feature-analysis/` | Deep Feature Analysis | Phase 01 |
-| `02-deep-code-analysis/` | Deep Code Analysis | Phase 02 |
-| `03-compliance-review/` | Compliance & Review | Phase 03 (iterative) |
-| `04-implementation-planning/` | Implementation Planning | Phase 04 |
-| `05-implementation/` | Implementation | Phase 05 & 06 |
+| `01-deep-feature-analysis/` | Deep Feature Analysis | DEEP FEATURE ANALYSIS PHASE |
+| `02-deep-code-analysis/` | Deep Code Analysis | DEEP CODE ANALYSIS PHASE |
+| `03-compliance-review/` | Compliance & Review | COMPLIANCE & REVIEW PHASE (iterative) |
+| `04-implementation-planning/` | Implementation Planning | IMPLEMENTATION PLANNING PHASE |
+| `05-implementation/` | Implementation | IMPLEMENTATION PHASE & DOCUMENTATION |
 
 ---
 
 ## Installation
 
-### Via Marketplace (recommended)
+### Via Claude Code CLI (recommended)
 
 Once published to GitHub at `cucurb-it/analysis-gated-workflow-skills`:
 
@@ -28,6 +28,28 @@ Once published to GitHub at `cucurb-it/analysis-gated-workflow-skills`:
 /plugin marketplace add cucurb-it/analysis-gated-workflow-skills
 /plugin install analysis-gated-workflow@analysis-gated-workflow-skills
 ```
+
+### Via GitHub Copilot CLI
+
+```bash
+# Add the marketplace
+gh copilot skill marketplace add cucurb-it/analysis-gated-workflow-skills
+
+# Install the skill
+gh copilot skill install analysis-gated-workflow
+```
+
+### Via VS Code Extension (easiest for VS Code users)
+
+Install the [Agent Plugins extension](https://github.com/timheuer/vscode-agent-plugins) for VS Code, which provides a UI for managing marketplaces and skills:
+
+1. Install the extension from the VS Code marketplace
+2. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+3. Run: `Agent Plugins: Add Marketplace`
+4. Enter: `cucurb-it/analysis-gated-workflow-skills`
+5. Install the skill scoped to your workspace or user settings
+
+The extension makes it easy to browse, install, and manage skills without command-line tools.
 
 ### Local installation
 
@@ -75,7 +97,7 @@ The Governing Workflow skill handles everything from there — new session or re
 
 - The ANALYSIS document is the sole persistent memory of the workflow
 - The Architect is the only authority who can advance a phase
-- The codebase is never touched before Phase 05
+- The codebase is never touched before IMPLEMENTATION PHASE
 - ADRs are permanent — never overwritten or deleted
 - Every user prompt is logged verbatim in the ANALYSIS document
 
@@ -84,27 +106,27 @@ The Governing Workflow skill handles everything from there — new session or re
 ## Phase Overview
 
 ```
-PHASE 01 — Deep Feature Analysis
+DEEP FEATURE ANALYSIS PHASE
   Understand what is requested. No code access. No implementation.
        ↓ [Architect go signal]
-PHASE 02 — Deep Code Analysis
+DEEP CODE ANALYSIS PHASE
   Understand the existing implementation deeply. No implementation.
        ↓ [Architect go signal]
-PHASE 03 — Compliance & Review  ←──────────────────┐
-  Iterate on analysis based on Architect ADR        │
-  annotations until analysis is complete.           │
-       ↓ [Architect go signal]          [ADR added — loop back]
-PHASE 04 — Implementation Planning
+COMPLIANCE & REVIEW PHASE  ←──────────────────┐
+  Iterate on analysis based on Architect ADR   │
+  annotations until analysis is complete.      │
+       ↓ [Architect go signal]    [ADR added — loop back]
+IMPLEMENTATION PLANNING PHASE
   Produce a detailed, phase-structured Implementation Plan. No code.
        ↓ [Architect go signal]
-PHASE 05a — Implementation
+IMPLEMENTATION PHASE
   Execute the Implementation Plan, phase by phase.
-       ↓ [Architect accepts]        [Architect rejects → PHASE 05b]
-PHASE 05b — Rejection & Revert ──────────────────────┐
-  Revert codebase. Document learnings.                │
-  Update Implementation Plan.                         │
-       ↓ [Architect go signal] ──────────────────────→ back to PHASE 05a
-PHASE 06 — Documentation & Cleanup
+       ↓ [Architect accepts]        [Architect rejects → REJECTION & REVERT]
+REJECTION & REVERT ──────────────────────────┐
+  Revert codebase. Document learnings.        │
+  Update Implementation Plan.                 │
+       ↓ [Architect go signal] ───────────────→ back to IMPLEMENTATION PHASE
+DOCUMENTATION & CLEANUP
   Document implementation, deviations, and results.
        ↓ [Workflow closed]
 ```
