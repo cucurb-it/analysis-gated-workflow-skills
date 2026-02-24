@@ -102,8 +102,29 @@ criteria are met:
 - [ ] No unresolved ambiguities remain that could cause the Implementation Plan to be based on incorrect assumptions
 - [ ] The Architect has explicitly signalled readiness to proceed to Implementation Planning Phase
 
+**Handling unresolved open questions:**
+
+If any open questions remain unresolved when assessing Definition of Ready, the AI must
+convert them into **placeholder ADRs** in the `## Architecture Decision Records` section.
+This is the **only** circumstance where the AI may write to the ADR section (normally
+ADRs are Architect-only).
+
+Format for placeholder ADRs (minimal and ultra-short):
+
+```markdown
+> **ADR [YYYY-MM-DD] — PENDING DECISION:** [Question text]  
+> **Status:** PENDING ARCHITECT INPUT  
+> **Context:** …  
+> **Decision:** …  
+> **Consequences:** + … / – …
+```
+
+These placeholder ADRs become **blocking** — the workflow cannot advance to Phase 04
+until the Architect replaces the placeholder content with actual decisions, or deletes
+the placeholder if it's no longer relevant.
+
 **If ANY criterion is not met**, document what is missing in `## Open Questions` or
-flag it explicitly to the Architect. Do not proceed until the Definition of Ready
+convert to placeholder ADRs as appropriate. Do not proceed until the Definition of Ready
 is satisfied.
 
 **If ALL criteria are met**, state clearly:
