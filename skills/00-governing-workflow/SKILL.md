@@ -24,9 +24,13 @@ Every session — new or resumed — begins with the same sequence:
 
 ### Step 1 — Ask for feature name and folder
 
-Ask the user:
-1. **Feature or refactoring name** — what are they working on?
-2. **Working folder** — where should the ANALYSIS document be stored?
+Use the `ask_user_input_v0` tool to ask the user:
+
+```
+What are you working on?
+- Feature or refactoring name
+- Working folder for the ANALYSIS document
+```
 
 Set:
 - `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
@@ -46,32 +50,14 @@ Check whether an ANALYSIS document already exists at:
 
 ### Step 3 — New Session Protocol
 
-1. **Ask for feature name and folder using interactive widget:**
-
-Use the `ask_user_input_v0` tool to present interactive options:
-
-```
-Ask the user:
-- Feature or refactoring name
-- Working folder for the ANALYSIS document
-```
-
-The widget should offer common patterns but allow custom input via "Other / I'll specify" option.
-
-2. Set:
-   - `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
-   - `{{FOLDER_NAME}}` = the folder provided
-   - `{{FEATURE_NAME_UPPERCASE}}` = feature name converted to SCREAMING_SNAKE_CASE
-   - ANALYSIS document path = `{{FOLDER_NAME}}/{{FEATURE_NAME_UPPERCASE}}_ANALYSIS.md`
-
-3. Ask for **specifics** about the feature or refactoring:
+1. Ask for **specifics** about the feature or refactoring:
    - A class name, a pattern, a business capability, a service contract, a domain name, or similar
-4. Ask the user to **describe the required feature or expected refactoring**.
-5. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
-6. Register the phase as `DEEP FEATURE ANALYSIS PHASE — IN PROGRESS` in the Workflow State block.
-7. Read the **Deep Feature Analysis skill**:
+2. Ask the user to **describe the required feature or expected refactoring**.
+3. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
+4. Register the phase as `DEEP FEATURE ANALYSIS PHASE — IN PROGRESS` in the Workflow State block.
+5. Read the **Deep Feature Analysis skill**:
    `skills/01-deep-feature-analysis/SKILL.md`
-8. Execute Phase 01 under the governance of that skill.
+6. Execute Phase 01 under the governance of that skill.
 
 ---
 
