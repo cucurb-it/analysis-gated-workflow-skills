@@ -1,18 +1,22 @@
 {
-  "name": "analysis-gated-workflow",
+  "name": "cucurb-it-analysis-gated-workflow",
   "owner": {
     "name": "Cucurb IT BV"
   },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/cucurb-it/analysis-gated-workflow-skills"
+  },
   "metadata": {
     "description": "Analysis-Gated Workflow — a structured, phase-gated process for software development and refactoring governed by a Software Architect.",
-    "version": "26.227.3"
+    "version": "26.218.1"
   },
   "plugins": [
     {
       "name": "analysis-gated-workflow",
       "source": "./",
       "description": "Structured phase-gated workflow for software development and refactoring. Enforces deep analysis before implementation through six progressive phases, governed by a Software Architect.",
-      "version": "26.227.3",
+      "version": "26.218.1",
       "author": {
         "name": "Cucurb IT BV"
       },
