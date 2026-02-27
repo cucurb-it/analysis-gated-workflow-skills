@@ -24,15 +24,31 @@ Every session — new or resumed — begins with the same sequence:
 
 ### Step 1 — Ask for feature name and folder
 
-Use the `ask_user_input_v0` tool to ask the user:
+**Question 1: Feature or refactoring name**
 
-```
-What are you working on?
-- Feature or refactoring name
-- Working folder for the ANALYSIS document
-```
+Present options:
+- "New Feature Implementation"
+- "Refactoring Existing Code"
+- "Bug Fix"
+- "Performance Optimization"
+- "Architecture Change"
+- "Custom / I'll specify"
 
-Set:
+If the user selects "Custom / I'll specify", ask in prose:
+> "Please provide the feature or refactoring name:"
+
+**Question 2: Working folder**
+
+Present options:
+- "docs/"
+- "assets/analysis/"
+- ". (current directory)"
+- "Custom path / I'll specify"
+
+If the user selects "Custom path / I'll specify", ask in prose:
+> "Please provide the folder path (e.g., assets/05.implementation/0802-my-feature):"
+
+After receiving responses, set:
 - `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
 - `{{FOLDER_NAME}}` = the folder provided
 - `{{FEATURE_NAME_UPPERCASE}}` = feature name converted to SCREAMING_SNAKE_CASE
