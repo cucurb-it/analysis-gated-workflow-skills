@@ -109,14 +109,25 @@ convert them into **placeholder ADRs** in the `## Architecture Decision Records`
 This is the **only** circumstance where the AI may write to the ADR section (normally
 ADRs are Architect-only).
 
-Format for placeholder ADRs (minimal and ultra-short):
+Format for placeholder ADRs:
 
 ```markdown
-**ADR [YYYY-MM-DD] — PENDING DECISION:** [Question text]  
-**Status:** PENDING ARCHITECT INPUT  
-**Context:** …  
-**Decision:** …  
-**Consequences:** + … / – …
+**ADR [YYYY-MM-DD]:** 
+[Question text]
+
+**Status:** PENDING ARCHITECT INPUT
+
+**Context:** 
+[Summary of the issue, why it matters, and what the options are]
+
+**Decision:** 
+[Most likely options, if known, or "TBD based on Architect input"]
+
+**Consequences:** 
+- DO: [accepted options]
+- NOT: [rejected options]
+
+---
 ```
 
 These placeholder ADRs become **blocking** — the workflow cannot advance to Phase 04
