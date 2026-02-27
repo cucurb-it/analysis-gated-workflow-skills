@@ -46,14 +46,32 @@ Check whether an ANALYSIS document already exists at:
 
 ### Step 3 — New Session Protocol
 
-1. Ask for **specifics** about the feature or refactoring:
+1. **Ask for feature name and folder using interactive widget:**
+
+Use the `ask_user_input_v0` tool to present interactive options:
+
+```
+Ask the user:
+- Feature or refactoring name
+- Working folder for the ANALYSIS document
+```
+
+The widget should offer common patterns but allow custom input via "Other / I'll specify" option.
+
+2. Set:
+   - `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
+   - `{{FOLDER_NAME}}` = the folder provided
+   - `{{FEATURE_NAME_UPPERCASE}}` = feature name converted to SCREAMING_SNAKE_CASE
+   - ANALYSIS document path = `{{FOLDER_NAME}}/{{FEATURE_NAME_UPPERCASE}}_ANALYSIS.md`
+
+3. Ask for **specifics** about the feature or refactoring:
    - A class name, a pattern, a business capability, a service contract, a domain name, or similar
-2. Ask the user to **describe the required feature or expected refactoring**.
-3. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
-4. Register the phase as `DEEP FEATURE ANALYSIS PHASE — IN PROGRESS` in the Workflow State block.
-5. Read the **Deep Feature Analysis skill**:
+4. Ask the user to **describe the required feature or expected refactoring**.
+5. Create the ANALYSIS document with the initial structure (see: ANALYSIS Document Structure).
+6. Register the phase as `DEEP FEATURE ANALYSIS PHASE — IN PROGRESS` in the Workflow State block.
+7. Read the **Deep Feature Analysis skill**:
    `skills/01-deep-feature-analysis/SKILL.md`
-6. Execute Phase 01 under the governance of that skill.
+8. Execute Phase 01 under the governance of that skill.
 
 ---
 
@@ -104,7 +122,7 @@ When the Architect signals a phase transition:
    - Check if git is properly configured (user.name and user.email set)
    - If both checks pass, commit the ANALYSIS document with message:
      ```
-     [chore] complete [COMPLETED_PHASE_NAME] PHASE [skip ci]
+     chore: complete [COMPLETED_PHASE_NAME] PHASE [skip ci]
      ```
    - If any check fails, continue silently without committing (no error, no interruption)
    - This creates an automatic checkpoint at each phase boundary for audit trail
