@@ -163,15 +163,18 @@ immediately and invoke the Deviation Protocol.
 If at any point the implementation requires deviating from the approved plan:
 
 1. **Stop immediately** — do not continue implementing
-2. Document the deviation in the ANALYSIS document:
+2. Document the deviation in the ANALYSIS document under the ## Deviations section:
 
-```
-### Deviation [N] — [YYYY-MM-DD]
-**Planned:** [What the plan said]
-**Actual:** [What was found or needed instead]
-**Reason:** [Why the deviation is necessary]
-**Impact:** [What this changes about the remaining plan]
-**Architect decision:** [PENDING]
+```markdown
+### Deviation [N] — YYYY-MM-DD
+
+| Field | Info |
+|---|---|
+| **Planned** | [What the Implementation Plan specified] |
+| **Actual** | [What was actually implemented or discovered] |
+| **Reason** | [Root cause — why the deviation was necessary] |
+| **Impact** | [What this changes about the remaining plan] |
+| **Decision** | PENDING |
 ```
 
 3. Notify the Architect:
@@ -181,9 +184,23 @@ If at any point the implementation requires deviating from the approved plan:
 
 4. Wait for Architect decision before continuing.
 
-5. When the Architect decides, update the deviation entry:
-   - `**Architect decision:** APPROVED — [rationale]` → continue with the deviation
-   - `**Architect decision:** REJECTED — [rationale]` → revert to the plan as written
+5. When the Architect decides, update the deviation entry Decision field:
+   - `APPROVED — [rationale]` → continue with the deviation
+   - `REJECTED — [rationale]` → revert to the plan as written
+
+**Example deviation:**
+
+```markdown
+### Deviation 1 — 2026-03-10
+
+| Field | Info |
+|---|---|
+| **Planned** | Conditional thinking block rendered inside the bot message `<Padder>` using `@if (!string.IsNullOrEmpty(message.ThinkingContent))` as a child of `<Padder>`. |
+| **Actual** | `<Padder>` in RazorConsole does not support dynamic child counts. Placing `@if` blocks inside `<Padder>` caused the component to fail to render any children. |
+| **Reason** | The original codebase establishes a clear convention: `<Rows>` handles dynamic/conditional children; `<Padder>` always receives a fixed set of children. The Implementation Plan did not account for this RazorConsole-specific constraint. |
+| **Impact** | Phase 3.2 (rendering loop) must be restructured. Conditional content must live at the `<Rows>` level. Each `<Padder>` must have exactly 3 fixed children. Two separate `<Padder>` instances are used for bot messages. |
+| **Decision** | APPROVED — self-evident fix from existing codebase convention. |
+```
 
 ### Step 5 — Update Workflow State after each phase
 
@@ -322,7 +339,7 @@ Pending Architect Action: none
 - Check if git is properly configured (user.name and user.email set)
 - If both checks pass, stage and commit all changes with message:
   ```
-  [feat] [FEATURE_NAME] - complete implementation [skip ci]
+  feat: [FEATURE_NAME] - complete implementation [skip ci]
   
   Completed via Analysis-Gated Workflow
   See [ANALYSIS_DOCUMENT_FILENAME] for full analysis and implementation details

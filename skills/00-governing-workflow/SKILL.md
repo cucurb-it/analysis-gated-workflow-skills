@@ -179,8 +179,16 @@ When the Architect adds an annotation to the ANALYSIS document:
 7. Record the compliance response immediately below the ADR in the document.
 
 ADR format (written by Architect):
-```
-> **ADR [YYYY-MM-DD]:** [Decision or correction text]
+```markdown
+**ADR YYYY-MM-DD:**
+
+|     | Info |
+| --- | --- |
+| **Subject** | [topic] |
+| **Status** | DECIDED / PENDING |
+| **Context** | [background and considerations] |
+| **Decision** | [what was decided] |
+| **Consequences** | DO: ... <br/> NOT: ... |
 ```
 
 Compliance response format (written by AI):

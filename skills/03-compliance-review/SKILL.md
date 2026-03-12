@@ -39,8 +39,16 @@ section, verbatim.
 
 Scan the entire ANALYSIS document for ADR annotations:
 
-```
-> **ADR [YYYY-MM-DD]:** [text]
+```markdown
+**ADR YYYY-MM-DD:**
+
+|     | Info |
+| --- | --- |
+| **Subject** | [topic] |
+| **Status** | DECIDED / PENDING |
+| **Context** | [background and considerations] |
+| **Decision** | [what was decided] |
+| **Consequences** | DO: ... <br/> NOT: ... |
 ```
 
 For each ADR found without a corresponding Compliance response:
@@ -112,22 +120,15 @@ ADRs are Architect-only).
 Format for placeholder ADRs:
 
 ```markdown
-**ADR [YYYY-MM-DD]:** 
-[Question text]
+**ADR YYYY-MM-DD:**
 
-**Status:** PENDING ARCHITECT INPUT
-
-**Context:** 
-[Summary of the issue, why it matters, and what the options are]
-
-**Decision:** 
-[Most likely options, if known, or "TBD based on Architect input"]
-
-**Consequences:** 
-- DO: [accepted options]
-- NOT: [rejected options]
-
----
+|     | Info |
+| --- | --- |
+| **Subject** | [Question text / topic requiring decision] |
+| **Status** | PENDING ARCHITECT INPUT |
+| **Context** | [Summary of the issue, why it matters, and what the options are] |
+| **Decision** | [Most likely options, if known, or "TBD based on Architect input"] |
+| **Consequences** | DO: [accepted options] <br/> NOT: [rejected options] |
 ```
 
 These placeholder ADRs become **blocking** — the workflow cannot advance to Phase 04
