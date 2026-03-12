@@ -25,7 +25,7 @@ governed by a Software Architect and supported by AI (Claude Code CLI or Copilot
 Once published to GitHub at `cucurb-it/analysis-gated-workflow-skills`:
 
 ```bash
-/plugin marketplace add cucurb-it/analysis-gated-workflow-skills
+/plugin marketplace add https://github.com/cucurb-it/analysis-gated-workflow-skills.git
 /plugin install analysis-gated-workflow@analysis-gated-workflow-skills
 ```
 
@@ -33,7 +33,7 @@ Once published to GitHub at `cucurb-it/analysis-gated-workflow-skills`:
 
 ```bash
 # Add the marketplace
-gh copilot skill marketplace add cucurb-it/analysis-gated-workflow-skills
+gh copilot skill marketplace add https://github.com/cucurb-it/analysis-gated-workflow-skills.git
 
 # Install the skill
 gh copilot skill install analysis-gated-workflow
@@ -46,7 +46,7 @@ Install the [Agent Plugins extension](https://github.com/timheuer/vscode-agent-p
 1. Install the extension from the VS Code marketplace
 2. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
 3. Run: `Agent Plugins: Add Marketplace`
-4. Enter: `cucurb-it/analysis-gated-workflow-skills`
+4. Enter: `https://github.com/cucurb-it/analysis-gated-workflow-skills.git`
 5. Install the skill scoped to your workspace or user settings
 
 The extension makes it easy to browse, install, and manage skills without command-line tools.
