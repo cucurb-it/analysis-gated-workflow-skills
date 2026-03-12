@@ -192,8 +192,13 @@ ADR format (written by Architect):
 ```
 
 Compliance response format (written by AI):
-```
-> **Compliance [YYYY-MM-DD]:** [How the analysis was updated in response]
+```markdown
+**Compliance YYYY-MM-DD:**
+
+|     | Info |
+| --- | --- |
+| **Analysis Updates** | [How the analysis was updated in response] |
+| **Sections Affected** | [Which sections were changed] |
 ```
 
 ---

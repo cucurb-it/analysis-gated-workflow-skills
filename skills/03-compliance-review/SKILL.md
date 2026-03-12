@@ -73,8 +73,13 @@ For open questions carried forward from Phase 01 or Phase 02:
 Update the affected sections of the ANALYSIS document to reflect full compliance
 with each ADR. Then, immediately below each ADR, add the compliance response:
 
-```
-> **Compliance [YYYY-MM-DD]:** [How the analysis was updated in response]
+```markdown
+**Compliance YYYY-MM-DD:**
+
+|     | Info |
+| --- | --- |
+| **Analysis Updates** | [How the analysis was updated in response] |
+| **Sections Affected** | [Which sections were changed] |
 ```
 
 The ADR itself is never modified. The compliance response documents what changed
