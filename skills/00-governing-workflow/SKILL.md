@@ -1,6 +1,7 @@
 ---
 name: analysis-gated-workflow
 description: Governs the Analysis-Gated Workflow for software development and refactoring. Use when starting or resuming a structured analysis session with a Software Architect. Orchestrates all other workflow skills across phases.
+argument-hint: [for '<feature-name>' in '<folder-path>']
 ---
 
 # Analysis-Gated Workflow — Governing Workflow Skill
@@ -31,15 +32,31 @@ the Implementation Plan where you describe PHASES of implementation.
 
 Every session — new or resumed — begins with the same sequence:
 
-### Step 1 — Ask for feature name and folder
+### Step 1 — Resolve feature name and folder
 
-Ask the user for:
-1. Feature or refactoring name
-2. Working folder path
+The skill receives its arguments as: $ARGUMENTS
 
-Wait for their response before proceeding.
+**If arguments are present**, parse them using the natural-language pattern:
+```
+for '<feature-name>' in '<folder-path>'
+```
+Examples that must all be accepted:
+- `for 'Finding all configured countries' in '~/analysis/issues/012-find-configured-countries'`
+- `for "My Feature" in "/absolute/path/to/folder"`
+- `Finding all configured countries ~/analysis/issues/012` *(positional fallback: first quoted/unquoted string = name, last token = folder)*
 
-After receiving responses, set:
+Extract:
+- `{{FEATURE_NAME}}` from the value after `for` (strip surrounding quotes)
+- `{{FOLDER_NAME}}` from the value after `in` (strip surrounding quotes)
+
+**If arguments are absent or incomplete**, ask the user only for the missing piece(s):
+- No arguments at all → ask for both feature name and working folder path
+- Feature name present but no folder → ask only for the working folder path
+- Folder present but no feature name → ask only for the feature name
+
+Do not ask for information already supplied in the arguments. Wait for any missing responses before proceeding.
+
+After all values are resolved, set:
 - `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
 - `{{FOLDER_NAME}}` = the folder provided
 - `{{FEATURE_NAME_UPPERCASE}}` = feature name converted to SCREAMING_SNAKE_CASE
