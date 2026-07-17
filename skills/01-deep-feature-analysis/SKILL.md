@@ -64,7 +64,9 @@ Before writing, reason carefully about the following:
 Write `{{PHASE_FILE}}` with frontmatter (`type: Phase`, `phase: "01 — Deep Feature
 Analysis"`, `status: IN PROGRESS`, one-line `description`). Emit the common anchors
 (`phase-top`, `outcome`, `open-items`) and the phase-specific anchor
-(`feature-description`) at their sections. Populate the body:
+(`feature-description`) at their sections. Use plain `###` subsection headings — do
+**not** number them (the old `N.x` numbering was an artifact of the single-document
+model and produces orphaned numbers in a per-phase file). Structure:
 
 ```markdown
 ---
@@ -79,31 +81,40 @@ description: <one-line summary>
 
 <a id="feature-description"></a>
 ## Feature or Refactoring Description
+
+### Request Summary
+### Domain Context
+### Scope
+### Key Concepts & Terminology
+
+<a id="open-items"></a>
+## Open Questions
+
+<a id="outcome"></a>
+## Outcome
 ```
 
-#### 3.1 — Request Summary
-A precise restatement of what has been requested, in your own words.
+Populate each subsection:
+
+**Request Summary** — A precise restatement of what has been requested, in your own words.
 This is not a copy of the user's prompt — it is your structured understanding of it.
 
-#### 3.2 — Domain Context
-The business or technical domain this feature or refactoring belongs to.
+**Domain Context** — The business or technical domain this feature or refactoring belongs to.
 What capability it serves. What problem it solves or what improvement it delivers.
 
-#### 3.3 — Scope
-What is in scope. What is explicitly out of scope. What is unclear and requires
+**Scope** — What is in scope. What is explicitly out of scope. What is unclear and requires
 clarification before proceeding.
 
-#### 3.4 — Key Concepts & Terminology
-The domain-specific terms, class names, patterns, or concepts identified in the
-user's description. Defined as the user uses them — not as general programming terms.
+**Key Concepts & Terminology** — The domain-specific terms, class names, patterns, or
+concepts identified in the user's description. Defined as the user uses them — not as
+general programming terms.
 
-#### 3.5 — Open Questions (under `<a id="open-items"></a>`)
-Any ambiguities, missing information, or assumptions that need Architect confirmation
-before Phase 02 can begin. If there are none, state that explicitly.
+**Open Questions** (under the `open-items` anchor) — Any ambiguities, missing information,
+or assumptions that need Architect confirmation before Phase 02 can begin. If there are
+none, state that explicitly.
 
-#### 3.6 — Outcome (under `<a id="outcome"></a>`)
-A one-to-three sentence statement of what this phase established — the structured
-understanding of the request that Phase 02 will build on.
+**Outcome** (under the `outcome` anchor) — A one-to-three sentence statement of what this
+phase established: the structured understanding of the request that Phase 02 will build on.
 
 ### Step 4 — Write the summary file
 

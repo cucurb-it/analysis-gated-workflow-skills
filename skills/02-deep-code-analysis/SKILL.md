@@ -57,14 +57,14 @@ Write findings to `{{PHASE_FILE}}` (`type: Phase`, `phase: "02 — Deep Code Ana
 Analyse the following dimensions systematically. Each finding goes under its own
 subsection beneath `<a id="code-analysis"></a> ## Deep Code Analysis`.
 
-#### 3.1 — Architecture Overview
+#### Architecture Overview
 
 - Position in the system: where does this component sit in the pipeline, layer, or domain?
 - Class hierarchy: base classes, interfaces implemented, inheritance chain
 - Dependencies: what does it depend on, and what depends on it?
 - Lifecycle: how is it instantiated, invoked, and disposed?
 
-#### 3.2 — Behavioural Analysis
+#### Behavioural Analysis
 
 - What does this component do, step by step?
 - What are its execution paths? Map all conditional branches.
@@ -74,13 +74,13 @@ subsection beneath `<a id="code-analysis"></a> ## Deep Code Analysis`.
 
 Document the primary execution flow as a structured outline or ASCII diagram.
 
-#### 3.3 — Data Model
+#### Data Model
 
 - What data structures does this component consume and produce?
 - What are the key properties, their types, and their meanings?
 - What are typical cardinalities (e.g. "2–20 building levels per project")?
 
-#### 3.4 — Coding Patterns & Style
+#### Coding Patterns & Style
 
 - What patterns are used? (e.g. template method, strategy, pipeline processor)
 - What naming conventions are followed?
@@ -152,7 +152,7 @@ If no convention files exist, state explicitly: "No project-specific convention 
 Document any relevant conventions found. These take precedence over general coding
 assumptions.
 
-#### 3.5 — Performance Characteristics
+#### Performance Characteristics
 
 - Are there any O(n), O(n²), or worse complexity operations?
 - Are there repeated traversals of large collections?
@@ -160,19 +160,19 @@ assumptions.
 - Is there any existing documentation or commentary about performance in the code?
 - Provide estimated cost breakdown where evidence supports it.
 
-#### 3.6 — Relationship to Similar Components
+#### Relationship to Similar Components
 
 - Are there similar components in the codebase that solve the same or related problems?
 - Do any of them use better or different patterns?
 - Are there shared utilities or helpers used across these components?
 - Does the component under analysis deviate from the patterns used by its peers?
 
-#### 3.7 — Template Structure (if applicable)
+#### Template Structure (if applicable)
 
 - If the component operates on a document template, map the relevant template markers,
   section structure, and table references.
 
-#### 3.8 — Known Issues & Code Commentary
+#### Known Issues & Code Commentary
 
 - Are there any TODO, FIXME, HACK, or NOTE comments in the code?
 - Are there any inline comments that document known limitations or workarounds?

@@ -89,7 +89,7 @@ Write `{{PHASE_FILE}}` (`type: Phase`, `phase: "04 — Implementation Planning"`
 `outcome`, `open-items`) and the phase-specific anchor (`implementation-plan`).
 Populate the body under `<a id="implementation-plan"></a> ## Implementation Plan`:
 
-#### 5.1 — Proposed Changes Summary
+#### Proposed Changes Summary
 
 A concise overview of what will change:
 - Files to be created
@@ -98,7 +98,7 @@ A concise overview of what will change:
 - New classes, methods, or patterns introduced
 - Existing patterns eliminated or replaced
 
-#### 5.2 — Strategy Evaluation (if multiple approaches exist)
+#### Strategy Evaluation (if multiple approaches exist)
 
 If the analysis identified multiple viable approaches:
 
@@ -109,7 +109,7 @@ If the analysis identified multiple viable approaches:
 
 State the selected approach and the rationale.
 
-#### 5.3 — Implementation Phases
+#### Implementation Phases
 
 For each phase:
 
@@ -140,7 +140,7 @@ For each phase:
 4. Integration testing & validation
 5. Documentation & cleanup
 
-#### 5.4 — Risk Mitigation
+#### Risk Mitigation
 
 For each significant risk identified in the analysis:
 
@@ -148,7 +148,7 @@ For each significant risk identified in the analysis:
 |---|---|---|
 | [Risk] | High/Medium/Low | [Concrete mitigation step] |
 
-#### 5.5 — Deviations Protocol
+#### Deviations Protocol
 
 State explicitly:
 > "Any deviation from this Implementation Plan during Phase 05 must be:
