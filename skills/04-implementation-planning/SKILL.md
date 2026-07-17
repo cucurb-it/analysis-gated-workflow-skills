@@ -6,6 +6,11 @@ description: the Implementation Planning Phase of the Analysis-Gated Workflow. U
 # Analysis-Gated Workflow — Implementation Planning Skill
 ## IMPLEMENTATION PLANNING PHASE
 
+> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
+> Conventions** defined in `skills/00-governing-workflow/SKILL.md`. For this phase,
+> `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-04-implementation-planning`, so
+> `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
+
 ---
 
 ## Purpose
@@ -19,14 +24,14 @@ It must be precise enough that Phase 05 can be executed without further analysis
 
 No code is written in this phase.
 No code is modified in this phase.
-The Implementation Plan is written to the ANALYSIS document only.
+The Implementation Plan is written to `{{PHASE_FILE}}` only.
 
 ---
 
 ## Inputs
 
-- The completed Phase 01, 02, and 03 output in the ANALYSIS document
-- All ADRs and their compliance responses
+- The completed Phase 01, 02, and 03 output
+- All ADR files under `{{FOLDER_NAME}}/adrs/` and their compliance responses
 - The resolved scope, domain understanding, and identified constraints
 
 ---
@@ -40,23 +45,23 @@ signals go for Phase 05.**
 
 ### Step 1 — Log the prompt
 
-Append the Phase 04 initiating prompt to the `## Prompt Log` section, verbatim.
+Append the Phase 04 initiating prompt to `log.md`, verbatim.
 
 ### Step 2 — Check for existing Implementation Plan
 
-Before writing anything, check whether the `## Implementation Plan` section of the
-ANALYSIS document already contains content.
+Before writing anything, check whether `{{PHASE_FILE}}` already contains an
+Implementation Plan.
 
 - If it **already exists**: do not overwrite it. Notify the Architect:
-  > "An Implementation Plan already exists in the ANALYSIS document. Do you want me
-  > to extend it, replace it, or leave it as-is?"
+  > "An Implementation Plan already exists. Do you want me to extend it, replace it,
+  > or leave it as-is?"
   Wait for explicit instruction before proceeding.
 
 - If it **does not exist**: proceed to Step 3.
 
 ### Step 3 — Review the full analysis
 
-Before writing the Implementation Plan, re-read the entire ANALYSIS document.
+Before writing the Implementation Plan, re-read the Phase 01–03 phase files and all ADRs.
 Confirm that:
 
 - The scope is unambiguous
@@ -66,7 +71,7 @@ Confirm that:
 
 If any of the above are not satisfied, do not proceed. Flag the gap to the Architect.
 
-### Step 3 — Design the Implementation Plan structure
+### Step 4 — Design the Implementation Plan structure
 
 The Implementation Plan is structured as **numbered phases** — not as tasks, stories,
 or time estimates. Each phase represents a logical unit of implementation that can be
@@ -77,11 +82,14 @@ For each phase, identify:
 - What it depends on (prior phases)
 - What validation is needed before the next phase begins
 
-### Step 4 — Write the Implementation Plan
+### Step 5 — Write the Implementation Plan
 
-Populate the `## Implementation Plan` section of the ANALYSIS document.
+Write `{{PHASE_FILE}}` (`type: Phase`, `phase: "04 — Implementation Planning"`,
+`status: IN PROGRESS`, one-line `description`). Emit the common anchors (`phase-top`,
+`outcome`, `open-items`) and the phase-specific anchor (`implementation-plan`).
+Populate the body under `<a id="implementation-plan"></a> ## Implementation Plan`:
 
-#### 4.1 — Proposed Changes Summary
+#### 5.1 — Proposed Changes Summary
 
 A concise overview of what will change:
 - Files to be created
@@ -90,7 +98,7 @@ A concise overview of what will change:
 - New classes, methods, or patterns introduced
 - Existing patterns eliminated or replaced
 
-#### 4.2 — Strategy Evaluation (if multiple approaches exist)
+#### 5.2 — Strategy Evaluation (if multiple approaches exist)
 
 If the analysis identified multiple viable approaches:
 
@@ -101,7 +109,7 @@ If the analysis identified multiple viable approaches:
 
 State the selected approach and the rationale.
 
-#### 4.3 — Implementation Phases
+#### 5.3 — Implementation Phases
 
 For each phase:
 
@@ -132,7 +140,7 @@ For each phase:
 4. Integration testing & validation
 5. Documentation & cleanup
 
-#### 4.4 — Risk Mitigation
+#### 5.4 — Risk Mitigation
 
 For each significant risk identified in the analysis:
 
@@ -140,30 +148,51 @@ For each significant risk identified in the analysis:
 |---|---|---|
 | [Risk] | High/Medium/Low | [Concrete mitigation step] |
 
-#### 4.5 — Deviations Protocol
+#### 5.5 — Deviations Protocol
 
 State explicitly:
 > "Any deviation from this Implementation Plan during Phase 05 must be:
 > 1. Stopped immediately
-> 2. Documented in the ANALYSIS document under ## Deviations
+> 2. Documented in `phase-05-implementation/phase.md` under the `deviations` anchor
 > 3. Reviewed by the Architect before implementation continues"
 
-### Step 5 — Update Workflow State
+Record the selected approach under the `outcome` anchor, and any residual risks or
+assumptions under the `open-items` anchor.
 
+### Step 6 — Write the summary file
+
+Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "04 — Implementation Planning"`,
+`status: AWAITING ARCHITECT REVIEW`, `phase_file: ./phase.md`, one-line `description`):
+
+```markdown
+---
+type: Summary
+phase: "04 — Implementation Planning"
+status: AWAITING ARCHITECT REVIEW
+phase_file: ./phase.md
+description: <one-line outcome>
+---
+
+# Phase 04 Summary — Implementation Planning
+
+**Work completed:** [plan structure; number of implementation phases]
+
+**Outcome:** [selected strategy, one line] → [full detail](./phase.md#implementation-plan)
+
+**Open items carried forward:** [residual risks, or "none"] → [detail](./phase.md#open-items)
 ```
-Current Phase:           PHASE 04
-Phase Status:            AWAITING ARCHITECT REVIEW
-Last Updated:            YYYY-MM-DD
-Pending Architect Action: Review Implementation Plan.
-                          Add ADR annotations if corrections needed.
-                          Signal go for Phase 05 to begin implementation.
-```
 
-### Step 6 — Notify the Architect
+### Step 7 — Update workflow state
 
-> "Implementation Planning Phase is complete. The Implementation Plan is ready for review in the
-> ANALYSIS document. Please review it carefully. Add ADR annotations if corrections
-> are needed. When you are satisfied, signal go for Phase 05 to begin implementation."
+Update `{{FOLDER_NAME}}/STATE.md`:
+- `Phase Status` → `AWAITING ARCHITECT REVIEW`
+- `Pending Architect Action` → `Review Implementation Plan. Add ADR annotations if corrections needed. Signal go for Phase 05 to begin implementation.`
+
+### Step 8 — Notify the Architect
+
+> "Implementation Planning Phase is complete. The Implementation Plan is ready for review in
+> `phase-04-implementation-planning/`. Please review it carefully. Add ADR annotations if
+> corrections are needed. When you are satisfied, signal go for Phase 05 to begin implementation."
 
 ---
 
@@ -188,4 +217,5 @@ Phase 04 output is complete when:
 - [ ] Each phase ends with a Build and Validate step
 - [ ] Risk mitigation table is populated
 - [ ] Deviations protocol is stated
-- [ ] Workflow State reflects `AWAITING ARCHITECT REVIEW`
+- [ ] `{{SUMMARY_FILE}}` is written and links back to the phase file
+- [ ] `STATE.md` reflects `AWAITING ARCHITECT REVIEW`

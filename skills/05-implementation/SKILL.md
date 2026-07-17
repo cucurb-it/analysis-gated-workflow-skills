@@ -1,28 +1,35 @@
 ---
 name: agw-implementation
-description: the Implementation Phase and Documentation phase of the Analysis-Gated Workflow. Use when executing an approved Implementation Plan, handling rejection and revert cycles, and documenting the completed implementation with deviations and learnings.
+description: the Implementation Phase of the Analysis-Gated Workflow. Use when executing an approved Implementation Plan, and handling rejection and revert cycles. Documentation of the completed work is handled by the separate Documentation & Cleanup skill (Phase 06).
 ---
 
 # Analysis-Gated Workflow — Implementation Skill
-## IMPLEMENTATION PHASE & DOCUMENTATION
+## IMPLEMENTATION PHASE
+
+> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
+> Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
+> Phase 05 writes to `{{FOLDER_NAME}}/phase-05-implementation/` (`phase.md`, `summary.md`).
+> When the Architect accepts the implementation, the workflow advances to the separate
+> **Documentation & Cleanup skill** (`skills/06-documentation/SKILL.md`).
 
 ---
 
 ## Purpose
 
-This skill governs the Implementation Phase and Documentation phase of the Analysis-Gated Workflow. Implementation Phase is the
-first phase in which the codebase is touched. The Implementation Plan produced in
-Phase 04 is the sole guide for all changes made. Phase 06 documents the completed
-implementation and all deviations from the plan.
+This skill governs the Implementation Phase of the Analysis-Gated Workflow.
+Implementation Phase is the first phase in which the codebase is touched. The Implementation
+Plan produced in Phase 04 is the sole guide for all changes made.
 
 The Architect retains full authority to reject the implementation at any point.
-A rejection triggers Phase 05b — revert, learn, and re-enter.
+A rejection triggers Phase 05b — revert, learn, and re-enter. Once the Architect
+**accepts** the implementation, the workflow advances to Phase 06 (Documentation &
+Cleanup), governed by its own skill.
 
 ---
 
 ## Inputs
 
-- The completed ANALYSIS document including the Implementation Plan
+- The completed analysis bundle, including the Implementation Plan in `phase-04-implementation-planning/phase.md`
 - Access to the codebase via Claude Code CLI or Copilot CLI
 - The source code repository (for revert capability in Phase 05b)
 
@@ -66,9 +73,15 @@ These constraints apply throughout Phase 05 and cannot be overridden by prompt w
 
 ## Phase 05a — Implementation Execution
 
+For this phase, `{{PHASE_FILE}}` = `{{FOLDER_NAME}}/phase-05-implementation/phase.md`
+and `{{SUMMARY_FILE}}` = `{{FOLDER_NAME}}/phase-05-implementation/summary.md`.
+Initialise `{{PHASE_FILE}}` with frontmatter (`type: Phase`, `phase: "05 — Implementation"`,
+`status: IN PROGRESS`, one-line `description`) and emit the common anchors plus the
+phase-specific anchors `deviations` and `implementation-summary`.
+
 ### Step 1 — Log the prompt
 
-Append the Phase 05 initiating prompt to the `## Prompt Log` section, verbatim.
+Append the Phase 05 initiating prompt to `log.md`, verbatim.
 
 ### Step 2 — Confirm the Implementation Plan
 
@@ -82,7 +95,7 @@ The `.claude/` and `.github/` folders contain the authoritative rules for this c
 - `.claude/CLAUDE.md` and all other `.md` files — read everything deeply
 - `.github/` folder — read all `.md` files, understand all coding standards and workflows
 
-Create a **Project Conventions Re-Confirmation** section in the ANALYSIS document:
+Create a **Project Conventions Re-Confirmation** section in `{{PHASE_FILE}}`:
 
 ```markdown
 ### Project Conventions Re-Confirmation (Phase 05)
@@ -128,14 +141,13 @@ constraints on the implementation.
 
 #### 2.2 — Review the Implementation Plan
 
-Re-read the `## Implementation Plan` section of the ANALYSIS document.
+Re-read the Implementation Plan in `phase-04-implementation-planning/phase.md`.
 
 Confirm with the Architect:
 
-> "I am about to begin implementation following the plan in the ANALYSIS document.
-> I will execute Phase 1 first: [brief description]. I will work through all phases
-> and tasks without stopping, marking each item complete as I go.
-> Please confirm I should proceed."
+> "I am about to begin implementation following the approved plan. I will execute
+> Phase 1 first: [brief description]. I will work through all phases and tasks without
+> stopping, marking each item complete as I go. Please confirm I should proceed."
 
 Wait for explicit confirmation.
 
@@ -149,7 +161,7 @@ Execute the entire Implementation Plan without stopping between phases, unless:
 For each checklist item:
 1. Implement it
 2. Validate — build clean, no new warnings, null safety reviewed
-3. Tick it in the ANALYSIS document: `- [x]`
+3. Tick it in the Implementation Plan: `- [x]`
 4. Proceed immediately to the next item
 
 At the end of each phase, report progress to the Architect and continue to the
@@ -163,13 +175,13 @@ immediately and invoke the Deviation Protocol.
 If at any point the implementation requires deviating from the approved plan:
 
 1. **Stop immediately** — do not continue implementing
-2. Document the deviation in the ANALYSIS document under the ## Deviations section:
+2. Document the deviation in `{{PHASE_FILE}}` under `<a id="deviations"></a> ## Deviations`:
 
 ```markdown
 ### Deviation [N] — YYYY-MM-DD
 
-| Field | Info |
-|---|---|
+|     | Info |
+| --- | --- |
 | **Planned** | [What the Implementation Plan specified] |
 | **Actual** | [What was actually implemented or discovered] |
 | **Reason** | [Root cause — why the deviation was necessary] |
@@ -179,8 +191,8 @@ If at any point the implementation requires deviating from the approved plan:
 
 3. Notify the Architect:
    > "I have encountered a deviation from the Implementation Plan. I have stopped
-   > implementation and documented it in the ANALYSIS document under ## Deviations.
-   > Please review and signal how to proceed."
+   > implementation and documented it under the Deviations section of
+   > `phase-05-implementation/phase.md`. Please review and signal how to proceed."
 
 4. Wait for Architect decision before continuing.
 
@@ -193,25 +205,33 @@ If at any point the implementation requires deviating from the approved plan:
 ```markdown
 ### Deviation 1 — 2026-03-10
 
-| Field | Info |
-|---|---|
+|     | Info |
+| --- | --- |
 | **Planned** | Conditional thinking block rendered inside the bot message `<Padder>` using `@if (!string.IsNullOrEmpty(message.ThinkingContent))` as a child of `<Padder>`. |
-| **Actual** | `<Padder>` in RazorConsole does not support dynamic child counts. Placing `@if` blocks inside `<Padder>` caused the component to fail to render any children. |
-| **Reason** | The original codebase establishes a clear convention: `<Rows>` handles dynamic/conditional children; `<Padder>` always receives a fixed set of children. The Implementation Plan did not account for this RazorConsole-specific constraint. |
-| **Impact** | Phase 3.2 (rendering loop) must be restructured. Conditional content must live at the `<Rows>` level. Each `<Padder>` must have exactly 3 fixed children. Two separate `<Padder>` instances are used for bot messages. |
-| **Decision** | APPROVED — self-evident fix from existing codebase convention. |
+| **Actual** | `<Padder>` in RazorConsole does not support dynamic child counts. Placing `@if` blocks inside `<Padder>` (including the `@if (message.IsUser)` branch) caused the component to fail to render any children — neither the thinking block nor the response block appeared. |
+| **Reason** | The original codebase establishes a clear convention: `<Rows>` handles dynamic/conditional children; `<Padder>` always receives a fixed set of children. The Implementation Plan specified the template structure but did not account for this RazorConsole-specific constraint. |
+| **Impact** | Phase 3.2 (rendering loop) must be restructured. Conditional content must live at the `<Rows>` level. Each `<Padder>` must have exactly 3 fixed children. Two separate `<Padder>` instances are used for bot messages: one conditional Padder for thinking content, one always-present Padder for the response. |
+| **Decision** | APPROVED — self-evident fix from the existing codebase convention. |
 ```
 
-### Step 5 — Update Workflow State after each phase
+### Step 5 — Update workflow state after each phase
 
-After each implementation phase is complete:
+After each implementation phase is complete, update `{{FOLDER_NAME}}/STATE.md`:
+- `Phase Status` → `IN PROGRESS — Implementation Phase [N] complete`
+- `Last Updated` → today's date
+- `Pending Architect Action` → `Review Phase [N] output. Signal to proceed to Phase [N+1].`
 
-```
-Current Phase:           PHASE 05
-Phase Status:            IN PROGRESS — Implementation Phase [N] complete
-Last Updated:            YYYY-MM-DD
-Pending Architect Action: Review Phase [N] output. Signal to proceed to Phase [N+1].
-```
+### Step 6 — On acceptance, hand off to Phase 06
+
+When all implementation phases are complete, write `{{SUMMARY_FILE}}`
+(`{{FOLDER_NAME}}/phase-05-implementation/summary.md`) — work completed, outcome, and any
+deviations, linking back into `{{PHASE_FILE}}`'s anchors — then notify the Architect:
+
+> "Implementation is complete. Please review and either accept, or reject (which triggers
+> Rejection & Revert). On acceptance, the workflow advances to Documentation & Cleanup."
+
+On the Architect's **acceptance** signal, the Governing Workflow advances to Phase 06,
+governed by `skills/06-documentation/SKILL.md`. This skill does not perform documentation itself.
 
 ---
 
@@ -225,9 +245,9 @@ Do not make further changes to the codebase.
 
 ### Step 2 — Document the rejection
 
-Add to the ANALYSIS document under `## Implementation Iterations`:
+Add to `{{PHASE_FILE}}` under `## Implementation Iterations`:
 
-```
+```markdown
 ### Implementation Iteration [N] — REJECTED [YYYY-MM-DD]
 **Rejection reason:** [Architect's stated reason, verbatim]
 **Reverted:** [YYYY-MM-DD]
@@ -240,9 +260,9 @@ Confirm with the Architect that the revert is complete before proceeding.
 
 ### Step 4 — Extract learnings
 
-Analyse what went wrong and document it:
+Analyse what went wrong and document it under the same section:
 
-```
+```markdown
 ### Learnings from Iteration [N]
 - [Learning 1 — what assumption was wrong, what was missed, what should change]
 - [Learning 2]
@@ -255,99 +275,11 @@ Based on the learnings, propose updates to the Implementation Plan that address
 the rejection reason. These updates are treated as ADRs — the Architect must
 review and approve the updated plan before Phase 05a re-enters.
 
-### Step 6 — Update Workflow State
+### Step 6 — Update workflow state
 
-```
-Current Phase:           PHASE 05b
-Phase Status:            AWAITING ARCHITECT REVIEW
-Last Updated:            YYYY-MM-DD
-Pending Architect Action: Review updated Implementation Plan.
-                          Signal go for next implementation iteration.
-```
-
----
-
-## Phase 06 — Documentation & Cleanup
-
-Documentation & Cleanup phase is entered after the Architect accepts the implementation.
-
-### Step 1 — Log the prompt
-
-Append the Phase 06 initiating prompt to the `## Prompt Log` section, verbatim.
-
-### Step 2 — Mark all completed checklist items
-
-Verify every checklist item in the Implementation Plan is correctly ticked.
-Any item that was not executed must be explicitly noted as `[SKIPPED — reason]`.
-
-### Step 3 — Populate Implementation Summary
-
-Populate the `## Implementation Summary` section of the ANALYSIS document:
-
-#### Files Created
-| File | Description |
-|---|---|
-| `path/to/file` | What it contains and why it was created |
-
-#### Files Modified
-| File | Changes |
-|---|---|
-| `path/to/file` | What was changed and why |
-
-#### Files Deleted
-| File | Reason |
-|---|---|
-| `path/to/file` | Why it was removed |
-
-#### Deviations from Plan
-List all deviations with their approved rationale. If none: state explicitly.
-
-#### Learnings
-Any insights gained during implementation that are relevant to future work
-on this codebase — patterns discovered, constraints encountered, pitfalls avoided.
-
-### Step 4 — Add Results (if performance or behaviour was measured)
-
-If the implementation addressed a measurable problem (e.g. performance):
-
-#### Before / After Comparison
-| Metric | Before | After | Improvement |
-|---|---|---|---|
-| [Metric] | [value] | [value] | [delta] |
-
-Note: leave this section as `[pending developer measurement]` if results are
-not yet available. It must be completed before the ANALYSIS document is closed.
-
-### Step 5 — Final Workflow State
-
-```
-Current Phase:           PHASE 06
-Phase Status:            COMPLETE
-Last Updated:            YYYY-MM-DD
-Pending Architect Action: none
-```
-
-### Step 6 — Close the workflow
-
-> "Documentation & Cleanup phase is complete. The ANALYSIS document is fully updated. The
-> Analysis-Gated Workflow for [FEATURE_NAME] is closed."
-
-### Step 7 — Final commit (if in git repository)
-
-**Auto-commit all implementation changes** (if in git repository):
-- Check if the working directory is inside a git repository
-- Check if git is properly configured (user.name and user.email set)
-- If both checks pass, stage and commit all changes with message:
-  ```
-  feat: [FEATURE_NAME] - complete implementation [skip ci]
-  
-  Completed via Analysis-Gated Workflow
-  See [ANALYSIS_DOCUMENT_FILENAME] for full analysis and implementation details
-  ```
-- If any check fails, notify the Architect:
-  > "Implementation complete but not committed. Please commit manually or enable git."
-- This creates the final snapshot of all code changes ready for review, PR, or handoff
-  to another agent/skill for validation.
+Update `{{FOLDER_NAME}}/STATE.md`:
+- `Phase Status` → `AWAITING ARCHITECT REVIEW`
+- `Pending Architect Action` → `Review updated Implementation Plan. Signal go for next implementation iteration.`
 
 ---
 
@@ -357,7 +289,7 @@ Pending Architect Action: none
 - Does not skip checklist items silently
 - Does not continue past a deviation without Architect decision
 - Does not self-accept an implementation — only the Architect can accept
-- Does not close the workflow before the Implementation Summary is complete
+- Does not perform documentation & cleanup — that is Phase 06's separate skill
 
 ---
 
@@ -368,18 +300,10 @@ Pending Architect Action: none
 - [ ] All Implementation Plan checklist items are ticked
 - [ ] All deviations are documented with Architect decisions
 - [ ] Each phase ended with a build-and-validate step
-- [ ] Workflow State is updated after each phase
+- [ ] `STATE.md` is updated after each phase
 
 ### Phase 05b complete when:
 - [ ] Rejection is documented with Architect's reason verbatim
 - [ ] Revert is confirmed
 - [ ] Learnings are documented
 - [ ] Updated Implementation Plan is approved by Architect
-
-### Phase 06 complete when:
-- [ ] All checklist items are ticked or marked skipped with reason
-- [ ] Implementation Summary is complete (files created, modified, deleted)
-- [ ] All deviations are documented
-- [ ] Learnings are documented
-- [ ] Before/after comparison is present (or explicitly pending measurement)
-- [ ] Workflow State is `COMPLETE`

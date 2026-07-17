@@ -6,6 +6,11 @@ description: the Deep Code Analysis Phase of the Analysis-Gated Workflow. Use wh
 # Analysis-Gated Workflow — Deep Code Analysis Skill
 ## DEEP CODE ANALYSIS PHASE
 
+> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
+> Conventions** defined in `skills/00-governing-workflow/SKILL.md`. For this phase,
+> `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-02-deep-code-analysis`, so
+> `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
+
 ---
 
 ## Purpose
@@ -23,7 +28,7 @@ No implementation is proposed in this phase — only understanding is built.
 
 ## Inputs
 
-- The completed Phase 01 output in the ANALYSIS document
+- The completed Phase 01 output (`phase-01-deep-feature-analysis/phase.md`)
 - Access to the codebase via Claude Code CLI or Copilot CLI
 - The specifics provided by the Architect: class name, pattern, module, domain, etc.
 
@@ -33,7 +38,7 @@ No implementation is proposed in this phase — only understanding is built.
 
 ### Step 1 — Log the prompt
 
-Append the Phase 02 initiating prompt to the `## Prompt Log` section, verbatim.
+Append the Phase 02 initiating prompt to `log.md`, verbatim.
 
 ### Step 2 — Orient in the codebase
 
@@ -46,8 +51,11 @@ Before diving into specifics, establish orientation:
 
 ### Step 3 — Deep analysis
 
-Analyse the following dimensions systematically. Each finding goes into the
-`## Deep Code Analysis` section of the ANALYSIS document under its own subsection.
+Write findings to `{{PHASE_FILE}}` (`type: Phase`, `phase: "02 — Deep Code Analysis"`,
+`status: IN PROGRESS`, one-line `description`). Emit the common anchors (`phase-top`,
+`outcome`, `open-items`) and the phase-specific anchors (`code-analysis`, `conventions`).
+Analyse the following dimensions systematically. Each finding goes under its own
+subsection beneath `<a id="code-analysis"></a> ## Deep Code Analysis`.
 
 #### 3.1 — Architecture Overview
 
@@ -64,8 +72,7 @@ Analyse the following dimensions systematically. Each finding goes into the
 - What side effects does it produce?
 - What state does it read and what state does it mutate?
 
-Document the primary execution flow as a structured outline or ASCII diagram,
-matching the style of the example ANALYSIS document.
+Document the primary execution flow as a structured outline or ASCII diagram.
 
 #### 3.3 — Data Model
 
@@ -94,12 +101,13 @@ of the project's architectural and development guidelines:
   - `github-instructions.md` or similar — Read thoroughly
   - Any other `.md` files — Read everything, skip nothing
 
-After reading, **create a confirmation table** in the ANALYSIS document immediately
-after this section to prove comprehension. For each file read, extract guidelines in
-these categories (where applicable):
+After reading, **create a confirmation table** under `<a id="conventions"></a>
+## Project Conventions Confirmation` to prove comprehension. For each file read, extract
+guidelines in these categories (where applicable):
 
 ```markdown
-### Project Conventions Confirmation
+<a id="conventions"></a>
+## Project Conventions Confirmation
 
 #### `.claude/CLAUDE.md`
 **Read:** ✓  
@@ -170,26 +178,53 @@ assumptions.
 - Are there any inline comments that document known limitations or workarounds?
 - Quote these verbatim — they are evidence.
 
-### Step 4 — Populate Executive Summary
+### Step 4 — Executive Summary & Outcome
 
-Once the deep analysis is complete, write the `## Executive Summary` section:
+Under `<a id="outcome"></a> ## Executive Summary`, write:
 
 - The single most important finding (the dominant issue or characteristic)
 - The root cause, if identifiable
 - The key insight that shapes everything else
-- Keep it tight — the detail lives in the sections below it
+- Keep it tight — the detail lives in the sections above it
 
-### Step 5 — Update Workflow State
+Record anything still unresolved under `<a id="open-items"></a> ## Open Items`.
 
-Update the `## Workflow State` block:
+### Step 5 — Write the summary file
+
+Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "02 — Deep Code Analysis"`,
+`status: AWAITING ARCHITECT REVIEW`, `phase_file: ./phase.md`, one-line `description`).
+Because Phase 02 content can grow large, the summary must stay compact — work completed,
+the executive-summary outcome, and open items only, each linking back into `{{PHASE_FILE}}`:
+
+```markdown
+---
+type: Summary
+phase: "02 — Deep Code Analysis"
+status: AWAITING ARCHITECT REVIEW
+phase_file: ./phase.md
+description: <one-line outcome>
+---
+
+# Phase 02 Summary — Deep Code Analysis
+
+**Work completed:** [dimensions analysed; conventions confirmed]
+
+**Outcome:** [dominant finding, one line] → [full detail](./phase.md#outcome)
+
+**Open items carried forward:** [list, or "none"] → [detail](./phase.md#open-items)
+```
+
+### Step 6 — Update workflow state
+
+Update `{{FOLDER_NAME}}/STATE.md`:
 - `Phase Status` → `AWAITING ARCHITECT REVIEW`
 - `Pending Architect Action` → `Review Phase 02 output. Add ADR annotations if corrections needed. Signal readiness for Phase 03.`
 
-### Step 6 — Notify the Architect
+### Step 7 — Notify the Architect
 
-> "Deep Code Analysis Phase is complete. Please review the ANALYSIS document. Add ADR annotations
-> where corrections or decisions are needed, then signal when you are ready to
-> proceed to Compliance & Review Phase."
+> "Deep Code Analysis Phase is complete. Please review `phase-02-deep-code-analysis/summary.md`
+> (and the full `phase.md` if you want detail). Add ADR annotations where corrections or
+> decisions are needed, then signal when you are ready to proceed to Compliance & Review Phase."
 
 ---
 
@@ -216,5 +251,6 @@ Phase 02 output is complete when:
 - [ ] Performance characteristics are analysed with complexity estimates
 - [ ] Comparison with similar components is documented
 - [ ] Known issues and code commentary are captured verbatim
-- [ ] Executive Summary is written
-- [ ] Workflow State reflects `AWAITING ARCHITECT REVIEW`
+- [ ] Executive Summary is written under the `outcome` anchor
+- [ ] `{{SUMMARY_FILE}}` is written and links back to the phase file
+- [ ] `STATE.md` reflects `AWAITING ARCHITECT REVIEW`

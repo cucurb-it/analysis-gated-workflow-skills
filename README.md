@@ -14,7 +14,12 @@ governed by a Software Architect and supported by AI (Claude Code CLI or Copilot
 | `02-deep-code-analysis/` | Deep Code Analysis | DEEP CODE ANALYSIS PHASE |
 | `03-compliance-review/` | Compliance & Review | COMPLIANCE & REVIEW PHASE (iterative) |
 | `04-implementation-planning/` | Implementation Planning | IMPLEMENTATION PLANNING PHASE |
-| `05-implementation/` | Implementation | IMPLEMENTATION PHASE & DOCUMENTATION |
+| `05-implementation/` | Implementation | IMPLEMENTATION PHASE (incl. rejection & revert) |
+| `06-documentation/` | Documentation & Cleanup | DOCUMENTATION & CLEANUP PHASE |
+
+Each workflow run produces an **analysis bundle** — a folder of markdown files rather than
+a single document. See [Core Principles](#core-principles) for the layout and the reasoning
+behind it.
 
 ---
 
@@ -95,11 +100,17 @@ The Governing Workflow skill handles everything from there — new session or re
 
 ## Core Principles
 
-- The ANALYSIS document is the sole persistent memory of the workflow
+- The **analysis bundle** is the persistent memory of the workflow — a folder of markdown
+  files (one folder per phase, each with a full `phase.md` and a compact `summary.md`),
+  plus `STATE.md`, `log.md`, `index.md`, and an `adrs/` directory. The layout is inspired
+  by the Open Knowledge Format (frontmatter + per-concept files + relative links) but is
+  deliberately not OKF-conformant: it is single-feature workflow state, not a knowledge base.
+- The split keeps any one file readable: a dev resuming work reads `STATE.md` plus the
+  current phase's `summary.md`; the full `phase.md` is opened only when detail is needed.
 - The Architect is the only authority who can advance a phase
 - The codebase is never touched before IMPLEMENTATION PHASE
-- ADRs are permanent — never overwritten or deleted
-- Every user prompt is logged verbatim in the ANALYSIS document
+- ADRs are permanent — one file each under `adrs/`, never overwritten or deleted
+- Every user prompt is logged verbatim in `log.md`
 
 ---
 

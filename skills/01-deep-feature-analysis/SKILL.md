@@ -6,6 +6,11 @@ description: Phase 01 of the Analysis-Gated Workflow. Use when capturing and str
 # Analysis-Gated Workflow — Deep Feature Analysis Skill
 ## DEEP FEATURE ANALYSIS PHASE
 
+> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
+> Conventions** defined in `skills/00-governing-workflow/SKILL.md`. For this phase,
+> `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-01-deep-feature-analysis`, so
+> `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
+
 ---
 
 ## Purpose
@@ -27,13 +32,13 @@ At the start of Phase 01, the following information has been collected by the
 Governing Workflow skill:
 
 - `{{FEATURE_NAME}}` — the name of the feature or refactoring
-- `{{FOLDER_NAME}}` — the working folder for this analysis
+- `{{FOLDER_NAME}}` — the working folder (bundle root) for this analysis
 - Specifics provided by the user: class name, pattern, business capability,
   service contract, domain name, or similar
 - The user's description of the required feature or expected refactoring
 
 If any of these inputs are missing or ambiguous, ask clarifying questions
-**before writing anything to the ANALYSIS document**.
+**before writing anything to `{{PHASE_FILE}}`**.
 
 ---
 
@@ -41,8 +46,8 @@ If any of these inputs are missing or ambiguous, ask clarifying questions
 
 ### Step 1 — Log the prompt
 
-Append the initiating prompt to the `## Prompt Log` section of the ANALYSIS document,
-verbatim, before doing anything else.
+Append the initiating prompt to `log.md`, verbatim, before doing anything else
+(see the Prompt Log section of the governing skill).
 
 ### Step 2 — Analyse the request
 
@@ -54,9 +59,27 @@ Before writing, reason carefully about the following:
 - What terminology the user is using — preserve it exactly, do not substitute your own
 - What ambiguities or gaps exist in the description
 
-### Step 3 — Write to the ANALYSIS document
+### Step 3 — Write to the phase file
 
-Populate the `## Feature or Refactoring Description` section with:
+Write `{{PHASE_FILE}}` with frontmatter (`type: Phase`, `phase: "01 — Deep Feature
+Analysis"`, `status: IN PROGRESS`, one-line `description`). Emit the common anchors
+(`phase-top`, `outcome`, `open-items`) and the phase-specific anchor
+(`feature-description`) at their sections. Populate the body:
+
+```markdown
+---
+type: Phase
+phase: "01 — Deep Feature Analysis"
+status: IN PROGRESS
+description: <one-line summary>
+---
+
+<a id="phase-top"></a>
+# [FEATURE_NAME] — Deep Feature Analysis
+
+<a id="feature-description"></a>
+## Feature or Refactoring Description
+```
 
 #### 3.1 — Request Summary
 A precise restatement of what has been requested, in your own words.
@@ -74,22 +97,52 @@ clarification before proceeding.
 The domain-specific terms, class names, patterns, or concepts identified in the
 user's description. Defined as the user uses them — not as general programming terms.
 
-#### 3.5 — Open Questions
+#### 3.5 — Open Questions (under `<a id="open-items"></a>`)
 Any ambiguities, missing information, or assumptions that need Architect confirmation
 before Phase 02 can begin. If there are none, state that explicitly.
 
-### Step 4 — Update Workflow State
+#### 3.6 — Outcome (under `<a id="outcome"></a>`)
+A one-to-three sentence statement of what this phase established — the structured
+understanding of the request that Phase 02 will build on.
 
-Update the `## Workflow State` block:
+### Step 4 — Write the summary file
+
+Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "01 — Deep Feature Analysis"`,
+`status: AWAITING ARCHITECT REVIEW`, `phase_file: ./phase.md`, one-line `description`).
+Keep it compact — work completed, outcome, and open items only, each linking back into
+`{{PHASE_FILE}}`'s anchors:
+
+```markdown
+---
+type: Summary
+phase: "01 — Deep Feature Analysis"
+status: AWAITING ARCHITECT REVIEW
+phase_file: ./phase.md
+description: <one-line outcome>
+---
+
+# Phase 01 Summary — Deep Feature Analysis
+
+**Work completed:** [one or two lines]
+
+**Outcome:** [one line] → [full detail](./phase.md#outcome)
+
+**Open items carried forward:** [list, or "none"] → [detail](./phase.md#open-items)
+```
+
+### Step 5 — Update workflow state
+
+Update `{{FOLDER_NAME}}/STATE.md`:
 - `Phase Status` → `AWAITING ARCHITECT REVIEW`
 - `Pending Architect Action` → `Review Phase 01 output. Signal readiness for Phase 02.`
 
-### Step 5 — Notify the Architect
+### Step 6 — Notify the Architect
 
-Inform the Architect that the Deep Feature Analysis Phase is complete. Do not summarise the ANALYSIS document
-in chat — direct the Architect to read it. State clearly what action is expected:
-> "Deep Feature Analysis Phase is complete. Please review the ANALYSIS document and signal when you are
-> ready to proceed to Deep Code Analysis Phase, or add annotations if corrections are needed."
+Inform the Architect that the Deep Feature Analysis Phase is complete. Do not summarise the phase file
+in chat — direct the Architect to read the summary. State clearly what action is expected:
+> "Deep Feature Analysis Phase is complete. Please review `phase-01-deep-feature-analysis/summary.md`
+> and signal when you are ready to proceed to Deep Code Analysis Phase, or add annotations if
+> corrections are needed."
 
 ---
 
@@ -112,4 +165,6 @@ Phase 01 output is complete when:
 - [ ] Scope boundaries are explicit — including what is unclear
 - [ ] All key terminology from the user is captured and defined
 - [ ] Open questions are listed, or explicitly stated as none
-- [ ] The Workflow State reflects `AWAITING ARCHITECT REVIEW`
+- [ ] `{{PHASE_FILE}}` emits the required anchors
+- [ ] `{{SUMMARY_FILE}}` is written and links back to the phase file
+- [ ] `STATE.md` reflects `AWAITING ARCHITECT REVIEW`
