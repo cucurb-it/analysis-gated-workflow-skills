@@ -127,8 +127,11 @@ files rather than one growing document. Its shape:
 │   ├── phase.md
 │   └── summary.md
 ├── phase-06-documentation/
-│   ├── phase.md
-│   └── summary.md                        # the bundle's front-door summary
+│   ├── phase.md                          # thin working notes
+│   ├── summary.md                        # the bundle's front-door summary
+│   ├── doc-executive.md                  # audience seed: business-outcome brief
+│   ├── doc-business.md                   # audience seed: business process & experience
+│   └── doc-technical.md                  # audience seed: technical record
 └── adrs/
     └── YYYY-MM-DD-<slug>.md              # one file per Architecture Decision Record
 ```
@@ -157,6 +160,26 @@ alongside its full `phase.md`, lets each reader load only what their task needs:
 `summary.md` is bounded in size no matter how large `phase.md` grows, so orientation stays
 cheap even when the underlying analysis is deep. It links back into `phase.md` via stable
 anchors, so "give me the detail" is always one click away.
+
+### Close-out: three audience documents
+
+The final phase (Documentation & Cleanup) closes a feature by producing three
+audience-targeted documents in `phase-06-documentation/`, one for each typical audience of
+a software project:
+
+| File | Audience | Substance |
+|---|---|---|
+| `doc-executive.md` | Executive / sponsor | Business-outcome brief — capability delivered, risk delta, what it unblocks. TCO is out of scope. |
+| `doc-business.md` | Business stakeholder | The end-to-end business process the feature enables; UI/UX described as *where that process surfaces*. |
+| `doc-technical.md` | Development team | The technical record — files changed, deviations, learnings, measured results. |
+
+All three are produced for every feature, however briefly, so consumers always know where
+to look. They are **expansion seeds, not finished documents**: terse bullets under fixed
+headings, marked `expandable: true`. They are never shared verbatim outside the development
+team — an external reader always receives a redacted and/or expanded version generated from
+the seed. Writing the same work for three audiences also surfaces gaps: if the business or
+executive seed can't be filled, the feature's *purpose* wasn't fully understood, only its
+mechanics.
 
 ### Format lineage — OKF-shaped, not OKF-conformant
 

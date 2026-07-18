@@ -69,8 +69,11 @@ in Step 1 of the Session Start Protocol):
 │   ├── phase.md
 │   └── summary.md
 ├── phase-06-documentation/
-│   ├── phase.md
-│   └── summary.md
+│   ├── phase.md                          # thin working notes for the phase
+│   ├── summary.md                        # front-door; links to the three audience docs
+│   ├── doc-executive.md                  # type: Doc, audience: executive — outcome brief (seed)
+│   ├── doc-business.md                   # type: Doc, audience: business — process & UX (seed)
+│   └── doc-technical.md                  # type: Doc, audience: technical — implementation record (seed)
 └── adrs/
     └── YYYY-MM-DD-<short-slug>.md         # type: ADR — one file per ADR, never deleted
 ```
@@ -120,6 +123,17 @@ phase: "01 — Deep Feature Analysis"
 status: COMPLETE
 phase_file: ./phase.md
 description: <one-line summary of the outcome>
+---
+```
+
+**`phase-06-documentation/doc-*.md`** (audience documents — expansion seeds):
+```yaml
+---
+type: Doc
+audience: executive          # executive | business | technical
+expandable: true
+status: COMPLETE
+description: <one-line summary for this audience>
 ---
 ```
 
