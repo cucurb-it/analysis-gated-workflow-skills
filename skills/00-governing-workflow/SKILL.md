@@ -78,8 +78,7 @@ in Step 1 of the Session Start Protocol):
     └── YYYY-MM-DD-<short-slug>.md         # type: ADR — one file per ADR, never deleted
 ```
 
-Within a phase folder, `phase.md` sorts before `summary.md` (p < s), so the full content
-is listed first and the compact summary last.
+Within a phase folder, `phase.md` sorts before `summary.md` (p < s), so the full content is listed first and the compact summary last.
 
 ### Phase-to-folder map
 
