@@ -140,7 +140,7 @@ files rather than one growing document. Its shape:
 
 A single analysis document grows without bound. By the implementation phase it carries
 feature analysis, code analysis, compliance iterations, ADRs, the implementation plan,
-deviations, and the prompt log — all at once. Two people pay for that: the AI reloads the
+deviations, and the prompt log — all at once. Two readers pay for that: the AI reloads the
 whole thing into context every session, and a developer wanting one fact has to scroll
 past everything else to find it.
 
