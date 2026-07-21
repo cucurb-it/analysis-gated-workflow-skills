@@ -122,7 +122,9 @@ files rather than one growing document. Its shape:
 │   └── summary.md
 ├── phase-04-implementation-planning/
 │   ├── phase.md
-│   └── summary.md
+│   ├── summary.md
+│   ├── doc-executive.md                  # intent seed: business-outcome brief (forward-looking)
+│   └── doc-business.md                   # intent seed: business process & experience (forward-looking)
 ├── phase-05-implementation/
 │   ├── phase.md
 │   └── summary.md
@@ -161,25 +163,34 @@ alongside its full `phase.md`, lets each reader load only what their task needs:
 cheap even when the underlying analysis is deep. It links back into `phase.md` via stable
 anchors, so "give me the detail" is always one click away.
 
-### Close-out: three audience documents
+### Audience documents: intent (Phase 04) and outcome (Phase 06)
 
-The final phase (Documentation & Cleanup) closes a feature by producing three
-audience-targeted documents in `phase-06-documentation/`, one for each typical audience of
-a software project:
+The workflow produces **audience-targeted seed documents at two moments**, for the typical
+audiences of a software project:
 
-| File | Audience | Substance |
-|---|---|---|
-| `doc-executive.md` | Executive / sponsor | Business-outcome brief — capability delivered, risk delta, what it unblocks. TCO is out of scope. |
-| `doc-business.md` | Business stakeholder | The end-to-end business process the feature enables; UI/UX described as *where that process surfaces*. |
-| `doc-technical.md` | Development team | The technical record — files changed, deviations, learnings, measured results. |
+- **Phase 04 (Implementation Planning)** — alongside the plan, two **forward-looking** seeds
+  describe *what the plan will deliver and why*: `doc-executive.md` (business-outcome brief;
+  TCO out of scope) and `doc-business.md` (business process; UI/UX as where it surfaces). The
+  Implementation Plan itself is the technical view. These let a business or executive
+  stakeholder review the **intent** before any code is written, while it is still cheap to
+  change.
+- **Phase 06 (Documentation & Cleanup)** — three **retrospective** seeds describe *what was
+  actually delivered*: `doc-executive.md`, `doc-business.md`, and `doc-technical.md`. These
+  reference the Phase 04 intent seeds to compare promise against outcome ("intended X →
+  deviation Z → delivered Y").
 
-All three are produced for every feature, however briefly, so consumers always know where
-to look. They are **expansion seeds, not finished documents**: terse bullets under fixed
-headings, marked `expandable: true`. They are never shared verbatim outside the development
-team — an external reader always receives a redacted and/or expanded version generated from
-the seed. Writing the same work for three audiences also surfaces gaps: if the business or
-executive seed can't be filled, the feature's *purpose* wasn't fully understood, only its
-mechanics.
+| File | Audience | Phase 04 (intent) | Phase 06 (outcome) |
+|---|---|---|---|
+| `doc-executive.md` | Executive / sponsor | ✓ | ✓ |
+| `doc-business.md` | Business stakeholder | ✓ | ✓ |
+| `doc-technical.md` | Development team | — (the plan is the technical view) | ✓ |
+
+All are **expansion seeds, not finished documents**: terse bullets under fixed headings,
+marked `expandable: true`, never shared verbatim outside the development team — an external
+reader always receives a redacted and/or expanded version generated from the seed. The
+Phase 04 seeds are frozen once the phase closes; nothing writes backward. Writing the same
+work for multiple audiences also surfaces gaps: if the business or executive seed can't be
+filled, the feature's *purpose* wasn't fully understood, only its mechanics.
 
 ### Format lineage — OKF-shaped, not OKF-conformant
 
@@ -253,6 +264,7 @@ COMPLIANCE & REVIEW PHASE  ←────────────────�
        ↓ [Architect go signal]    [ADR added — loop back]
 IMPLEMENTATION PLANNING PHASE
   Produce a detailed, phase-structured Implementation Plan. No code.
+  Plus forward-looking executive + business intent seeds.
        ↓ [Architect go signal]
 IMPLEMENTATION PHASE
   Execute the Implementation Plan, phase by phase.
@@ -262,6 +274,7 @@ REJECTION & REVERT ────────────────────�
   Update Implementation Plan.                 │
        ↓ [Architect go signal] ───────────────→ back to IMPLEMENTATION PHASE
 DOCUMENTATION & CLEANUP
-  Document implementation, deviations, and results.
+  Retrospective executive + business + technical docs;
+  deviations and measured results.
        ↓ [Workflow closed]
 ```

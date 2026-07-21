@@ -64,7 +64,9 @@ in Step 1 of the Session Start Protocol):
 │   └── summary.md
 ├── phase-04-implementation-planning/
 │   ├── phase.md
-│   └── summary.md
+│   ├── summary.md
+│   ├── doc-executive.md                  # type: Doc, audience: executive — intent (forward-looking seed)
+│   └── doc-business.md                   # type: Doc, audience: business — intent (forward-looking seed)
 ├── phase-05-implementation/
 │   ├── phase.md
 │   └── summary.md
@@ -78,7 +80,8 @@ in Step 1 of the Session Start Protocol):
     └── YYYY-MM-DD-<short-slug>.md         # type: ADR — one file per ADR, never deleted
 ```
 
-Within a phase folder, `phase.md` sorts before `summary.md` (p < s), so the full content is listed first and the compact summary last.
+Within a phase folder, `phase.md` sorts before `summary.md` (p < s), so the full content
+is listed first and the compact summary last.
 
 ### Phase-to-folder map
 
@@ -125,7 +128,8 @@ description: <one-line summary of the outcome>
 ---
 ```
 
-**`phase-06-documentation/doc-*.md`** (audience documents — expansion seeds):
+**`doc-*.md`** (audience documents — expansion seeds; in `phase-04-implementation-planning/`
+as forward-looking *intent*, and in `phase-06-documentation/` as retrospective *outcome*):
 ```yaml
 ---
 type: Doc
@@ -135,6 +139,9 @@ status: COMPLETE
 description: <one-line summary for this audience>
 ---
 ```
+Phase 04 produces `executive` + `business` seeds (the plan itself is the technical view).
+Phase 06 produces all three. The Phase 04 seeds are frozen once the phase closes; Phase 06's
+seeds reference them rather than overwriting, so intent-vs-outcome stays comparable.
 
 **`adrs/YYYY-MM-DD-<slug>.md`:**
 ```yaml

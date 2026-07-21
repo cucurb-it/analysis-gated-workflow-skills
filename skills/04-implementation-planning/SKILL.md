@@ -1,6 +1,6 @@
 ---
 name: agw-implementation-planning
-description: the Implementation Planning Phase of the Analysis-Gated Workflow. Use when producing a detailed, phase-structured Implementation Plan based on completed analysis. No code is written. Requires explicit Architect go signal to advance to implementation.
+description: the Implementation Planning Phase of the Analysis-Gated Workflow. Use when producing a detailed, phase-structured Implementation Plan based on completed analysis, together with forward-looking executive and business stakeholder seeds. No code is written. Requires explicit Architect go signal to advance to implementation.
 ---
 
 # Analysis-Gated Workflow — Implementation Planning Skill
@@ -15,16 +15,22 @@ description: the Implementation Planning Phase of the Analysis-Gated Workflow. U
 
 ## Purpose
 
-This skill governs the Implementation Planning Phase of the Analysis-Gated Workflow. Its sole responsibility
-is to produce a **detailed, phase-structured Implementation Plan** based entirely on
-the analysis accumulated in Phases 01–03.
+This skill governs the Implementation Planning Phase of the Analysis-Gated Workflow. It
+produces a **detailed, phase-structured Implementation Plan** based entirely on the analysis
+accumulated in Phases 01–03, together with two **forward-looking stakeholder seeds** — an
+executive and a business view of *what the plan will deliver and why*.
 
 The Implementation Plan is the contract between the analysis and the implementation.
 It must be precise enough that Phase 05 can be executed without further analysis decisions.
 
+The stakeholder seeds let a business or executive stakeholder review the **intent** before
+any code is written, while it is still cheap to change. They mirror the Phase 06 close-out
+documents, but are forward-looking (intent) rather than retrospective (outcome); Phase 06's
+documents later reference them to compare what was promised against what was delivered.
+
 No code is written in this phase.
 No code is modified in this phase.
-The Implementation Plan is written to `{{PHASE_FILE}}` only.
+Only planning artifacts are written — the plan and the two stakeholder seeds.
 
 ---
 
@@ -159,10 +165,87 @@ State explicitly:
 Record the selected approach under the `outcome` anchor, and any residual risks or
 assumptions under the `open-items` anchor.
 
-### Step 6 — Write the summary file
+### Step 6 — Generate the stakeholder seed documents
+
+Alongside the Implementation Plan, produce two **forward-looking** audience seeds — the
+non-technical views of *what the plan will deliver and why*. The Implementation Plan itself
+is the technical view, so only the executive and business audiences are added here.
+
+These are **expansion seeds**, identical in form to the Phase 06 seeds: terse bullets under
+fixed headings, `expandable: true`, never shared verbatim outside the development team.
+The difference is tense — these describe **intent before the build**, not outcome after it.
+They are **frozen** once Phase 04 closes: Phase 05 does not edit them, and Phase 06 writes
+its own retrospective seeds that reference these rather than overwriting them.
+
+**`{{PHASE_DIR}}/doc-executive.md`** — executive/sponsor, forward-looking:
+
+```markdown
+---
+type: Doc
+audience: executive
+expandable: true
+status: AWAITING ARCHITECT REVIEW
+description: <one-line intended outcome>
+---
+
+# [FEATURE_NAME] — Business Outcome Brief (intent, seed)
+
+## Capability To Be Delivered
+- The business capability this plan will create, in one or two bullets.
+
+## Risk Delta (expected)
+- Risk this is expected to close: [...]
+- Risk being accepted or deferred (e.g. acknowledged-imperfect model, later hardening): [...]
+
+## What It Will Unblock
+- What this enables next — dependent features, go-live, revenue path, etc.
+
+## Scope Note
+- TCO / cost / budget: out of scope for this feature-level brief.
+```
+
+**`{{PHASE_DIR}}/doc-business.md`** — business stakeholder, forward-looking:
+
+```markdown
+---
+type: Doc
+audience: business
+expandable: true
+status: AWAITING ARCHITECT REVIEW
+description: <one-line intended capability>
+---
+
+# [FEATURE_NAME] — Business Process & Experience (intent, seed)
+
+## Capability
+- What will be possible that is not possible today — in business terms.
+
+## Business Process (end to end, intended)
+- Step-by-step flow of the process this feature will enable, from trigger to outcome.
+- Include human-in-the-loop or out-of-band steps where they apply.
+
+## Where It Will Surface (UI/UX)
+- The surface(s) through which the process will be exercised (screen, page action, email,
+  API, etc.). Populate only what is planned — if there is no user-facing surface, say so
+  and describe the non-UI touchpoints.
+
+## What Will Change For The User
+- Concrete before/after from the user's or stakeholder's point of view.
+
+## Not Included
+- Explicit boundaries — what this feature deliberately will not do (e.g. deferred to a
+  later feature).
+```
+
+Keep both as brief as the feature warrants — stub a heading with one line if there is
+little to say. They exist so a business or executive stakeholder can review and sanity-check
+the **intent** while it is still cheap to change, before any code is written.
+
+### Step 7 — Write the summary file
 
 Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "04 — Implementation Planning"`,
-`status: AWAITING ARCHITECT REVIEW`, `phase_file: ./phase.md`, one-line `description`):
+`status: AWAITING ARCHITECT REVIEW`, `phase_file: ./phase.md`, one-line `description`).
+The front-door links the plan and both stakeholder seeds:
 
 ```markdown
 ---
@@ -179,20 +262,25 @@ description: <one-line outcome>
 
 **Outcome:** [selected strategy, one line] → [full detail](./phase.md#implementation-plan)
 
+**Stakeholder seeds (intent — expansion seeds, not for verbatim external sharing):**
+- Executive → [doc-executive.md](./doc-executive.md)
+- Business → [doc-business.md](./doc-business.md)
+
 **Open items carried forward:** [residual risks, or "none"] → [detail](./phase.md#open-items)
 ```
 
-### Step 7 — Update workflow state
+### Step 8 — Update workflow state
 
 Update `{{FOLDER_NAME}}/STATE.md`:
 - `Phase Status` → `AWAITING ARCHITECT REVIEW`
 - `Pending Architect Action` → `Review Implementation Plan. Add ADR annotations if corrections needed. Signal go for Phase 05 to begin implementation.`
 
-### Step 8 — Notify the Architect
+### Step 9 — Notify the Architect
 
 > "Implementation Planning Phase is complete. The Implementation Plan is ready for review in
-> `phase-04-implementation-planning/`. Please review it carefully. Add ADR annotations if
-> corrections are needed. When you are satisfied, signal go for Phase 05 to begin implementation."
+> `phase-04-implementation-planning/`, together with forward-looking executive and business
+> seeds describing what the plan will deliver. Please review it carefully. Add ADR annotations
+> if corrections are needed. When you are satisfied, signal go for Phase 05 to begin implementation."
 
 ---
 
@@ -202,6 +290,9 @@ Update `{{FOLDER_NAME}}/STATE.md`:
 - Does not begin implementation "just to validate the plan"
 - Does not use sprint, timeline, or duration language
 - Does not make the Implementation Plan vague to preserve flexibility
+- Does not fabricate TCO, cost, or budget figures in the executive seed
+- Does not write the stakeholder seeds as polished prose — they are terse, forward-looking seeds
+- Does not treat the stakeholder seeds as an approval gate — the Architect's go signal alone unlocks Phase 05
 - Does not advance to Phase 05 without an explicit Architect go signal
 
 ---
@@ -216,6 +307,8 @@ Phase 04 output is complete when:
 - [ ] Every checklist item is specific, actionable, and traceable to the analysis
 - [ ] Each phase ends with a Build and Validate step
 - [ ] Risk mitigation table is populated
+- [ ] `doc-executive.md` and `doc-business.md` (forward-looking intent seeds) are written, `expandable: true`
+- [ ] Executive seed keeps TCO out of scope (no fabricated figures)
 - [ ] Deviations protocol is stated
-- [ ] `{{SUMMARY_FILE}}` is written and links back to the phase file
+- [ ] `{{SUMMARY_FILE}}` is written and links to the plan and both stakeholder seeds
 - [ ] `STATE.md` reflects `AWAITING ARCHITECT REVIEW`

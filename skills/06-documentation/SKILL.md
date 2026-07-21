@@ -204,6 +204,12 @@ Body — terse bullets under these fixed headings:
 Keep every audience document as brief as the feature warrants. Terse is correct — these
 are seeds for later expansion, not the documents an external reader will see.
 
+**Reference the Phase 04 intent seeds.** Where `phase-04-implementation-planning/` contains
+forward-looking `doc-executive.md` / `doc-business.md`, the Phase 06 (outcome) versions
+should reconcile intent against outcome — e.g. "intended X → deviation Z → delivered Y" —
+linking back to the Phase 04 seed rather than overwriting it. This makes the
+promise-vs-outcome comparison explicit for each audience.
+
 ### Step 6 — Write the closing summary file
 
 Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "06 — Documentation"`,
