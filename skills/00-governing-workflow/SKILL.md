@@ -315,7 +315,9 @@ When the Architect signals a phase transition:
      ```
    - If any check fails, continue silently without committing (no error, no interruption)
    - This creates an automatic checkpoint at each phase boundary for audit trail
-6. Regenerate `index.md` from the current frontmatter of all bundle files.
+6. Regenerate `index.md` from the current frontmatter of all bundle files, following the
+   grouping and ordering rules in the `index.md` section below (grouped by type: ADRs
+   first, then control files, then phases in numeric order — never interleaved).
 7. Load the skill for the new phase.
 8. Announce the phase transition to the Architect before proceeding.
 
@@ -388,6 +390,8 @@ file under `adrs/`:
 7. Record the compliance response **inside the same ADR file**, appended below the
    decision — preserving the "never overwritten" guarantee while keeping the decision
    and its compliance trail together.
+8. Regenerate `index.md` so the new ADR appears in the **Architecture Decision Records**
+   section at the top (date order), not among the phase entries.
 
 Each ADR is one file: `adrs/YYYY-MM-DD-<short-slug>.md`. ADR file body:
 
@@ -459,9 +463,29 @@ type: Log
 ## index.md
 
 `index.md` is **regenerable** — it holds links and descriptions only, no live state.
-It is rebuilt from the frontmatter (`type`, `phase`, `status`, `description`) of every
-bundle file whenever the bundle changes. Never hand-maintain live state here; that
+It is rebuilt from the frontmatter (`type`, `phase`, `status`, `description`, `audience`)
+of every bundle file whenever the bundle changes. Never hand-maintain live state here; that
 belongs in `STATE.md`.
+
+### Grouping and ordering rules
+
+`index.md` is **grouped by file type**, never a single flat list. Files of different types
+are never interleaved — all ADRs together, all phases together, control files together.
+Use exactly these sections, in this order:
+
+1. **Architecture Decision Records** — every file in `adrs/`, in **date order (oldest
+   first)**, as one block. ADRs come **first**: they are the bundle's most durable output.
+   The phase files capture how an understanding was reached and lose value once the feature
+   ships; a decision and its rationale outlive both the bundle and often the code.
+2. **Bundle Control** — `STATE.md`, `log.md` (in that order)
+3. **Phases** — one sub-table per phase, in **numeric phase order** (01 → 06). Within a
+   phase, list its files in this fixed order: `phase.md`, `summary.md`, then any
+   `doc-*.md` ordered `executive`, `business`, `technical`.
+
+Omit a section entirely if it has no files yet (e.g. no ADR section before the first
+ADR exists). Never emit placeholder or `...` rows — list only files that actually exist.
+
+### Template
 
 ```markdown
 ---
@@ -470,12 +494,39 @@ type: Index
 
 # [FEATURE_NAME] — Analysis Bundle
 
+## Architecture Decision Records
+
+| ADR | Date | Status | Description |
+|---|---|---|---|
+| [2026-06-18 — some-decision](./adrs/2026-06-18-some-decision.md) | 2026-06-18 | DECIDED | ... |
+| [2026-06-21 — another-decision](./adrs/2026-06-21-another-decision.md) | 2026-06-21 | PENDING | ... |
+
+## Bundle Control
+
+| File | Type | Description |
+|---|---|---|
+| [STATE](./STATE.md) | State | Live workflow state |
+| [log](./log.md) | Log | Prompt log & transition history |
+
+## Phases
+
+### Phase 01 — Deep Feature Analysis
+
 | File | Type | Status | Description |
 |---|---|---|---|
-| [STATE](./STATE.md) | State | — | Live workflow state |
-| [log](./log.md) | Log | — | Prompt log & transition history |
-| [Phase 01](./phase-01-deep-feature-analysis/phase.md) | Phase | COMPLETE | ... |
-| ... | ... | ... | ... |
+| [phase](./phase-01-deep-feature-analysis/phase.md) | Phase | COMPLETE | ... |
+| [summary](./phase-01-deep-feature-analysis/summary.md) | Summary | COMPLETE | ... |
+
+### Phase 04 — Implementation Planning
+
+| File | Type | Status | Description |
+|---|---|---|---|
+| [phase](./phase-04-implementation-planning/phase.md) | Phase | COMPLETE | ... |
+| [summary](./phase-04-implementation-planning/summary.md) | Summary | COMPLETE | ... |
+| [doc-executive](./phase-04-implementation-planning/doc-executive.md) | Doc (executive) | COMPLETE | Intent — outcome brief |
+| [doc-business](./phase-04-implementation-planning/doc-business.md) | Doc (business) | COMPLETE | Intent — process & experience |
+
+*(…remaining phases in numeric order…)*
 ```
 
 ---
