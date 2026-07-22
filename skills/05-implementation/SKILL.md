@@ -6,8 +6,10 @@ description: the Implementation Phase of the Analysis-Gated Workflow. Use when e
 # Analysis-Gated Workflow — Implementation Skill
 ## IMPLEMENTATION PHASE
 
-> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
-> Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
+> File paths, frontmatter, anchors, and the navigation bar in this skill follow the
+> **Bundle & File Naming Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
+> Every `phase.md` and `summary.md` carries the navigation bar directly under its H1 title;
+> `doc-*.md` and ADR files do not.
 > Phase 05 writes to `{{FOLDER_NAME}}/phase-05-implementation/` (`phase.md`, `summary.md`).
 > When the Architect accepts the implementation, the workflow advances to the separate
 > **Documentation & Cleanup skill** (`skills/06-documentation/SKILL.md`).

@@ -6,8 +6,10 @@ description: the Deep Code Analysis Phase of the Analysis-Gated Workflow. Use wh
 # Analysis-Gated Workflow — Deep Code Analysis Skill
 ## DEEP CODE ANALYSIS PHASE
 
-> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
-> Conventions** defined in `skills/00-governing-workflow/SKILL.md`. For this phase,
+> File paths, frontmatter, anchors, and the navigation bar in this skill follow the
+> **Bundle & File Naming Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
+> Every `phase.md` and `summary.md` carries the navigation bar directly under its H1 title;
+> `doc-*.md` and ADR files do not. For this phase,
 > `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-02-deep-code-analysis`, so
 > `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
 
@@ -206,6 +208,10 @@ description: <one-line outcome>
 ---
 
 # Phase 02 Summary — Deep Code Analysis
+
+[Index](../index.md) · [State](../STATE.md) · [Log](../log.md)
+
+---
 
 **Work completed:** [dimensions analysed; conventions confirmed]
 

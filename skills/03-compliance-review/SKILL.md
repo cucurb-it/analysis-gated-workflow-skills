@@ -6,8 +6,10 @@ description: the Compliance & Review Phase of the Analysis-Gated Workflow. Use w
 # Analysis-Gated Workflow — Compliance & Review Skill
 ## COMPLIANCE & REVIEW PHASE
 
-> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
-> Conventions** defined in `skills/00-governing-workflow/SKILL.md`. For this phase,
+> File paths, frontmatter, anchors, and the navigation bar in this skill follow the
+> **Bundle & File Naming Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
+> Every `phase.md` and `summary.md` carries the navigation bar directly under its H1 title;
+> `doc-*.md` and ADR files do not. For this phase,
 > `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-03-compliance-review`, so
 > `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
 > ADRs live as one file each under `{{FOLDER_NAME}}/adrs/` (see the ADR Protocol in the governing skill).
@@ -193,6 +195,10 @@ description: <one-line outcome>
 ---
 
 # Phase 03 Summary — Compliance & Review
+
+[Index](../index.md) · [State](../STATE.md) · [Log](../log.md)
+
+---
 
 **Work completed:** [ADRs addressed this iteration; sections updated]
 

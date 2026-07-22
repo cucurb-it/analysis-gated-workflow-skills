@@ -6,8 +6,10 @@ description: the Implementation Planning Phase of the Analysis-Gated Workflow. U
 # Analysis-Gated Workflow — Implementation Planning Skill
 ## IMPLEMENTATION PLANNING PHASE
 
-> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
-> Conventions** defined in `skills/00-governing-workflow/SKILL.md`. For this phase,
+> File paths, frontmatter, anchors, and the navigation bar in this skill follow the
+> **Bundle & File Naming Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
+> Every `phase.md` and `summary.md` carries the navigation bar directly under its H1 title;
+> `doc-*.md` and ADR files do not. For this phase,
 > `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-04-implementation-planning`, so
 > `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
 
@@ -257,6 +259,10 @@ description: <one-line outcome>
 ---
 
 # Phase 04 Summary — Implementation Planning
+
+[Index](../index.md) · [State](../STATE.md) · [Log](../log.md)
+
+---
 
 **Work completed:** [plan structure; number of implementation phases]
 

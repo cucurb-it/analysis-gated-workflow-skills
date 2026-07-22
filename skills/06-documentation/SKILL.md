@@ -6,8 +6,10 @@ description: the Documentation & Cleanup Phase of the Analysis-Gated Workflow. U
 # Analysis-Gated Workflow — Documentation & Cleanup Skill
 ## DOCUMENTATION & CLEANUP PHASE
 
-> File paths, frontmatter, and anchors in this skill follow the **Bundle & File Naming
-> Conventions** defined in `skills/00-governing-workflow/SKILL.md`. For this phase,
+> File paths, frontmatter, anchors, and the navigation bar in this skill follow the
+> **Bundle & File Naming Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
+> Every `phase.md` and `summary.md` carries the navigation bar directly under its H1 title;
+> `doc-*.md` and ADR files do not. For this phase,
 > `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-06-documentation`, so
 > `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
 
@@ -226,6 +228,10 @@ description: <one-line feature outcome>
 ---
 
 # Phase 06 Summary — Documentation & Cleanup
+
+[Index](../index.md) · [State](../STATE.md) · [Log](../log.md)
+
+---
 
 **Work completed:** [what was implemented, in one or two lines]
 

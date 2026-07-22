@@ -102,6 +102,33 @@ For the phase currently being executed:
 - `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md`
 - `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`
 
+### Navigation bar
+
+Bundle files sit two folders deep, and `phase.md` can grow long — so every phase file
+carries a **navigation bar at the top**, immediately below the H1 title and above the
+content. Top placement is deliberate: a footer at the bottom of a long analysis is useless
+for getting back out.
+
+Format (bundle-relative, from inside a phase folder):
+
+```markdown
+<a id="phase-top"></a>
+# [FEATURE_NAME] — [Phase Title]
+
+[Index](../index.md) · [State](../STATE.md) · [Log](../log.md)
+
+---
+```
+
+Which files carry it:
+
+| File | Navigation bar |
+|---|---|
+| `phase.md` | Yes — Index · State · Log |
+| `summary.md` | Yes — Index · State · Log |
+| `doc-*.md` | **No.** These are expanded/redacted for external audiences; links to internal workflow state and a raw prompt log must not ride along. |
+| `adrs/*.md` | **No.** ADRs are the bundle's most portable artifact and may be promoted to a project-level store; bundle-relative links would silently break. |
+
 ### Frontmatter
 
 Every bundle file carries YAML frontmatter. `type` is the one always-required key
