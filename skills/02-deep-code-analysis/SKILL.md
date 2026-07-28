@@ -74,7 +74,46 @@ subsection beneath `<a id="code-analysis"></a> ## Deep Code Analysis`.
 - What side effects does it produce?
 - What state does it read and what state does it mutate?
 
-Document the primary execution flow as a structured outline or ASCII diagram.
+**Execution flow diagram (required).** Document the primary execution flow as an **ASCII
+flow diagram** — not merely a prose outline. ASCII is used because it renders everywhere the
+bundle is read (GitHub, VS Code, plain text) without any plugin or rendering step. The
+diagram must show the entry point, the sequential steps, every conditional branch, and the
+terminal outcomes. A structured outline may accompany the diagram, but does not replace it.
+
+Follow this style — boxes for steps, labelled branches for conditionals, arrows for flow:
+
+```
+        ┌──────────────────────────┐
+        │  ProcessBuilding(request)│
+        └────────────┬─────────────┘
+                     │
+                     ▼
+            ┌─────────────────┐
+            │ request == null?│
+            └───┬─────────┬───┘
+             yes│         │no
+                ▼         ▼
+      ┌───────────────┐  ┌──────────────────────┐
+      │ throw ArgNull │  │ ValidateBuilding(...) │
+      └───────────────┘  └──────────┬───────────┘
+                                    │
+                          ┌─────────┴─────────┐
+                          │  valid?           │
+                          └───┬───────────┬───┘
+                           no │           │ yes
+                              ▼           ▼
+                   ┌──────────────┐  ┌──────────────────┐
+                   │ return Failed│  │ persist + publish│
+                   └──────────────┘  └────────┬─────────┘
+                                              ▼
+                                     ┌──────────────────┐
+                                     │ return Succeeded │
+                                     └──────────────────┘
+```
+
+Keep the diagram faithful to the actual code paths observed — every branch in the diagram
+must correspond to a real conditional in the source, and every real conditional on the
+primary path must appear in the diagram.
 
 #### Data Model
 
@@ -250,6 +289,7 @@ Phase 02 output is complete when:
 
 - [ ] Architecture overview is documented with position in pipeline/system
 - [ ] Full behavioural analysis with all execution paths is documented
+- [ ] Primary execution flow is rendered as an ASCII flow diagram matching the code's real branches
 - [ ] Data model is documented with types, properties, and typical cardinalities
 - [ ] `.claude/` and `.github/` folders scanned — all .md files read in great detail
 - [ ] Project Conventions Confirmation table created with extracted guidelines

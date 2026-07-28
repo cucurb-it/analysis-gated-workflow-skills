@@ -106,6 +106,55 @@ A concise overview of what will change:
 - New classes, methods, or patterns introduced
 - Existing patterns eliminated or replaced
 
+#### Target-State Execution Flow
+
+Document the **intended** execution flow after the change, as an **ASCII flow diagram** in
+the same style as the current-state diagram from Phase 02 (Deep Code Analysis). This is the
+to-be counterpart of the as-is diagram: Phase 02 shows the flow that exists, this shows the
+flow that will exist once the plan is implemented. A wrong arrow here is caught before any
+code is written.
+
+Use the same conventions — boxes for steps, labelled branches for conditionals, arrows for
+flow, terminal outcomes — for example:
+
+```
+        ┌──────────────────────────┐
+        │  StartSubscription(intent)│
+        └────────────┬─────────────┘
+                     ▼
+            ┌─────────────────────┐
+            │ caller authenticated?│
+            └───┬─────────────┬────┘
+             no │             │ yes
+                ▼             ▼
+      ┌──────────────┐  ┌──────────────────────────┐
+      │ reject (401) │  │ create Subscription       │
+      └──────────────┘  │ (Type = Created)          │
+                        └────────────┬──────────────┘
+                                     ▼
+                        ┌──────────────────────────┐
+                        │ record status trail       │
+                        └────────────┬──────────────┘
+                                     ▼
+                        ┌──────────────────────────┐
+                        │ send confirmation + admin │
+                        │ notification (2 mails)    │
+                        └────────────┬──────────────┘
+                                     ▼
+                        ┌──────────────────────────┐
+                        │ return Accepted (pending  │
+                        │ manual activation)        │
+                        └───────────────────────────┘
+```
+
+Add a one-line note of what changed relative to the current state, and link back to the
+Phase 02 diagram for comparison:
+[current-state flow](../phase-02-deep-code-analysis/phase.md#code-analysis).
+
+Keep the diagram faithful to the plan: every branch and step must correspond to something
+the Implementation Plan actually specifies. Do not reproduce the Phase 02 as-is diagram
+here — link to it; this subsection is the to-be view only.
+
 #### Strategy Evaluation (if multiple approaches exist)
 
 If the analysis identified multiple viable approaches:
@@ -308,6 +357,7 @@ Update `{{FOLDER_NAME}}/STATE.md`:
 Phase 04 output is complete when:
 
 - [ ] Proposed changes summary lists all affected files with their change type
+- [ ] Target-state execution flow is rendered as an ASCII diagram, linking back to the Phase 02 as-is diagram
 - [ ] Strategy evaluation is present if multiple approaches were identified
 - [ ] Implementation phases are numbered and sequenced logically
 - [ ] Every checklist item is specific, actionable, and traceable to the analysis
