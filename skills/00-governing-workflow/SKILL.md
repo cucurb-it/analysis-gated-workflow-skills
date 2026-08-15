@@ -226,6 +226,40 @@ ADR files emit `<a id="decision"></a>` and `<a id="consequences"></a>`.
 Links are always **bundle-relative** so the folder stays portable when moved or zipped:
 `./phase.md#outcome`, `../adrs/2026-06-18-slug.md#decision`.
 
+### STE-style writing (for `doc-*.md`)
+
+The audience documents (`doc-*.md`, in both `phase-04-implementation-planning/` and
+`phase-06-documentation/`) are written in the **style of Simplified Technical English
+(ASD-STE100)** — a controlled, unambiguous, translation-friendly register. This is
+*STE-styled*, not certified: follow the writing rules below, but no approved-dictionary
+check is required.
+
+Rules to apply:
+
+1. **Short sentences.** One instruction or one idea per sentence. Aim for ≤ 20 words in
+   procedural text, ≤ 25 in descriptive text.
+2. **Active voice.** "The service sends a confirmation mail" — not "a confirmation mail is
+   sent."
+3. **Imperative for instructions.** Start an instruction with the verb: "Select a plan",
+   "Record the status".
+4. **One meaning per word.** Use each word in a single, common sense. Do not use a word as
+   both noun and verb across the document (prefer "Start the subscription" over reusing
+   "start" as a noun).
+5. **No noun clusters over three words.** Break up long strings of stacked nouns.
+6. **Simple tenses.** Prefer present and simple past/future. Avoid perfect and continuous
+   tenses and stacked modals ("would have been able to").
+7. **One topic per paragraph**, and keep paragraphs short.
+8. **Consistent terminology.** Use the same word for the same thing every time — never vary
+   for style. Reuse the feature's own domain terms.
+9. **Plain vocabulary.** Prefer common words over elaborate ones ("use" not "utilise",
+   "start" not "commence").
+10. **No ambiguous pronouns.** Repeat the noun rather than a "this"/"it" whose referent is
+    unclear.
+
+This register applies **only** to `doc-*.md`. It does **not** apply to `phase.md`, ADRs,
+`summary.md`, `STATE.md`, or `log.md`: analytical writing needs the nuance, hedging, and
+precise domain vocabulary that STE deliberately removes, and the log is recorded verbatim.
+
 ---
 
 ## Session Start Protocol

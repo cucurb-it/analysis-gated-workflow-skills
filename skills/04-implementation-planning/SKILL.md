@@ -228,6 +228,10 @@ The difference is tense — these describe **intent before the build**, not outc
 They are **frozen** once Phase 04 closes: Phase 05 does not edit them, and Phase 06 writes
 its own retrospective seeds that reference these rather than overwriting them.
 
+Write both documents in **STE-style** (ASD-STE100 — see the STE-style writing convention in
+`skills/00-governing-workflow/SKILL.md`): short active sentences, plain consistent
+vocabulary, one meaning per word.
+
 **`{{PHASE_DIR}}/doc-executive.md`** — executive/sponsor, forward-looking:
 
 ```markdown
@@ -364,6 +368,7 @@ Phase 04 output is complete when:
 - [ ] Each phase ends with a Build and Validate step
 - [ ] Risk mitigation table is populated
 - [ ] `doc-executive.md` and `doc-business.md` (forward-looking intent seeds) are written, `expandable: true`
+- [ ] Both stakeholder seeds are written in STE-style (short active sentences, plain consistent vocabulary)
 - [ ] Executive seed keeps TCO out of scope (no fabricated figures)
 - [ ] Deviations protocol is stated
 - [ ] `{{SUMMARY_FILE}}` is written and links to the plan and both stakeholder seeds

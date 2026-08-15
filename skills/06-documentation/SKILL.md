@@ -37,6 +37,9 @@ All three are produced for **every** feature (uniformity), however briefly. They
 - Because of that, each seed is written as **terse, scannable bullets under fixed
   headings** — clean input for an LLM expansion/redaction pass — not polished narrative.
 - Each carries `expandable: true` in frontmatter to mark it as seed material.
+- Each is written in **STE-style** (ASD-STE100 — see the STE-style writing convention in
+  `skills/00-governing-workflow/SKILL.md`): short active sentences, plain consistent
+  vocabulary, one meaning per word.
 
 A feature with little to say to a given audience still gets that audience's file — as a
 one-line-per-heading stub. An empty-looking executive brief is a valid, expandable seed;
@@ -297,6 +300,7 @@ Documentation & Cleanup Phase is complete when:
 - [ ] `doc-business.md` is written (business process end-to-end; UI/UX as where it surfaces)
 - [ ] `doc-executive.md` is written (outcome brief; TCO explicitly out of scope, no fabricated figures)
 - [ ] All three carry `type: Doc`, the correct `audience`, and `expandable: true`
+- [ ] All three are written in STE-style (short active sentences, plain consistent vocabulary)
 - [ ] Each document is terse, bulleted seed material under its fixed headings (stubbed if little to say)
 - [ ] All deviations are linked with their rationale
 - [ ] Before/after results are present in `doc-technical.md` (or explicitly pending measurement)

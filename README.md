@@ -187,10 +187,13 @@ audiences of a software project:
 
 All are **expansion seeds, not finished documents**: terse bullets under fixed headings,
 marked `expandable: true`, never shared verbatim outside the development team — an external
-reader always receives a redacted and/or expanded version generated from the seed. The
-Phase 04 seeds are frozen once the phase closes; nothing writes backward. Writing the same
-work for multiple audiences also surfaces gaps: if the business or executive seed can't be
-filled, the feature's *purpose* wasn't fully understood, only its mechanics.
+reader always receives a redacted and/or expanded version generated from the seed. They are
+written in the **style of Simplified Technical English (ASD-STE100)** — short active
+sentences, plain and consistent vocabulary — so the seeds are unambiguous and
+translation-friendly (STE-styled, not certified). The Phase 04 seeds are frozen once the
+phase closes; nothing writes backward. Writing the same work for multiple audiences also
+surfaces gaps: if the business or executive seed can't be filled, the feature's *purpose*
+wasn't fully understood, only its mechanics.
 
 ### Format lineage — OKF-shaped, not OKF-conformant
 
