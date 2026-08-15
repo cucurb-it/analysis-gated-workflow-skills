@@ -230,12 +230,95 @@ Under `<a id="outcome"></a> ## Executive Summary`, write:
 
 Record anything still unresolved under `<a id="open-items"></a> ## Open Items`.
 
-### Step 5 — Write the summary file
+### Step 5 — Evolution-gap determination (autonomous)
+
+Decide, **autonomously and from evidence**, whether to generate an **evolution-gap
+document** — an executive-framed seed that states what the current system lacks *in relation
+to the specifications driving this workflow*, so a budget owner can defend the spend on the
+concrete feature rather than on a vague "modernization" line item.
+
+**The rule.** Generate the document if, and only if, the Phase 02 analysis shows one or more
+**structural-blockage indicators** — the current system does not merely need work to add the
+capability, it actively resists the intended evolution. Each indicator cited **must** be
+backed by a specific finding already recorded in `{{PHASE_FILE}}` (a named file, stub,
+convention rule, complexity result). Size or effort is **not** an indicator — a large
+feature that slots cleanly into the architecture has no evolution gap; a small one blocked
+by a structural limitation does.
+
+Indicators (all drawn from the analysis above):
+
+1. **Architectural boundary conflict** — the spec requires the capability to live where the
+   current architecture forbids it (layer rules, strangler-fig boundaries, an enforced pattern).
+2. **Missing seam / stub on the required path** — a `NotImplementedException`, stub, or
+   absent extension point exactly where the spec needs one; the system was shaped assuming
+   this would not exist.
+3. **Data-model or contract limitation** — the current model cannot represent what the spec
+   requires without a schema or contract change, not just new code.
+4. **Performance / complexity wall** — the complexity analysis shows the existing approach
+   will not scale to what the spec implies.
+5. **Acknowledged-imperfect collision** — the spec collides with a known deferred or
+   temporary design already flagged as refactor-later.
+
+**If one or more fire (evidence-backed):** generate `{{PHASE_DIR}}/doc-evolution-gap.md`
+(see template below). **If none fire:** do **not** generate it, and record the negative
+visibly in the summary file (Step 6) with a one-line reason. The negative must be visible so
+the Architect can make an informed override.
+
+**Discipline — this document's reason to exist:**
+- It is tied to **the concrete specification**, never generic. "The system is old / should be
+  modernised" is not an evolution-gap statement and never qualifies.
+- It states the **gap and its business consequence** only. **No** solution, **no** timeline,
+  **no** cost — those are not known at Phase 02 and are not its job.
+- It is **provisional**: written before solution decisions (ADRs, Phase 03). It says so on
+  its face.
+
+**Template** (`{{PHASE_DIR}}/doc-evolution-gap.md`), STE-style (see governing skill):
+
+```markdown
+---
+type: Doc
+audience: executive
+intent: evolution-gap
+basis: rule-triggered        # rule-triggered | architect-requested
+expandable: true
+status: AWAITING ARCHITECT REVIEW
+description: <one-line statement of the evolution gap>
+---
+
+# [FEATURE_NAME] — Evolution Gap (seed)
+
+> Provisional — based on current-state analysis, before solution decisions are made.
+> Scoped to this feature's specifications. This is not a "modernization" statement.
+
+## What The System Must Become
+- The capability the specifications require, in business terms.
+
+## What Is Missing Today
+- The specific current-state limitation(s) that block it, each tied to a Phase 02 finding.
+
+## Business Consequence Of The Gap
+- What the gap costs or prevents if left unaddressed — in budget-owner terms.
+
+## Basis (evidence)
+- [Indicator] → [the Phase 02 finding that proves it, e.g. `Financial/StartSubscription.cs` is a `NotImplementedException` stub]
+```
+
+Keep it brief and in STE-style. If it is generated because the Architect requested it (see
+below) rather than by the rule, set `basis: architect-requested`.
+
+**Architect override (before Compliance).** The rule decides autonomously, but the Architect
+may force generation. When reviewing Phase 02 — before signalling readiness for Phase 03
+(Compliance & Review) — the Architect can say "generate the evolution-gap doc anyway". Produce
+it then on whatever evidence exists, with `basis: architect-requested`. The Architect never
+needs to *suppress* a rule-triggered doc; if the rule fired, the evidence supports it.
+
+### Step 6 — Write the summary file
 
 Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "02 — Deep Code Analysis"`,
 `status: AWAITING ARCHITECT REVIEW`, `phase_file: ./phase.md`, one-line `description`).
 Because Phase 02 content can grow large, the summary must stay compact — work completed,
-the executive-summary outcome, and open items only, each linking back into `{{PHASE_FILE}}`:
+the executive-summary outcome, open items, and the evolution-gap determination, each linking
+back into `{{PHASE_FILE}}`:
 
 ```markdown
 ---
@@ -257,19 +340,26 @@ description: <one-line outcome>
 **Outcome:** [dominant finding, one line] → [full detail](./phase.md#outcome)
 
 **Open items carried forward:** [list, or "none"] → [detail](./phase.md#open-items)
+
+**Evolution-gap doc:** [one of]
+- generated → [doc-evolution-gap.md](./doc-evolution-gap.md) (rule-triggered: [indicator])
+- not generated — no structural evolution-blocker found; the feature slots into the current architecture
 ```
 
-### Step 6 — Update workflow state
+### Step 7 — Update workflow state
 
 Update `{{FOLDER_NAME}}/STATE.md`:
 - `Phase Status` → `AWAITING ARCHITECT REVIEW`
 - `Pending Architect Action` → `Review Phase 02 output. Add ADR annotations if corrections needed. Signal readiness for Phase 03.`
 
-### Step 7 — Notify the Architect
+### Step 8 — Notify the Architect
 
 > "Deep Code Analysis Phase is complete. Please review `phase-02-deep-code-analysis/summary.md`
-> (and the full `phase.md` if you want detail). Add ADR annotations where corrections or
-> decisions are needed, then signal when you are ready to proceed to Compliance & Review Phase."
+> (and the full `phase.md` if you want detail). The summary states whether an evolution-gap
+> document was generated; if it was not and you want one for a budget or stakeholder
+> conversation, say 'generate the evolution-gap doc anyway' before we proceed. Add ADR
+> annotations where corrections or decisions are needed, then signal when you are ready to
+> proceed to Compliance & Review Phase."
 
 ---
 
@@ -279,6 +369,8 @@ Update `{{FOLDER_NAME}}/STATE.md`:
 - Does not write or modify any code
 - Does not skip dimensions of analysis because they seem unimportant
 - Does not make findings without tracing them to observed code
+- Does not generate the evolution-gap doc on generic "modernization" grounds — only on evidence-backed structural blockers
+- Does not put a solution, timeline, or cost in the evolution-gap doc
 - Does not advance to Phase 03 without an explicit Architect signal
 
 ---
@@ -298,5 +390,6 @@ Phase 02 output is complete when:
 - [ ] Comparison with similar components is documented
 - [ ] Known issues and code commentary are captured verbatim
 - [ ] Executive Summary is written under the `outcome` anchor
+- [ ] Evolution-gap determination made: doc generated (evidence-backed) or negative recorded visibly in the summary
 - [ ] `{{SUMMARY_FILE}}` is written and links back to the phase file
 - [ ] `STATE.md` reflects `AWAITING ARCHITECT REVIEW`

@@ -116,7 +116,8 @@ files rather than one growing document. Its shape:
 │   └── summary.md                        # compact "what happened / outcome / open items", sorts last
 ├── phase-02-deep-code-analysis/
 │   ├── phase.md
-│   └── summary.md
+│   ├── summary.md
+│   └── doc-evolution-gap.md              # optional: current-state gap vs specs (budget case)
 ├── phase-03-compliance-review/
 │   ├── phase.md
 │   └── summary.md
@@ -163,27 +164,37 @@ alongside its full `phase.md`, lets each reader load only what their task needs:
 cheap even when the underlying analysis is deep. It links back into `phase.md` via stable
 anchors, so "give me the detail" is always one click away.
 
-### Audience documents: intent (Phase 04) and outcome (Phase 06)
+### Audience documents: gap (Phase 02), intent (Phase 04), outcome (Phase 06)
 
-The workflow produces **audience-targeted seed documents at two moments**, for the typical
-audiences of a software project:
+The workflow produces **audience-targeted seed documents at up to three moments**, each
+serving a different decision, for the non-technical audiences of a software project:
 
+- **Phase 02 (Deep Code Analysis)** — an *optional*, executive-framed **evolution-gap** seed
+  (`doc-evolution-gap.md`): what the current system lacks *in relation to the specifications*,
+  so a budget owner can defend spend on the **concrete feature** rather than on a vague
+  "modernization" line item. It is generated **autonomously, only when the analysis finds an
+  evidence-backed structural blocker** (a missing seam, an architectural conflict, a data-model
+  limit, a complexity wall, or a collision with a deferred design) — never on generic "the
+  system is old" grounds. If the rule doesn't fire, the summary records that plainly, and the
+  Architect can still request the doc before Compliance. It states the gap and its business
+  consequence only — no solution, timeline, or cost — and is explicitly provisional (written
+  before solution decisions). This serves the **fund-the-work?** decision.
 - **Phase 04 (Implementation Planning)** — alongside the plan, two **forward-looking** seeds
   describe *what the plan will deliver and why*: `doc-executive.md` (business-outcome brief;
   TCO out of scope) and `doc-business.md` (business process; UI/UX as where it surfaces). The
-  Implementation Plan itself is the technical view. These let a business or executive
-  stakeholder review the **intent** before any code is written, while it is still cheap to
-  change.
+  Implementation Plan itself is the technical view. These serve the **approve-this-approach?**
+  decision, before any code is written.
 - **Phase 06 (Documentation & Cleanup)** — three **retrospective** seeds describe *what was
   actually delivered*: `doc-executive.md`, `doc-business.md`, and `doc-technical.md`. These
   reference the Phase 04 intent seeds to compare promise against outcome ("intended X →
-  deviation Z → delivered Y").
+  deviation Z → delivered Y"). This serves the **what-did-we-get?** review.
 
-| File | Audience | Phase 04 (intent) | Phase 06 (outcome) |
-|---|---|---|---|
-| `doc-executive.md` | Executive / sponsor | ✓ | ✓ |
-| `doc-business.md` | Business stakeholder | ✓ | ✓ |
-| `doc-technical.md` | Development team | — (the plan is the technical view) | ✓ |
+| File | Audience | Phase 02 (gap) | Phase 04 (intent) | Phase 06 (outcome) |
+|---|---|---|---|---|
+| `doc-evolution-gap.md` | Executive / sponsor | ✓ (conditional) | — | — |
+| `doc-executive.md` | Executive / sponsor | — | ✓ | ✓ |
+| `doc-business.md` | Business stakeholder | — | ✓ | ✓ |
+| `doc-technical.md` | Development team | — | — (the plan is the technical view) | ✓ |
 
 All are **expansion seeds, not finished documents**: terse bullets under fixed headings,
 marked `expandable: true`, never shared verbatim outside the development team — an external

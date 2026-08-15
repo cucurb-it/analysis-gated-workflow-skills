@@ -58,7 +58,8 @@ in Step 1 of the Session Start Protocol):
 │   └── summary.md                        # type: Summary — work done + outcome, compact, sorts last
 ├── phase-02-deep-code-analysis/
 │   ├── phase.md
-│   └── summary.md
+│   ├── summary.md
+│   └── doc-evolution-gap.md              # type: Doc, audience: executive — optional; only if a structural evolution-blocker is found
 ├── phase-03-compliance-review/
 │   ├── phase.md
 │   └── summary.md
@@ -155,20 +156,28 @@ description: <one-line summary of the outcome>
 ---
 ```
 
-**`doc-*.md`** (audience documents — expansion seeds; in `phase-04-implementation-planning/`
-as forward-looking *intent*, and in `phase-06-documentation/` as retrospective *outcome*):
+**`doc-*.md`** (audience documents — expansion seeds; STE-styled, always `expandable: true`):
 ```yaml
 ---
 type: Doc
 audience: executive          # executive | business | technical
+intent: evolution-gap        # optional: evolution-gap (Phase 02 only). Omit for the standard intent/outcome seeds.
+basis: rule-triggered        # optional: rule-triggered | architect-requested (evolution-gap doc only)
 expandable: true
 status: COMPLETE
 description: <one-line summary for this audience>
 ---
 ```
-Phase 04 produces `executive` + `business` seeds (the plan itself is the technical view).
-Phase 06 produces all three. The Phase 04 seeds are frozen once the phase closes; Phase 06's
-seeds reference them rather than overwriting, so intent-vs-outcome stays comparable.
+The audience seeds appear at three moments, all STE-styled, all `expandable: true`:
+
+- **Phase 02** — *optional* `doc-evolution-gap.md` (`audience: executive`,
+  `intent: evolution-gap`): what the current system lacks relative to the specifications, to
+  defend budget on the concrete feature. Generated autonomously only when Phase 02 finds an
+  evidence-backed structural blocker, or on Architect request before Compliance. Provisional.
+- **Phase 04** — forward-looking *intent*: `executive` + `business` (the plan itself is the
+  technical view). Frozen once the phase closes.
+- **Phase 06** — retrospective *outcome*: `executive` + `business` + `technical`. These
+  reference the Phase 04 seeds rather than overwriting, so intent-vs-outcome stays comparable.
 
 **`adrs/YYYY-MM-DD-<slug>.md`:**
 ```yaml
@@ -541,7 +550,8 @@ Use exactly these sections, in this order:
 2. **Bundle Control** — `STATE.md`, `log.md` (in that order)
 3. **Phases** — one sub-table per phase, in **numeric phase order** (01 → 06). Within a
    phase, list its files in this fixed order: `phase.md`, `summary.md`, then any
-   `doc-*.md` ordered `executive`, `business`, `technical`.
+   `doc-*.md` (for the standard seeds order `executive`, `business`, `technical`; an
+   optional `doc-evolution-gap.md` in Phase 02 is listed after `summary.md`).
 
 Omit a section entirely if it has no files yet (e.g. no ADR section before the first
 ADR exists). Never emit placeholder or `...` rows — list only files that actually exist.
