@@ -254,10 +254,30 @@ Indicators (all drawn from the analysis above):
    this would not exist.
 3. **Data-model or contract limitation** — the current model cannot represent what the spec
    requires without a schema or contract change, not just new code.
-4. **Performance / complexity wall** — the complexity analysis shows the existing approach
-   will not scale to what the spec implies.
+4. **Performance / scalability wall** — the complexity analysis shows the existing approach
+   will not scale to what the spec implies. (This indicator is about **runtime scaling**, not
+   extraction or refactoring effort — for entanglement-driven partial remediation see
+   Indicator 6.)
 5. **Acknowledged-imperfect collision** — the spec collides with a known deferred or
    temporary design already flagged as refactor-later.
+6. **Entanglement forces partial remediation, evidenced.** When the spec's own goal is
+   consolidation — dedup, extraction, unification of something that already exists — the goal
+   cannot be reached cleanly because cross-cutting infrastructure (serialization, mapping, DI
+   wiring, generated-client tooling) spans multiple layers, and this is demonstrated by
+   either: **(a)** a named prior attempt at the same consolidation on record that did not
+   resolve the divergence, or **(b)** the accepted solution's own DECIDED text baking in
+   permanent staging or partial extraction ("initially", "selectively", "remains in current
+   owners") as a consequence of the entanglement itself — not as ordinary rollout sequencing.
+   This is **not** an effort test: "this will take a while" does not qualify. It requires
+   demonstrated resistance — history repeating, or a design that permanently accepts
+   incompleteness rather than sequencing toward a clean end state. Evidence form (a) is
+   available at the initial Phase 02 run (from code history); form (b) becomes available once
+   a relevant ADR is DECIDED (Phase 03 onward).
+
+The first five indicators are phrased for a **forward-looking** spec ("the spec needs a new
+capability — does the current system block it?"). Indicator 6 covers the **backward-looking**
+consolidation spec ("remove duplication that already exists"), whose failure shape is
+different: the thing being consolidated resists clean consolidation.
 
 **If one or more fire (evidence-backed):** generate `{{PHASE_DIR}}/doc-evolution-gap.md`
 (see template below). **If none fire:** do **not** generate it, and record the negative

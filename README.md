@@ -174,7 +174,9 @@ serving a different decision, for the non-technical audiences of a software proj
   so a budget owner can defend spend on the **concrete feature** rather than on a vague
   "modernization" line item. It is generated **autonomously, only when the analysis finds an
   evidence-backed structural blocker** (a missing seam, an architectural conflict, a data-model
-  limit, a complexity wall, or a collision with a deferred design) — never on generic "the
+  limit, a scalability wall, a collision with a deferred design, or consolidation that
+  resists clean extraction — evidenced by a failed prior attempt or a decision that bakes in
+  partial extraction) — never on generic "the
   system is old" grounds. If the rule doesn't fire, the summary records that plainly, and the
   Architect can still request the doc before Compliance. It states the gap and its business
   consequence only — no solution, timeline, or cost — and is explicitly provisional (written
