@@ -1,7 +1,7 @@
 ---
 name: agw-governing-workflow
 description: Governs the Analysis-Gated Workflow for software development and refactoring. Use when starting or resuming a structured analysis session with a Software Architect. Orchestrates all other workflow skills across phases.
-argument-hint: [for '<feature-name>' in '<folder-path>']
+argument-hint": "[for '<feature-name>' in '<folder-path>']"
 ---
 
 # Analysis-Gated Workflow — Governing Workflow Skill
