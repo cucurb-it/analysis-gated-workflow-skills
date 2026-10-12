@@ -71,18 +71,32 @@ in Step 1 of the Session Start Protocol):
 ├── phase-05-implementation/
 │   ├── phase.md
 │   └── summary.md
-├── phase-06-documentation/
+├── phase-06-close-out/
 │   ├── phase.md                          # thin working notes for the phase
 │   ├── summary.md                        # front-door; links to the three audience docs
 │   ├── doc-executive.md                  # type: Doc, audience: executive — outcome brief (seed)
 │   ├── doc-business.md                   # type: Doc, audience: business — process & UX (seed)
 │   └── doc-technical.md                  # type: Doc, audience: technical — implementation record (seed)
+├── phase-07-implementation-review/       # OPTIONAL post-06 pass — only if the Architect requests it
+│   ├── phase.md                          # thin working notes
+│   ├── summary.md                        # front-door; links to the review report
+│   └── review.md                         # type: Review — the Implementation Review Report
+├── phase-08-implementation-documentation/ # OPTIONAL post-06 pass — only if the Architect requests it
+│   ├── phase.md                          # thin working notes
+│   ├── summary.md                        # front-door; links to the reference document
+│   └── reference.md                      # type: Reference — the comprehensive technical reference
 └── adrs/
     └── YYYY-MM-DD-<short-slug>.md         # type: ADR — one file per ADR, never deleted
 ```
 
 Within a phase folder, `phase.md` sorts before `summary.md` (p < s), so the full content
 is listed first and the compact summary last.
+
+**Phases 07 and 08 are optional, independent post-06 passes.** The core workflow is
+complete at Phase 06. After that, the Architect may invoke Phase 07 (Implementation Review),
+Phase 08 (Implementation Documentation), both (in either order), or neither. Their folders
+exist only if the corresponding pass was run. Both are read-only with respect to the
+codebase — like Phases 01–04, they never modify code.
 
 ### Phase-to-folder map
 
@@ -93,7 +107,9 @@ is listed first and the compact summary last.
 | COMPLIANCE & REVIEW PHASE | `phase-03-compliance-review/` | `skills/03-compliance-review/SKILL.md` |
 | IMPLEMENTATION PLANNING PHASE | `phase-04-implementation-planning/` | `skills/04-implementation-planning/SKILL.md` |
 | IMPLEMENTATION PHASE | `phase-05-implementation/` | `skills/05-implementation/SKILL.md` |
-| DOCUMENTATION & CLEANUP PHASE | `phase-06-documentation/` | `skills/06-documentation/SKILL.md` |
+| CLOSE-OUT PHASE | `phase-06-close-out/` | `skills/06-close-out/SKILL.md` |
+| IMPLEMENTATION REVIEW PHASE *(optional)* | `phase-07-implementation-review/` | `skills/07-implementation-review/SKILL.md` |
+| IMPLEMENTATION DOCUMENTATION PHASE *(optional)* | `phase-08-implementation-documentation/` | `skills/08-implementation-documentation/SKILL.md` |
 
 ### Path placeholders used by phase skills
 
@@ -127,6 +143,8 @@ Which files carry it:
 |---|---|
 | `phase.md` | Yes — Index · State · Log |
 | `summary.md` | Yes — Index · State · Log |
+| `review.md` (Phase 07) | Yes — Index · State · Log. Internal dev-team artifact. |
+| `reference.md` (Phase 08) | Yes — Index · State · Log. Internal dev-team artifact. |
 | `doc-*.md` | **No.** These are expanded/redacted for external audiences; links to internal workflow state and a raw prompt log must not ride along. |
 | `adrs/*.md` | **No.** ADRs are the bundle's most portable artifact and may be promoted to a project-level store; bundle-relative links would silently break. |
 
@@ -178,6 +196,28 @@ The audience seeds appear at three moments, all STE-styled, all `expandable: tru
   technical view). Frozen once the phase closes.
 - **Phase 06** — retrospective *outcome*: `executive` + `business` + `technical`. These
   reference the Phase 04 seeds rather than overwriting, so intent-vs-outcome stays comparable.
+
+**`phase-07-implementation-review/review.md`** (optional pass — Implementation Review Report):
+```yaml
+---
+type: Review
+phase: "07 — Implementation Review"
+status: COMPLETE             # IN PROGRESS | COMPLETE
+assessment: CHANGES REQUESTED # APPROVED | CHANGES REQUESTED | REJECTED
+description: <one-line review outcome>
+---
+```
+
+**`phase-08-implementation-documentation/reference.md`** (optional pass — comprehensive
+technical reference; **not** STE-styled — it needs full technical nuance, like `phase.md`):
+```yaml
+---
+type: Reference
+phase: "08 — Implementation Documentation"
+status: COMPLETE             # IN PROGRESS | COMPLETE
+description: <one-line description of what this documents>
+---
+```
 
 **`adrs/YYYY-MM-DD-<slug>.md`:**
 ```yaml
@@ -238,7 +278,7 @@ Links are always **bundle-relative** so the folder stays portable when moved or 
 ### STE-style writing (for `doc-*.md`)
 
 The audience documents (`doc-*.md`, in both `phase-04-implementation-planning/` and
-`phase-06-documentation/`) are written in the **style of Simplified Technical English
+`phase-06-close-out/`) are written in the **style of Simplified Technical English
 (ASD-STE100)** — a controlled, unambiguous, translation-friendly register. This is
 *STE-styled*, not certified: follow the writing rules below, but no approved-dictionary
 check is required.
@@ -345,6 +385,13 @@ Check whether `{{FOLDER_NAME}}/STATE.md` exists.
 6. Load the appropriate skill for the current phase (see: Phase-to-Skill Map).
 7. Resume from the registered state.
 
+**If the core workflow is already complete** (STATE shows `CLOSE-OUT PHASE` /
+`COMPLETE`), the resume summary should note that the core workflow is done and name the two
+optional passes still available — Implementation Review (07) and Implementation
+Documentation (08) — so the Architect can invoke either, both, or neither. If STATE shows an
+optional pass (07 or 08) that is `COMPLETE`, note that too, and that the other optional pass
+remains available. Never auto-start an optional pass.
+
 ---
 
 ## Phase-to-Skill Map
@@ -355,8 +402,20 @@ Check whether `{{FOLDER_NAME}}/STATE.md` exists.
 | DEEP CODE ANALYSIS PHASE | `skills/02-deep-code-analysis/SKILL.md` | Architect signals: "proceed to Compliance & Review" |
 | COMPLIANCE & REVIEW PHASE | `skills/03-compliance-review/SKILL.md` | Architect signals: "proceed to Implementation Planning" |
 | IMPLEMENTATION PLANNING PHASE | `skills/04-implementation-planning/SKILL.md` | Architect signals: "proceed to Implementation" |
-| IMPLEMENTATION PHASE | `skills/05-implementation/SKILL.md` | Architect accepts implementation → Documentation & Cleanup |
-| DOCUMENTATION & CLEANUP PHASE | `skills/06-documentation/SKILL.md` | Workflow closed |
+| IMPLEMENTATION PHASE | `skills/05-implementation/SKILL.md` | Architect accepts implementation → Close-out |
+| CLOSE-OUT PHASE | `skills/06-close-out/SKILL.md` | **Core workflow complete.** Optionally: Implementation Review and/or Implementation Documentation |
+
+**Optional post-completion passes** (after the core workflow completes at Phase 06; the
+Architect invokes either, both in either order, or neither):
+
+| Pass | Skill to Load | Entered when |
+|---|---|---|
+| IMPLEMENTATION REVIEW PHASE | `skills/07-implementation-review/SKILL.md` | Architect requests a review of the implemented code |
+| IMPLEMENTATION DOCUMENTATION PHASE | `skills/08-implementation-documentation/SKILL.md` | Architect requests a comprehensive technical reference |
+
+Neither optional pass gates the other: Phase 08 may run without Phase 07, and vice versa.
+Each is entered only on an explicit Architect request, and each is read-only with respect
+to the codebase.
 
 ---
 
@@ -406,13 +465,20 @@ The following gates are absolute and cannot be bypassed:
 | IMPLEMENTATION PLANNING → IMPLEMENTATION | Architect has explicitly signalled: go for Implementation |
 | IMPLEMENTATION → REJECTION & REVERT | Architect has rejected the implementation |
 | REJECTION & REVERT → IMPLEMENTATION (retry) | Architect has signalled: start next implementation iteration |
-| IMPLEMENTATION → DOCUMENTATION & CLEANUP | Architect has accepted the implementation |
+| IMPLEMENTATION → CLOSE-OUT | Architect has accepted the implementation |
+| CLOSE-OUT → IMPLEMENTATION REVIEW *(optional)* | Architect has requested an implementation review |
+| CLOSE-OUT → IMPLEMENTATION DOCUMENTATION *(optional)* | Architect has requested a comprehensive technical reference |
 
-If the Architect attempts to skip a phase, you must flag it explicitly:
+The gates above the optional line are the **core workflow** and are strictly sequential.
+If the Architect attempts to skip a core phase, you must flag it explicitly:
 > "The Analysis-Gated Workflow requires completing [PHASE_NAME] PHASE before advancing to [NEXT_PHASE_NAME] PHASE.
 > Please confirm you want to skip [PHASE_NAME] PHASE and take responsibility for that decision."
 
 Only proceed on explicit confirmation.
+
+The two optional passes (07, 08) are **not** part of the sequential chain: they are entered
+only on explicit Architect request after Phase 06, never automatically, and skipping them
+needs no warning — not running them is the default.
 
 ---
 
@@ -548,10 +614,11 @@ Use exactly these sections, in this order:
    The phase files capture how an understanding was reached and lose value once the feature
    ships; a decision and its rationale outlive both the bundle and often the code.
 2. **Bundle Control** — `STATE.md`, `log.md` (in that order)
-3. **Phases** — one sub-table per phase, in **numeric phase order** (01 → 06). Within a
-   phase, list its files in this fixed order: `phase.md`, `summary.md`, then any
-   `doc-*.md` (for the standard seeds order `executive`, `business`, `technical`; an
-   optional `doc-evolution-gap.md` in Phase 02 is listed after `summary.md`).
+3. **Phases** — one sub-table per phase, in **numeric phase order** (01 → 08). Within a
+   phase, list its files in this fixed order: `phase.md`, `summary.md`, then any other
+   file — `doc-*.md` (standard seeds order `executive`, `business`, `technical`; an optional
+   `doc-evolution-gap.md` in Phase 02 after `summary.md`), `review.md` (Phase 07), or
+   `reference.md` (Phase 08). Phases 07 and 08 appear only if those optional passes were run.
 
 Omit a section entirely if it has no files yet (e.g. no ADR section before the first
 ADR exists). Never emit placeholder or `...` rows — list only files that actually exist.
@@ -609,6 +676,8 @@ These rules apply across all phases and all skills:
 1. Before Phase 05, the AI writes only to: the current phase's `phase.md` and
    `summary.md`, `STATE.md`, `log.md`, and `adrs/` (new ADR files, or compliance
    responses appended to existing ones). `index.md` may be regenerated at any time.
+   Phase 05 is the only phase that modifies the codebase; Phases 01–04 and the optional
+   passes 07–08 are read-only with respect to code — they write only bundle files.
 2. The codebase is never read directly in chat — reading happens via Claude Code CLI or Copilot CLI.
 3. The AI never self-approves a phase transition.
 4. ADRs are permanent. Their files are never overwritten, summarised away, or deleted.

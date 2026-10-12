@@ -1,23 +1,23 @@
 ---
-name: agw-documentation
-description: the Documentation & Cleanup Phase of the Analysis-Gated Workflow. Use after the Architect accepts an implementation, to produce three audience-targeted documents (executive, business, technical) as expansion seeds, plus deviations, learnings, and results. No further code changes.
+name: agw-close-out
+description: the Close-out Phase of the Analysis-Gated Workflow. Use after the Architect accepts an implementation, to produce three audience-targeted documents (executive, business, technical) as expansion seeds, plus deviations, learnings, and results. No further code changes.
 ---
 
-# Analysis-Gated Workflow — Documentation & Cleanup Skill
-## DOCUMENTATION & CLEANUP PHASE
+# Analysis-Gated Workflow — Close-out Skill
+## CLOSE-OUT PHASE
 
 > File paths, frontmatter, anchors, and the navigation bar in this skill follow the
 > **Bundle & File Naming Conventions** defined in `skills/00-governing-workflow/SKILL.md`.
 > Every `phase.md` and `summary.md` carries the navigation bar directly under its H1 title;
 > `doc-*.md` and ADR files do not. For this phase,
-> `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-06-documentation`, so
+> `{{PHASE_DIR}}` = `{{FOLDER_NAME}}/phase-06-close-out`, so
 > `{{PHASE_FILE}}` = `{{PHASE_DIR}}/phase.md` and `{{SUMMARY_FILE}}` = `{{PHASE_DIR}}/summary.md`.
 
 ---
 
 ## Purpose
 
-This skill governs the Documentation & Cleanup Phase of the Analysis-Gated Workflow. It is
+This skill governs the Close-out Phase of the Analysis-Gated Workflow. It is
 entered **only after the Architect accepts the implementation** produced in Phase 05.
 
 Its responsibility is to close out the feature by producing **three audience-targeted
@@ -60,12 +60,12 @@ No code is written or modified in this phase.
 
 ---
 
-## DOCUMENTATION & CLEANUP PHASE Execution
+## CLOSE-OUT PHASE Execution
 
 The **deliverables** of this phase are the three audience documents (`doc-executive.md`,
 `doc-business.md`, `doc-technical.md`). `{{PHASE_FILE}}` (`phase.md`) holds only thin
 working notes for this phase — initialise it with frontmatter (`type: Phase`,
-`phase: "06 — Documentation"`, `status: IN PROGRESS`, one-line `description`) and emit the
+`phase: "06 — Close-out"`, `status: IN PROGRESS`, one-line `description`) and emit the
 common anchors (`phase-top`, `outcome`, `open-items`) plus the phase-specific anchor
 `documentation`. The substantive content lives in the three `doc-*.md` files, not here.
 
@@ -217,20 +217,20 @@ promise-vs-outcome comparison explicit for each audience.
 
 ### Step 6 — Write the closing summary file
 
-Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "06 — Documentation"`,
+Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "06 — Close-out"`,
 `status: COMPLETE`, `phase_file: ./phase.md`, one-line `description`). This is the
 bundle's internal front-door — it points to the three audience documents:
 
 ```markdown
 ---
 type: Summary
-phase: "06 — Documentation"
+phase: "06 — Close-out"
 status: COMPLETE
 phase_file: ./phase.md
 description: <one-line feature outcome>
 ---
 
-# Phase 06 Summary — Documentation & Cleanup
+# Phase 06 Summary — Close-out
 
 [Index](../index.md) · [State](../STATE.md) · [Log](../log.md)
 
@@ -251,14 +251,25 @@ description: <one-line feature outcome>
 ### Step 7 — Final workflow state
 
 Update `{{FOLDER_NAME}}/STATE.md`:
-- `Current Phase` → `DOCUMENTATION & CLEANUP PHASE`
+- `Current Phase` → `CLOSE-OUT PHASE`
 - `Phase Status` → `COMPLETE`
 - `Pending Architect Action` → `none`
 
-### Step 8 — Close the workflow
+### Step 8 — Close the core workflow
 
-> "Documentation & Cleanup phase is complete. The analysis bundle is fully updated. The
-> Analysis-Gated Workflow for [FEATURE_NAME] is closed."
+The core Analysis-Gated Workflow is complete at this phase. Inform the Architect, and name
+the two optional passes available — the Architect may invoke either, both (in either order),
+or neither:
+
+> "Close-out phase is complete. The analysis bundle is fully updated, and the
+> core Analysis-Gated Workflow for [FEATURE_NAME] is complete.
+>
+> Two optional passes are available if you want them:
+> - **Implementation Review** — a review of the implemented code against conventions,
+>   security, and the plan, producing a Review Report (and optional GitHub Issues).
+> - **Implementation Documentation** — a comprehensive technical reference document.
+>
+> Say the word to run either, or we can stop here."
 
 ### Step 9 — Final commit (if in git repository)
 
@@ -293,7 +304,7 @@ Update `{{FOLDER_NAME}}/STATE.md`:
 
 ## Quality Criteria
 
-Documentation & Cleanup Phase is complete when:
+Close-out Phase is complete when:
 
 - [ ] All checklist items are ticked or marked skipped with reason
 - [ ] `doc-technical.md` is written (files created/modified/deleted, deviations, learnings, results)

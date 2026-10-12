@@ -15,7 +15,9 @@ governed by a Software Architect and supported by AI (Claude Code CLI or Copilot
 | `03-compliance-review/` | Compliance & Review | COMPLIANCE & REVIEW PHASE (iterative) |
 | `04-implementation-planning/` | Implementation Planning | IMPLEMENTATION PLANNING PHASE |
 | `05-implementation/` | Implementation | IMPLEMENTATION PHASE (incl. rejection & revert) |
-| `06-documentation/` | Documentation & Cleanup | DOCUMENTATION & CLEANUP PHASE |
+| `06-close-out/` | Close-out & Seeds | CLOSE-OUT PHASE |
+| `07-implementation-review/` | Implementation Review | IMPLEMENTATION REVIEW PHASE *(optional, post-06)* |
+| `08-implementation-documentation/` | Implementation Documentation | IMPLEMENTATION DOCUMENTATION PHASE *(optional, post-06)* |
 
 Each workflow run produces an **analysis bundle** — a folder of markdown files rather than
 a single document. See [Core Principles](#core-principles) for the layout and the reasoning
@@ -129,12 +131,20 @@ files rather than one growing document. Its shape:
 ├── phase-05-implementation/
 │   ├── phase.md
 │   └── summary.md
-├── phase-06-documentation/
+├── phase-06-close-out/
 │   ├── phase.md                          # thin working notes
 │   ├── summary.md                        # the bundle's front-door summary
 │   ├── doc-executive.md                  # audience seed: business-outcome brief
 │   ├── doc-business.md                   # audience seed: business process & experience
 │   └── doc-technical.md                  # audience seed: technical record
+├── phase-07-implementation-review/       # optional pass — only if run
+│   ├── phase.md
+│   ├── summary.md
+│   └── review.md                         # the Implementation Review Report
+├── phase-08-implementation-documentation/ # optional pass — only if run
+│   ├── phase.md
+│   ├── summary.md
+│   └── reference.md                      # comprehensive technical reference
 └── adrs/
     └── YYYY-MM-DD-<slug>.md              # one file per Architecture Decision Record
 ```
@@ -186,7 +196,7 @@ serving a different decision, for the non-technical audiences of a software proj
   TCO out of scope) and `doc-business.md` (business process; UI/UX as where it surfaces). The
   Implementation Plan itself is the technical view. These serve the **approve-this-approach?**
   decision, before any code is written.
-- **Phase 06 (Documentation & Cleanup)** — three **retrospective** seeds describe *what was
+- **Phase 06 (Close-out)** — three **retrospective** seeds describe *what was
   actually delivered*: `doc-executive.md`, `doc-business.md`, and `doc-technical.md`. These
   reference the Phase 04 intent seeds to compare promise against outcome ("intended X →
   deviation Z → delivered Y"). This serves the **what-did-we-get?** review.
@@ -252,7 +262,11 @@ a goal of this project today.
 - **The Architect is the only authority who can advance a phase.** The AI never
   self-initiates a transition; it stops at every gate and waits for an explicit signal.
 - **The codebase is never touched before the IMPLEMENTATION PHASE.** Phases 01–04 build
-  understanding and a plan; no file is created, edited, or deleted until Phase 05.
+  understanding and a plan; no file is created, edited, or deleted until Phase 05. Phase 05
+  is the only phase that modifies code — the optional passes 07–08 are read-only too.
+- **The core workflow completes at Phase 06.** Two optional passes may follow —
+  Implementation Review (07) and Implementation Documentation (08) — each invoked only on
+  explicit Architect request, independent of each other, in any order or not at all.
 - **ADRs are permanent.** Each is one file under `adrs/`, never overwritten, summarised
   away, or deleted. Compliance responses are appended inside the same file, so a decision
   and its follow-through stay together and accumulate across iterations.
@@ -289,8 +303,18 @@ REJECTION & REVERT ────────────────────�
   Revert codebase. Document learnings.        │
   Update Implementation Plan.                 │
        ↓ [Architect go signal] ───────────────→ back to IMPLEMENTATION PHASE
-DOCUMENTATION & CLEANUP
+CLOSE-OUT
   Retrospective executive + business + technical docs;
   deviations and measured results.
-       ↓ [Workflow closed]
+       ↓ [Core workflow complete]
+
+  ── Optional post-completion passes (Architect-invoked, independent, any order or none) ──
+
+IMPLEMENTATION REVIEW  (optional)
+  Review implemented code vs plan, conventions, security, ADRs.
+  Produces a Review Report; optional GitHub Issues.
+
+IMPLEMENTATION DOCUMENTATION  (optional)
+  Comprehensive, self-contained technical reference (sources the whole bundle).
+  Service Contracts vs Component APIs; SVG + Mermaid diagrams.
 ```

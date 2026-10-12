@@ -1,6 +1,6 @@
 ---
 name: agw-implementation
-description: the Implementation Phase of the Analysis-Gated Workflow. Use when executing an approved Implementation Plan, and handling rejection and revert cycles. Documentation of the completed work is handled by the separate Documentation & Cleanup skill (Phase 06).
+description: the Implementation Phase of the Analysis-Gated Workflow. Use when executing an approved Implementation Plan, and handling rejection and revert cycles. Close-out of the completed work is handled by the separate Close-out skill (Phase 06).
 ---
 
 # Analysis-Gated Workflow — Implementation Skill
@@ -12,7 +12,7 @@ description: the Implementation Phase of the Analysis-Gated Workflow. Use when e
 > `doc-*.md` and ADR files do not.
 > Phase 05 writes to `{{FOLDER_NAME}}/phase-05-implementation/` (`phase.md`, `summary.md`).
 > When the Architect accepts the implementation, the workflow advances to the separate
-> **Documentation & Cleanup skill** (`skills/06-documentation/SKILL.md`).
+> **Close-out skill** (`skills/06-close-out/SKILL.md`).
 
 ---
 
@@ -230,10 +230,10 @@ When all implementation phases are complete, write `{{SUMMARY_FILE}}`
 deviations, linking back into `{{PHASE_FILE}}`'s anchors — then notify the Architect:
 
 > "Implementation is complete. Please review and either accept, or reject (which triggers
-> Rejection & Revert). On acceptance, the workflow advances to Documentation & Cleanup."
+> Rejection & Revert). On acceptance, the workflow advances to Close-out."
 
 On the Architect's **acceptance** signal, the Governing Workflow advances to Phase 06,
-governed by `skills/06-documentation/SKILL.md`. This skill does not perform documentation itself.
+governed by `skills/06-close-out/SKILL.md`. This skill does not perform documentation itself.
 
 ---
 
