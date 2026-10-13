@@ -136,6 +136,17 @@ primary path must appear in the diagram.
 - What logging or instrumentation exists?
 - Are there any project-specific practices or conventions observable in this component?
 
+**Test conventions** — capture how the project tests, so the Phase 04 Test Plan fits the
+codebase instead of imposing a generic approach:
+- Test framework(s) and runner (e.g. xUnit, NUnit, Jest) and how tests are run.
+- Where tests live and how they are named (project/folder layout, naming pattern).
+- Unit vs integration split — how the project distinguishes and structures them.
+- Mocking / faking / fixture approach and any test-data conventions.
+- Any existing coverage expectations or testing rules stated in `.claude/` or `.github/`.
+
+If the project has little or no existing test setup, note that — the Phase 04 Test Plan will
+then have to establish the approach rather than follow one.
+
 **Project conventions scan — MANDATORY:**
 Before documenting coding patterns, scan the following folders in the repository root
 if they exist. Read **every .md file in great detail** to understand the intricacies

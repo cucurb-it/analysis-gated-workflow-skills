@@ -172,7 +172,38 @@ next phase without waiting for acknowledgement, unless a gate condition above is
 **Do not skip checklist items.** If an item cannot be completed as written, stop
 immediately and invoke the Deviation Protocol.
 
-### Step 4 — Deviation Protocol
+### Step 4 — Write and run the planned tests
+
+After the implementation checklist is complete, execute the **Test Plan** approved in Phase 04
+(`phase-04-implementation-planning/phase.md`). Tests are written **now — after the code**, not
+before (AGW does not use TDD); but their assertions come from the plan and the contract, not
+from the code just written (see the provenance rule below).
+
+For each item in the Test Plan's scope:
+1. Write the unit or integration test(s) as planned, following the project's test conventions
+   (captured in Phase 02).
+2. Each test must establish a **behaviour the plan called for** — especially the error/failure
+   behaviour, side effects, boundary/edge cases, and ordering/idempotency the plan singled out.
+3. Run the tests. They must pass. Fix the **code** when a test derived from the contract fails
+   — a failing contract-derived test is a real defect, not a test to adjust.
+
+**Assertion provenance (critical).** Derive every assertion from the Test Plan, the contract,
+and the requirement — **never reverse-engineer expected values from the implementation that was
+just written.** The code is the loudest signal in view and the most dangerous source: a test
+that asserts "what the code does" certifies whatever the code guessed, including a subtly wrong
+behaviour the AI filled in from training rather than from the Architect's intent. The test's
+job is to catch that divergence, which it can only do if its assertions trace to intent, not to
+code. If the Test Plan is ambiguous about an expected behaviour, ask the Architect — do not
+resolve it by reading the implementation.
+
+**A "none, because …" entry** in the Test Plan is honoured — write no test there. If the
+Architect waives a planned test during implementation, record it as a deviation (Step 5).
+
+Green planned tests are part of what "implementation is complete" means: the implementation is
+not ready for the Architect's accept gate until the Test Plan's tests are written and passing
+(or explicitly waived).
+
+### Step 5 — Deviation Protocol
 
 If at any point the implementation requires deviating from the approved plan:
 
@@ -226,21 +257,24 @@ hands close-out a clean list to review. If a deviation implements a sanctioned d
 a Tier-2 ADR recorded in Phase 03 (a scoped override), note that too: it graduates by
 necessity at close-out. Do not write to `.analysis-gated-workflow/` during Phase 05.
 
-### Step 5 — Update workflow state after each phase
+### Step 6 — Update workflow state after each phase
 
 After each implementation phase is complete, update `{{FOLDER_NAME}}/STATE.md`:
 - `Phase Status` → `IN PROGRESS — Implementation Phase [N] complete`
 - `Last Updated` → today's date
 - `Pending Architect Action` → `Review Phase [N] output. Signal to proceed to Phase [N+1].`
 
-### Step 6 — On acceptance, hand off to Phase 06
+### Step 7 — On acceptance, hand off to Phase 06
 
-When all implementation phases are complete, write `{{SUMMARY_FILE}}`
-(`{{FOLDER_NAME}}/phase-05-implementation/summary.md`) — work completed, outcome, and any
-deviations, linking back into `{{PHASE_FILE}}`'s anchors — then notify the Architect:
+When all implementation phases are complete **and the Phase 04 Test Plan's tests are written
+and passing** (or explicitly waived), write `{{SUMMARY_FILE}}`
+(`{{FOLDER_NAME}}/phase-05-implementation/summary.md`) — work completed, outcome, the test
+result (what was tested, all green / waived items), and any deviations, linking back into
+`{{PHASE_FILE}}`'s anchors — then notify the Architect:
 
-> "Implementation is complete. Please review and either accept, or reject (which triggers
-> Rejection & Revert). On acceptance, the workflow advances to Close-out."
+> "Implementation is complete and the planned tests pass [or: with the following waived: …].
+> Please review and either accept, or reject (which triggers Rejection & Revert). On
+> acceptance, the workflow advances to Close-out."
 
 On the Architect's **acceptance** signal, the Governing Workflow advances to Phase 06,
 governed by `skills/06-close-out/SKILL.md`. This skill does not perform documentation itself.
@@ -317,6 +351,8 @@ Update `{{FOLDER_NAME}}/STATE.md`:
 - [ ] All Implementation Plan checklist items are ticked
 - [ ] All deviations are documented with Architect decisions
 - [ ] Each phase ended with a build-and-validate step
+- [ ] The Phase 04 Test Plan's tests are written and passing (or explicitly waived, recorded as deviations)
+- [ ] Test assertions derive from the plan/contract, not from the just-written code
 - [ ] `STATE.md` is updated after each phase
 
 ### Phase 05b complete when:

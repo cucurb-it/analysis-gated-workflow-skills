@@ -885,3 +885,8 @@ These rules apply across all phases and all skills:
    reflect current reality.
 9. The durable store never holds team/process/people knowledge — only knowledge about the
    system under development.
+10. Testing is **planned in Phase 04** (the Test Plan, Architect-approved) and **executed in
+    Phase 05 after the code is written** — AGW does not use TDD. Test assertions derive from
+    the plan and the contract, never reverse-engineered from the just-written code, so tests
+    catch intent-divergence rather than certify it. Planned tests must pass (or be explicitly
+    waived) before the Architect's accept gate; Phase 07 reviews their adequacy.

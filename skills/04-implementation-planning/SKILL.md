@@ -205,6 +205,44 @@ For each significant risk identified in the analysis:
 |---|---|---|
 | [Risk] | High/Medium/Low | [Concrete mitigation step] |
 
+#### Test Plan
+
+Testing is a first-class, planned part of the implementation — decided and approved here, in
+Phase 04, and executed in Phase 05 **after** the code is written (AGW does not use TDD; tests
+are post-implementation). The plan names *what* will be tested and *how*; Phase 05 writes the
+tests against this plan.
+
+Use the project's existing test conventions (framework, layout, naming, mocking) as captured
+in Phase 02 — fit the plan to the codebase, do not impose a generic approach.
+
+**Scope — what gets tested, and what does not:**
+
+| Target | Test type | Why |
+|---|---|---|
+| [component / operation / path] | unit | [the behaviour to verify] |
+| [cross-component / boundary flow] | integration | [the interaction to verify] |
+| [thing deliberately not tested] | none | [legitimate reason — e.g. config-only change, generated code, spike] |
+
+"None, because …" is a **valid, approved outcome** — forcing tests onto everything breeds
+useless tests. But it must be recorded with its reason, never silently omitted.
+
+**Behaviours to cover (derived from the contract/requirement, not from code that does not yet
+exist):** list the concrete cases each test must establish — stated as *what must be true*.
+Give particular weight to the layers an implementation is most likely to get subtly wrong:
+**error and failure behaviour** (which condition produces which failure, and what happens to
+state on failure — rollback, partial commit, trail entry), **side effects** (mail, audit log,
+cache, events), **boundary and edge cases** (empty, null, malformed, limits), and
+**ordering/idempotency** where they matter. Input/output shape alone is not a behaviour worth
+a test — the compiler already enforces it.
+
+**Coverage intent:** qualitative by default — critical paths and the edge/error/side-effect
+behaviours above are covered. A numeric coverage target is optional; include one only if the
+Architect wants it (a percentage is gameable and is not required).
+
+This Test Plan is approved as part of approving the Implementation Plan. In Phase 05 the
+planned tests must be written and passing before the Architect's accept gate (an Architect may
+explicitly waive a planned test, recorded as a deviation).
+
 #### Deviations Protocol
 
 State explicitly:
@@ -367,6 +405,7 @@ Phase 04 output is complete when:
 - [ ] Every checklist item is specific, actionable, and traceable to the analysis
 - [ ] Each phase ends with a Build and Validate step
 - [ ] Risk mitigation table is populated
+- [ ] Test Plan is present: unit/integration scope (or "none, because…"), behaviours to cover derived from the contract (error/failure, side effects, edges), qualitative coverage intent
 - [ ] `doc-executive.md` and `doc-business.md` (forward-looking intent seeds) are written, `expandable: true`
 - [ ] Both stakeholder seeds are written in STE-style (short active sentences, plain consistent vocabulary)
 - [ ] Executive seed keeps TCO out of scope (no fabricated figures)

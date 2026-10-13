@@ -96,6 +96,18 @@ Evaluate the current codebase against the checklist below. Every finding must ci
 - Scope creep (unrelated refactoring, style churn)?
 - New dependencies added without approval?
 
+**Test adequacy**
+- Does the implementation have the tests the Phase 04 **Test Plan** called for? Any planned
+  test missing and not waived is a finding.
+- Are the tests **meaningful** — do they assert observable behaviour and contract (which
+  survives refactoring), rather than implementation internals (which do not)? An
+  assertion-free, tautological, or structure-coupled test is a finding.
+- **Do the assertions trace to the contract/requirement, or do they merely mirror what the
+  code does?** A test that encodes the implementation's behaviour rather than the intended
+  behaviour certifies a possible prior-driven divergence instead of catching it — flag it.
+- Are the error/failure paths, side effects, and edge/boundary cases from the Test Plan
+  actually covered, not just the happy path?
+
 **Change delta (if git available)**
 - What changed between the implementation commit and current HEAD?
 - Do any post-implementation human changes introduce issues?
@@ -271,6 +283,7 @@ Implementation Review Phase is complete when:
 - [ ] Every finding cites evidence (file:line, or a convention/ADR/plan reference)
 - [ ] Findings are categorised by severity (CRITICAL → INFO)
 - [ ] Compliance against conventions, the plan, and every ADR is assessed
+- [ ] Test adequacy assessed: planned tests present, meaningful (behaviour not internals), assertions trace to the contract not the code, error/edge/side-effect cases covered
 - [ ] Change delta is documented where git is available
 - [ ] `review.md` is written with `type: Review` and the `assessment` field set
 - [ ] `{{SUMMARY_FILE}}` is written and links to the report

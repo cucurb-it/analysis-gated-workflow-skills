@@ -52,9 +52,10 @@ passes that run only on request after the core completes.
 02-deep-code-analysis        Understand the existing system deeply. Evidence-based. No code.
 03-compliance-review         Iterate against Architect ADRs until ready. Enforces standing
                              (project-level) decisions. The gate that protects planning.
-04-implementation-planning   Produce the Implementation Plan + forward-looking stakeholder
-                             seeds. No code.
-05-implementation            The only phase that modifies code. Executes the plan; handles
+04-implementation-planning   Produce the Implementation Plan (incl. the Test Plan) +
+                             forward-looking stakeholder seeds. No code.
+05-implementation            The only phase that modifies code. Executes the plan, then writes
+                             the planned tests (post-implementation, not TDD); handles
                              rejection & revert.
 06-close-out                 Cleanup, retrospective audience seeds, and graduation of durable
                              knowledge. Completes the CORE workflow.

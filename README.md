@@ -305,6 +305,12 @@ a goal of this project today.
 - **ADRs are permanent.** Each is one file under `adrs/`, never overwritten, summarised
   away, or deleted. Compliance responses are appended inside the same file, so a decision
   and its follow-through stay together and accumulate across iterations.
+- **Testing is planned, then executed — never TDD.** The Phase 04 Implementation Plan
+  includes an Architect-approved **Test Plan** (unit/integration scope, behaviours to cover,
+  coverage intent); Phase 05 writes those tests *after* the code and they must pass before the
+  accept gate; Phase 07 reviews their adequacy. Test assertions derive from the contract and
+  plan, never from the just-written code — so a test catches intent-divergence instead of
+  certifying it.
 - **Decisions that outlive the feature graduate to the durable store** (`.analysis-gated-workflow/`)
   at Phase 06 close-out — overrides automatically, project-wide candidates by Architect-approved
   promotion. The store is written only at close-out or by explicit Architect-initiated direct
