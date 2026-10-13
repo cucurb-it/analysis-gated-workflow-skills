@@ -216,6 +216,16 @@ If at any point the implementation requires deviating from the approved plan:
 | **Decision** | APPROVED — self-evident fix from the existing codebase convention. |
 ```
 
+**Durable-store graduation candidates.** A deviation often *is* a reusable hiccup-resolution
+("the system resisted X; we did Y because Z") — exactly the kind of knowledge the durable
+store keeps so the fence keeps its sign. When a deviation (or a learning, below) has
+relevance beyond this one feature, mark it as a **graduation candidate** in `{{PHASE_FILE}}`
+(a short `graduation-candidate: <why it may be project-wide>` note beside the deviation). This
+does not graduate anything now — graduation is resolved only at Phase 06 close-out — it just
+hands close-out a clean list to review. If a deviation implements a sanctioned divergence from
+a Tier-2 ADR recorded in Phase 03 (a scoped override), note that too: it graduates by
+necessity at close-out. Do not write to `.analysis-gated-workflow/` during Phase 05.
+
 ### Step 5 — Update workflow state after each phase
 
 After each implementation phase is complete, update `{{FOLDER_NAME}}/STATE.md`:
@@ -270,6 +280,11 @@ Analyse what went wrong and document it under the same section:
 - [Learning 2]
 - ...
 ```
+
+A learning with relevance beyond this feature is a durable-store **graduation candidate**
+(a `lesson`) — mark it as such for Phase 06 to review, exactly as for deviations above. Note,
+though, that a rejected-and-reverted iteration whose bundle never reaches close-out will not
+graduate its candidates — which is correct, since the reverted code shipped nothing.
 
 ### Step 5 — Update the Implementation Plan
 

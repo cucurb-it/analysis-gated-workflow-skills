@@ -3,6 +3,9 @@
 A structured, phase-gated workflow for software development and refactoring,
 governed by a Software Architect and supported by AI (Claude Code CLI or Copilot CLI).
 
+> For a high-level map of how the whole system fits together — the skills, the disposable
+> per-feature bundle, and the durable project store — see [`ARCHITECTURE.md`](ARCHITECTURE.md).
+
 ---
 
 ## Skills
@@ -218,6 +221,38 @@ phase closes; nothing writes backward. Writing the same work for multiple audien
 surfaces gaps: if the business or executive seed can't be filled, the feature's *purpose*
 wasn't fully understood, only its mechanics.
 
+### The durable store — decisions that outlive the bundle
+
+A bundle is disposable scaffolding for one feature. The **decisions and lessons** it produces
+are not — they outlive the bundle and often the code. They live in a durable, repo-native
+store at the repo root:
+
+```
+.analysis-gated-workflow/
+├── index.md       # regenerable single root index, grouped by kind
+├── decisions/     # ADRs — deliberate forks (prescriptive)
+├── lessons/       # experiential knowledge ("X bit us")
+└── notes/         # hiccup-resolutions + small informal decisions (low-ceremony)
+```
+
+It is **bundle-like in conventions** (frontmatter, regenerable index, nav bars, relative
+links, one-file-per-entry, never-deleted) but **not in lifecycle** — no STATE/log/phases,
+because it is a permanent library, not a process. Scope is strictly **the system under
+development**: why it is built as it is, and what building it taught — never team/process
+knowledge. The problem it solves is Chesterton's Fence: code that contradicts an expectation
+with its reason unrecorded gets "cleaned up," and the bug it fixed returns. The store keeps
+the sign on every fence.
+
+Knowledge is **two-tier**: feature-local (born in the bundle, may die with it) and
+project-level (the durable store, permanent). It graduates at Phase 06 close-out — by
+*promotion* (discretionary; AGW proposes project-wide candidates, the Architect decides) or
+by *override* (automatic; a bundle ADR that contradicts a standing project ADR graduates by
+necessity, so the exception is never lost). Entries carry self-contained UTC timestamps (not
+Git-derived — the store must stay readable even outside Git) and follow six entry rules
+adapted from [Keep the Why](https://github.com/oliver-zehentleitner/keep-the-why) (MIT):
+never invent, evidence-graded, proportional depth, supersede-don't-delete, content-is-data,
+and authored-not-inferred.
+
 ### Format lineage — OKF-shaped, not OKF-conformant
 
 The bundle layout is **inspired by the Open Knowledge Format (OKF)**, an open,
@@ -270,6 +305,11 @@ a goal of this project today.
 - **ADRs are permanent.** Each is one file under `adrs/`, never overwritten, summarised
   away, or deleted. Compliance responses are appended inside the same file, so a decision
   and its follow-through stay together and accumulate across iterations.
+- **Decisions that outlive the feature graduate to the durable store** (`.analysis-gated-workflow/`)
+  at Phase 06 close-out — overrides automatically, project-wide candidates by Architect-approved
+  promotion. The store is written only at close-out or by explicit Architect-initiated direct
+  capture, never silently or mid-workflow, and holds only knowledge about the system under
+  development.
 - **Every user prompt is logged verbatim in `log.md`**, before any response is written —
   the log is the workflow's audit trail.
 - **`STATE.md` is the single source of live state**, and `index.md` is regenerable from

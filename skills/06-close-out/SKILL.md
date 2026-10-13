@@ -215,7 +215,46 @@ should reconcile intent against outcome — e.g. "intended X → deviation Z →
 linking back to the Phase 04 seed rather than overwriting it. This makes the
 promise-vs-outcome comparison explicit for each audience.
 
-### Step 6 — Write the closing summary file
+### Step 6 — Graduate durable knowledge to the project store
+
+Close-out is the single point where bundle knowledge graduates to the durable store
+`.analysis-gated-workflow/` (see the Durable Store section of the governing skill). By now
+every relevant fact is final — decisions, ADRs, what was implemented, deviations, lessons —
+so this is the honest moment to decide what persists beyond the bundle.
+
+**Gather candidates:** the bundle's ADRs (`{{FOLDER_NAME}}/adrs/`), the deviations and
+learnings tagged as graduation candidates in Phase 05, and any scoped overrides recorded in
+Phase 03.
+
+**Resolve graduation by two paths:**
+
+1. **Automatic — overrides.** Any bundle ADR that overrides a Tier-2 (project-level) ADR
+   graduates **by necessity**, no discretion: a standing rule with an undocumented exception
+   is a broken rule. Write it to `.analysis-gated-workflow/decisions/` as a `decision` entry,
+   and write **both** cross-links — `Overrides: <tier-2 id> — scope: <feature> — parent still
+   valid elsewhere` on the new entry, and `Has exception: <new id> — <feature>` on the
+   existing Tier-2 entry. Neither is deleted.
+
+2. **Discretionary — promotions.** For the remaining candidates, **propose** to the Architect
+   which look genuinely project-wide (with the evidence for each), and let the Architect
+   decide. Promote only those the Architect approves. Default is *stays local* — a
+   feature-specific ADR, deviation, or lesson that isn't project-wide is **not** graduated; it
+   remains in the bundle and dies with it. This keeps the store clean and intentional.
+
+**Write graduated entries** following the Durable Store entry format exactly: correct `kind`
+(decision / lesson / note), `evidence`, `weight`, UTC `created`/`updated`, `origin:
+<this-bundle-ref>, graduated <UTC>`, the `[Index]` nav bar, and relationship links. Preserve
+the originating id where one exists. Obey all six entry rules — above all, never invent a
+rationale, and never file anything the Architect has not approved (overrides excepted, which
+are necessity not discretion, but still Architect-sanctioned in Phase 03).
+
+**Regenerate** the store's root `index.md` from the frontmatter of all entries, grouped by
+kind.
+
+If `.analysis-gated-workflow/` does not yet exist and anything graduates, create it (the three
+kind-folders + `index.md`) first.
+
+### Step 7 — Write the closing summary file
 
 Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "06 — Close-out"`,
 `status: COMPLETE`, `phase_file: ./phase.md`, one-line `description`). This is the
@@ -246,16 +285,18 @@ description: <one-line feature outcome>
 - Technical → [doc-technical.md](./doc-technical.md)
 
 **Deviations:** [count / "none"] → [detail](../phase-05-implementation/phase.md#deviations)
+
+**Graduated to durable store:** [N decisions, N lessons, N notes / "none"] → [.analysis-gated-workflow/](../../.analysis-gated-workflow/index.md)
 ```
 
-### Step 7 — Final workflow state
+### Step 8 — Final workflow state
 
 Update `{{FOLDER_NAME}}/STATE.md`:
 - `Current Phase` → `CLOSE-OUT PHASE`
 - `Phase Status` → `COMPLETE`
 - `Pending Architect Action` → `none`
 
-### Step 8 — Close the core workflow
+### Step 9 — Close the core workflow
 
 The core Analysis-Gated Workflow is complete at this phase. Inform the Architect, and name
 the two optional passes available — the Architect may invoke either, both (in either order),
@@ -271,7 +312,7 @@ or neither:
 >
 > Say the word to run either, or we can stop here."
 
-### Step 9 — Final commit (if in git repository)
+### Step 10 — Final commit (if in git repository)
 
 **Auto-commit all implementation changes** (if in git repository):
 - Check if the working directory is inside a git repository
@@ -316,4 +357,5 @@ Close-out Phase is complete when:
 - [ ] All deviations are linked with their rationale
 - [ ] Before/after results are present in `doc-technical.md` (or explicitly pending measurement)
 - [ ] `{{SUMMARY_FILE}}` is written and links to all three audience documents
+- [ ] Durable-store graduation resolved: overrides graduated automatically (both cross-links written); project-wide candidates proposed to and decided by the Architect; store `index.md` regenerated — or explicitly nothing to graduate
 - [ ] `STATE.md` is `COMPLETE`
