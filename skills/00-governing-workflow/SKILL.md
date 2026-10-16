@@ -208,8 +208,10 @@ description: <one-line review outcome>
 ---
 ```
 
-**`phase-08-implementation-documentation/reference.md`** (optional pass — comprehensive
-technical reference; **not** STE-styled — it needs full technical nuance, like `phase.md`):
+**`phase-08-implementation-documentation/reference.html`** (optional pass — the comprehensive
+technical reference; a depth-layered designed HTML page, **STE-styled** like every AGW
+document, with `reference.md` as a reduced Markdown projection of it). Carry this metadata in
+a frontmatter or equivalent block:
 ```yaml
 ---
 type: Reference
@@ -275,13 +277,14 @@ ADR files emit `<a id="decision"></a>` and `<a id="consequences"></a>`.
 Links are always **bundle-relative** so the folder stays portable when moved or zipped:
 `./phase.md#outcome`, `../adrs/2026-06-18-slug.md#decision`.
 
-### STE-style writing (for `doc-*.md`)
+### STE-style writing (for all produced documentation)
 
-The audience documents (`doc-*.md`, in both `phase-04-implementation-planning/` and
-`phase-06-close-out/`) are written in the **style of Simplified Technical English
-(ASD-STE100)** — a controlled, unambiguous, translation-friendly register. This is
-*STE-styled*, not certified: follow the writing rules below, but no approved-dictionary
-check is required.
+Every document AGW **produces for people to read** is written in the **style of Simplified
+Technical English (ASD-STE100)** — a controlled, unambiguous, translation-friendly register.
+This covers the audience documents (`doc-*.md`, in `phase-04-implementation-planning/` and
+`phase-06-close-out/`) and the Phase 08 technical reference (`reference.html` and its reduced
+`reference.md`). This is *STE-styled*, not certified: follow the writing rules below, but no
+approved-dictionary check is required.
 
 Rules to apply:
 
@@ -305,9 +308,12 @@ Rules to apply:
 10. **No ambiguous pronouns.** Repeat the noun rather than a "this"/"it" whose referent is
     unclear.
 
-This register applies **only** to `doc-*.md`. It does **not** apply to `phase.md`, ADRs,
-`summary.md`, `STATE.md`, or `log.md`: analytical writing needs the nuance, hedging, and
-precise domain vocabulary that STE deliberately removes, and the log is recorded verbatim.
+This register applies to the documents AGW produces for readers — the `doc-*.md` seeds and
+the Phase 08 `reference.html` / `reference.md`. It does **not** apply to the workflow's
+internal analytical and control files — `phase.md`, ADRs, `summary.md`, `STATE.md`, `log.md`:
+analytical writing needs the nuance and hedging STE removes, and the log is recorded verbatim.
+(The reference example `examples/pump-safety-rules-refactor.html` was built outside AGW and is
+not STE; it models structure and diagram craft, not prose voice.)
 
 ---
 

@@ -147,7 +147,8 @@ files rather than one growing document. Its shape:
 ├── phase-08-implementation-documentation/ # optional pass — only if run
 │   ├── phase.md
 │   ├── summary.md
-│   └── reference.md                      # comprehensive technical reference
+│   ├── reference.html                    # layered technical reference (authored source)
+│   └── reference.md                      # reduced Markdown projection of the HTML
 └── adrs/
     └── YYYY-MM-DD-<slug>.md              # one file per Architecture Decision Record
 ```

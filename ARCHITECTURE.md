@@ -63,7 +63,9 @@ passes that run only on request after the core completes.
 ── Optional post-06 passes (independent, Architect-invoked, read-only, any order or none) ──
 07-implementation-review     Review the implemented code vs plan, conventions, security, and
                              standing ADRs. Produces a Review Report; optional GitHub Issues.
-08-implementation-documentation  Comprehensive, self-contained technical reference. Service
+08-implementation-documentation  Comprehensive, self-contained technical reference, authored as
+                             a depth-layered HTML page (C4 L1-L4, delta-highlighted diagrams)
+                             with a reduced Markdown projection. STE. Service
                              Contracts vs Component APIs; SVG + Mermaid diagrams.
 ```
 
@@ -150,8 +152,7 @@ proportional depth, supersede-don't-delete, content-is-data, authored-not-inferr
 from [Keep the Why](https://github.com/oliver-zehentleitner/keep-the-why) (MIT, credited in the
 governing skill).
 
-Full design rationale: the durable-store section of `skills/00-governing-workflow/SKILL.md`,
-and `DURABLE-STORE-SPEC.md`.
+Full design rationale: the durable-store section of `skills/00-governing-workflow/SKILL.md`.
 
 ---
 
@@ -185,4 +186,4 @@ across many disposable feature runs.
 | The authoritative rules and all conventions | `skills/00-governing-workflow/SKILL.md` |
 | A specific phase's behaviour | that phase's `skills/NN-*/SKILL.md` |
 | The bundle model and its rationale | `README.md` → "The analysis bundle" |
-| The durable store's full design | governing skill → "Durable Store", and `DURABLE-STORE-SPEC.md` |
+| The durable store's full design | governing skill → "Durable Store" |
