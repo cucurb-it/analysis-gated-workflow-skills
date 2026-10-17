@@ -21,6 +21,7 @@ governed by a Software Architect and supported by AI (Claude Code CLI or Copilot
 | `06-close-out/` | Close-out & Seeds | CLOSE-OUT PHASE |
 | `07-implementation-review/` | Implementation Review | IMPLEMENTATION REVIEW PHASE *(optional, post-06)* |
 | `08-implementation-documentation/` | Implementation Documentation | IMPLEMENTATION DOCUMENTATION PHASE *(optional, post-06)* |
+| `reconcile/` | Store Reconciliation | *not a phase — repo-level store op, run on main after a merge* |
 
 Each workflow run produces an **analysis bundle** — a folder of markdown files rather than
 a single document. See [Core Principles](#core-principles) for the layout and the reasoning
@@ -329,6 +330,12 @@ a goal of this project today.
   promotion. The store is written only at close-out or by explicit Architect-initiated direct
   capture, never silently or mid-workflow, and holds only knowledge about the system under
   development.
+- **A team runs AGW concurrently** — each developer in their own git worktree, each a
+  self-contained single-Architect run. The durable store is the shared memory; Git reconciles
+  it on merge. After branches merge into main, the **`agw-reconcile`** skill — a repo-level
+  store operation, not a phase — regenerates the projections, repairs mechanical graph
+  inconsistencies, and flags the judgment calls (tag fragmentation, contradictory decisions)
+  for a human.
 - **Every user prompt is logged verbatim in `log.md`**, before any response is written —
   the log is the workflow's audit trail.
 - **`STATE.md` is the single source of live state**, and `index.md` is regenerable from

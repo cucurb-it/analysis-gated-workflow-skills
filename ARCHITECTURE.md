@@ -198,3 +198,4 @@ across many disposable feature runs.
 | A specific phase's behaviour | that phase's `skills/NN-*/SKILL.md` |
 | The bundle model and its rationale | `README.md` → "The analysis bundle" |
 | The durable store's full design | governing skill → "Durable Store" |
+| Reconciling the store after concurrent team merges | `skills/reconcile/SKILL.md` |

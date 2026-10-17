@@ -1020,6 +1020,27 @@ type: Timeline
   edges), and regenerates the store's `index.md` and `timeline.md`.
 - **Phases 07/08** read the store as standing context.
 
+### Concurrent team use and reconciliation
+
+AGW is single-run and stands on its own, but a **team** runs many AGW workflows concurrently —
+each developer in their own **git worktree** (own branch, own isolated tree, own bundle). Each
+worktree holds its own copy of `.analysis-gated-workflow/` as of its branch point; runs never
+touch each other in flight. The store is the **team's shared memory**, and Git is the
+convergence mechanism: each run reads the store and graduates into it, and the branches merge.
+
+No AGW machinery is needed for the concurrency itself — worktrees give isolation, the committed
+store gives shared memory, Git reconciles on merge. But a merge can leave the store's **graph**
+degraded: stale projections (`index.md`/`timeline.md`), missing inverse edges, dangling edges,
+**fragmented tags** (`rule-engine` vs `ruleengine` coined on two branches), and **contradictory
+decisions** that both landed silently. These are **merge-time** concerns, not in-flight ones.
+
+The **`agw-reconcile`** skill performs this cleanup — a **repo-level store-maintenance
+operation, not a phase** (no bundle, no `STATE.md`, Git-event-triggered rather than
+Architect-gated). Run it on main after a branch merges in: it regenerates the projections and
+repairs mechanical graph inconsistencies autonomously, and **flags the judgment calls** (tag
+canonicalisation, contradictory decisions, inconsistent supersessions) for a human. See
+`skills/reconcile/SKILL.md`.
+
 ---
 
 ## Invariants
