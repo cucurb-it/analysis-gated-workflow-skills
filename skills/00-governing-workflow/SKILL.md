@@ -800,11 +800,14 @@ sorts chronologically by plain text. Filenames stay date-only; the precise insta
 
 ### Navigation — single root index + extensive cross-linking
 
-- **Root `index.md`** — the single map, regenerable from node frontmatter. Groups by kind
-  (Decisions / Lessons / Notes / Features); one line per entry: title, status, link. No
-  per-kind index files.
+- **Root `index.md`** — the single, **complete** map of the store, regenerable. An index lists
+  **everything in the store** — a reader opens it and finds every artifact and where it is,
+  with nothing omitted. That means: the other top-level projection (`timeline.md`), the entry
+  nodes grouped by kind (Decisions / Lessons / Notes / Features — one line each: title, status,
+  link), and any reconciliation records. If an artifact exists at the store root, the index
+  lists it. No per-kind index files.
 - **`timeline.md`** — a second regenerable projection: the feature nodes, oldest-first (see
-  Graph model).
+  Graph model), listed in `index.md` like everything else.
 - **Nav bar** — every entry carries `[Index]` under its H1.
 - **Relationship links (typed edges) are the real navigation** — and the structure a future
   tool renders. From any node you can walk the whole graph: up to the rule a decision excepts
@@ -813,6 +816,37 @@ sorts chronologically by plain text. Filenames stay date-only; the precise insta
   (`produced` ↔ `produced-by`) and the components it touched (`touches`), and laterally
   (`see`). All bundle-relative links between the `.md` files. See **Graph model** for the full
   typed edge vocabulary.
+
+The store's `index.md` lists everything in the store:
+
+```markdown
+---
+type: Index
+---
+
+# <Project> — Durable Store
+
+## Projections
+- [Timeline](./timeline.md) — features & refactorings, oldest-first
+
+## Decisions
+- [<title>](./decisions/<id>.md) — <status>
+
+## Lessons
+- [<title>](./lessons/<id>.md) — <status>
+
+## Notes
+- [<title>](./notes/<id>.md) — <status>
+
+## Features
+- [<title>](./features/<id>/node.md) — <status>
+
+## Reconciliation records        (only if any exist)
+- [Reconciliation <UTC>](./reconciliation-<UTC>.md)
+```
+
+Omit a section that has no files yet (no Reconciliation section before the first reconcile
+run). The index is **complete**: whatever is at the store root appears here.
 
 ### The entry rules
 

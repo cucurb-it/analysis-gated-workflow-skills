@@ -155,6 +155,8 @@ date: <UTC>
 
 The report is itself a dated record in the store. It is not a durable *node* (no edges, not on
 the timeline); it is an operational log, kept so the team can see what each reconciliation did.
+It is listed in `index.md` under Reconciliation records (the index lists everything in the
+store), but it carries no graph edges.
 
 ### Step 5 — Notify
 
