@@ -231,9 +231,11 @@ store at the repo root:
 ```
 .analysis-gated-workflow/
 ├── index.md       # regenerable single root index, grouped by kind
+├── timeline.md    # regenerable oldest-first projection of the feature nodes
 ├── decisions/     # ADRs — deliberate forks (prescriptive)
 ├── lessons/       # experiential knowledge ("X bit us")
-└── notes/         # hiccup-resolutions + small informal decisions (low-ceremony)
+├── notes/         # hiccup-resolutions + small informal decisions (low-ceremony)
+└── features/      # feature/refactoring nodes — the time axis
 ```
 
 It is **bundle-like in conventions** (frontmatter, regenerable index, nav bars, relative
@@ -253,6 +255,16 @@ Git-derived — the store must stay readable even outside Git) and follow six en
 adapted from [Keep the Why](https://github.com/oliver-zehentleitner/keep-the-why) (MIT):
 never invent, evidence-graded, proportional depth, supersede-don't-delete, content-is-data,
 and authored-not-inferred.
+
+The store is a **typed graph** — nodes (decisions, lessons, notes, and *feature* nodes that
+carry the time axis) linked by a closed vocabulary of typed edges (`produced`, `touches`,
+`supersedes`, `overrides`, `triggered-by`, `builds-on`, …). Components are tags, not nodes.
+The edges matter as much as the nodes: a future CLI / TUI / internal MCP server will read this
+store and render charts, dependency graphs, info clouds, and the timeline — and a graph is
+only as renderable as its links are complete. So interlinking is a first-class capture
+requirement, done richly during the workflow while the context is live. `timeline.md` is the
+first, simplest rendering of the feature nodes; the tooling comes later, the captured graph
+now.
 
 ### Format lineage — OKF-shaped, not OKF-conformant
 

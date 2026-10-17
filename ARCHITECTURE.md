@@ -122,9 +122,11 @@ graduate into a permanent, repo-native store at the repo root:
 ```
 .analysis-gated-workflow/
 ├── index.md       regenerable single root index, grouped by kind
+├── timeline.md    regenerable oldest-first projection of the feature nodes
 ├── decisions/     ADRs — deliberate forks (prescriptive)
 ├── lessons/       experiential knowledge ("X bit us")
-└── notes/         hiccup-resolutions + small informal decisions (low-ceremony)
+├── notes/         hiccup-resolutions + small informal decisions (low-ceremony)
+└── features/      feature/refactoring nodes — the time axis
 ```
 
 **Scope:** the system under development — why it is built as it is, and what building it
@@ -151,6 +153,15 @@ readable even when lifted out of their repo. Entry discipline — never invent, 
 proportional depth, supersede-don't-delete, content-is-data, authored-not-inferred — is adapted
 from [Keep the Why](https://github.com/oliver-zehentleitner/keep-the-why) (MIT, credited in the
 governing skill).
+
+**A typed graph, for future tooling:** the store is modelled as nodes (decisions, lessons,
+notes, and *feature* nodes carrying the time axis; components are tags, not nodes) linked by a
+closed vocabulary of typed edges (`produced`, `touches`, `supersedes`, `overrides`,
+`triggered-by`, `builds-on`, …). A future CLI / TUI / internal MCP server will read the store
+and render charts, dependency graphs, info clouds, and the timeline — so the edges matter as
+much as the nodes, and interlinking is captured richly during the workflow (the rendering is
+deferred; the captured graph is not). `timeline.md` is the first, simplest rendering of the
+feature nodes.
 
 Full design rationale: the durable-store section of `skills/00-governing-workflow/SKILL.md`.
 

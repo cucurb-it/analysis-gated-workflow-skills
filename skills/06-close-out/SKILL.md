@@ -248,11 +248,23 @@ the originating id where one exists. Obey all six entry rules — above all, nev
 rationale, and never file anything the Architect has not approved (overrides excepted, which
 are necessity not discretion, but still Architect-sanctioned in Phase 03).
 
-**Regenerate** the store's root `index.md` from the frontmatter of all entries, grouped by
-kind.
+**Write the feature node** for this work as `features/<id>/node.md` (a feature is a *folder* —
+see the Graph model in the governing skill). Fill the **lightweight spine** — `work-kind`
+(feature | refactoring), `date` (close-out UTC), `touches` (component tags; reuse the exact
+spelling of tags already in the store), and `produced` (the ids of the entries just graduated —
+this list is already in hand from the step above, so the edge is free). **Omit** the
+`reference` edge: Phase 08 is optional and most bundles never run it, so a node normally has no
+reference. If Phase 08 is run later, that pass adds the edge. Add the optional edges
+(`builds-on`, `see`) only where obvious and cheap. On each graduated decision/lesson/note,
+write the inverse `produced-by` edge back to this feature. A node with only the spine is
+complete — optional edges never gate close-out. If the bundle was rejected and reverted (no
+shipped work), write **no** feature node.
 
-If `.analysis-gated-workflow/` does not yet exist and anything graduates, create it (the three
-kind-folders + `index.md`) first.
+**Regenerate** the store's `index.md` (grouped by kind: Decisions / Lessons / Notes /
+Features) **and** `timeline.md` (the feature nodes, oldest-first) from node frontmatter.
+
+If `.analysis-gated-workflow/` does not yet exist and anything graduates, create it (the
+`decisions/` `lessons/` `notes/` `features/` folders + `index.md` + `timeline.md`) first.
 
 ### Step 7 — Write the closing summary file
 
@@ -357,5 +369,6 @@ Close-out Phase is complete when:
 - [ ] All deviations are linked with their rationale
 - [ ] Before/after results are present in `doc-technical.md` (or explicitly pending measurement)
 - [ ] `{{SUMMARY_FILE}}` is written and links to all three audience documents
-- [ ] Durable-store graduation resolved: overrides graduated automatically (both cross-links written); project-wide candidates proposed to and decided by the Architect; store `index.md` regenerated — or explicitly nothing to graduate
+- [ ] Durable-store graduation resolved: overrides graduated automatically (both cross-links written); project-wide candidates proposed to and decided by the Architect — or explicitly nothing to graduate
+- [ ] Feature node written (lightweight spine: `work-kind`, `date`, `touches`, `produced`; `produced-by` inverse on each graduated entry), unless the bundle was reverted; store `index.md` and `timeline.md` regenerated
 - [ ] `STATE.md` is `COMPLETE`

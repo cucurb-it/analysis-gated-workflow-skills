@@ -702,13 +702,26 @@ Git (see Timestamps).
 ```
 .analysis-gated-workflow/
 ├── index.md              # regenerable: single root index, groups all kinds, links into each entry
+├── timeline.md           # regenerable: oldest-first projection of the feature nodes
 ├── decisions/            # ADRs — deliberate forks (prescriptive: "do this")
 │   └── YYYY-MM-DD-<slug>.md
 ├── lessons/              # experiential knowledge (descriptive: "X bit us")
 │   └── YYYY-MM-DD-<slug>.md
-└── notes/                # hiccup-resolutions + small informal decisions (low-ceremony)
-    └── YYYY-MM-DD-<slug>.md
+├── notes/                # hiccup-resolutions + small informal decisions (low-ceremony)
+│   └── YYYY-MM-DD-<slug>.md
+└── features/             # feature/refactoring nodes — the time axis (see Graph model)
+    └── YYYY-MM-DD-<slug>/         # one folder per feature node
+        ├── node.md               # the feature node (spine + edges)
+        ├── reference.html        # the Phase 08 outcome reference, if one was produced
+        └── reference.md          # reduced projection of it
 ```
+
+`index.md` and `timeline.md` are both **regenerable projections** of the entry/feature nodes —
+never hand-authored. The nodes are the source of truth; these two files are views of them.
+
+A **feature is a folder**, not a single file, because it anchors attachments — above all the
+Phase 08 **reference** (the feature's durable *outcome*). A decision/lesson/note is still one
+file; only feature nodes get a folder.
 
 **Bundle-like in conventions, NOT in lifecycle.** The store adopts the bundle's *conventions*
 — YAML frontmatter, a regenerable `index.md`, navigation bars, explicit anchors,
@@ -787,14 +800,19 @@ sorts chronologically by plain text. Filenames stay date-only; the precise insta
 
 ### Navigation — single root index + extensive cross-linking
 
-- **Root `index.md`** — the single map, regenerable from entry frontmatter. Groups by kind
-  (Decisions / Lessons / Notes); one line per entry: title, status, link. No per-kind index
-  files.
+- **Root `index.md`** — the single map, regenerable from node frontmatter. Groups by kind
+  (Decisions / Lessons / Notes / Features); one line per entry: title, status, link. No
+  per-kind index files.
+- **`timeline.md`** — a second regenerable projection: the feature nodes, oldest-first (see
+  Graph model).
 - **Nav bar** — every entry carries `[Index]` under its H1.
-- **Relationship links are the real navigation.** From any entry you can walk the whole web:
-  up to the project-level rule it excepts (`Overrides` ↔ `Has exception`), back to the cause
-  (`Triggered by` ↔ `Led to`), along the history (`Supersedes` ↔ `Superseded by`), and
-  laterally (`See`). All bundle-relative links between the `.md` files.
+- **Relationship links (typed edges) are the real navigation** — and the structure a future
+  tool renders. From any node you can walk the whole graph: up to the rule a decision excepts
+  (`Overrides` ↔ `Has exception`), back to the cause (`Triggered by` ↔ `Led to`), along the
+  history (`Supersedes` ↔ `Superseded by`), from a feature to what it produced
+  (`produced` ↔ `produced-by`) and the components it touched (`touches`), and laterally
+  (`see`). All bundle-relative links between the `.md` files. See **Graph model** for the full
+  typed edge vocabulary.
 
 ### The entry rules
 
@@ -854,15 +872,152 @@ Architect-initiated, proportional (rule 3), for the between-features small decis
 and notes that evaporate fastest. Set `origin: direct`. Direct capture obeys all six entry
 rules; it is never the AI filing unprompted.
 
+### Graph model
+
+The store is a **typed graph** — nodes and typed edges — so that future tooling (a CLI, TUI,
+internal MCP server, or chart/diagram/info-cloud renderers) has a well-structured, consistent
+dataset to read. The rendering is deferred; the **capture** is what must be right now, because
+a bundle's knowledge is gone once the bundle is disposed. **Capture the graph richly now;
+render it later.**
+
+The store's value to that tooling is in its **edges as much as its nodes**: a graph renders
+nodes-and-edges, and unlinked entries render as nothing. Interlinking is therefore a
+first-class capture requirement, not navigation convenience.
+
+**Node types:**
+
+| Node | Location | Role |
+|---|---|---|
+| decision | `decisions/<id>.md` | a deliberate choice (ADR) |
+| lesson | `lessons/<id>.md` | experiential knowledge |
+| note | `notes/<id>.md` | hiccup-resolution / small informal decision |
+| **feature** | `features/<id>/node.md` | a unit of work AGW processed — the **time-axis node** (a folder, holds attachments) |
+
+A `feature` node covers both features and refactorings, distinguished by `work-kind:
+feature | refactoring`. It carries the date and is what `timeline.md` renders. A **component**
+(module, class, service) is **not a node — it is a tag/string** used in `touches` and `governs`
+edges, so there are no component files to author or keep fresh; a tool still groups and clouds
+by tag.
+
+**Edge vocabulary (closed, typed):**
+
+| Edge | From → To | Inverse | Meaning |
+|---|---|---|---|
+| `supersedes` | decision → decision | `superseded-by` | replaces an earlier decision globally |
+| `overrides` | decision → decision | `has-exception` | scoped exception; parent valid elsewhere |
+| `triggered-by` | decision → lesson/note | `led-to` | the lesson/note that prompted this |
+| `produced` | feature → decision/lesson/note | `produced-by` | the feature that created this entry |
+| `touches` | feature → component tag | *(tag, no back-edge)* | a component this work changed |
+| `builds-on` | feature → feature | *(tool infers)* | this work builds on earlier work |
+| `depends-on` | feature → feature | *(tool infers)* | this work depends on earlier work |
+| `governs` | decision → component tag | *(tag, no back-edge)* | a component this decision constrains |
+| `reference` | feature → its attached reference doc | *(file in the folder)* | the Phase 08 outcome reference for this feature |
+| `see` | any → any | `see` (symmetric) | weak, untyped lateral relation |
+
+**Invertibility.** A tool must traverse an edge both ways. For node→node edges, write the
+forward edge; write the named inverse on the other node where that end is also a store node
+(`overrides`↔`has-exception`, `triggered-by`↔`led-to`, `produced`↔`produced-by`). For
+`builds-on`/`depends-on`, write only the forward edge on the newer feature — a tool infers the
+reverse by scanning. For node→tag edges (`touches`, `governs`), there is no back-edge; a tool
+builds the reverse index ("all features touching `auth`") by scanning.
+
+**Tag consistency.** `touches` and `governs` use component tags. For grouping to work, the same
+component must always use the **same tag string**. At capture, read the tags already in the
+store and **reuse the exact spelling** (`auth`, not a new `authentication`/`Auth-Service`
+variant). This is the "consistent terminology" rule applied to tags.
+
+**The feature node and its lightweight spine.** A feature node is a **folder**
+(`features/<id>/`) holding `node.md` (the node) plus any attachments. It is written at Phase 06
+close-out. Its **mandatory spine** is four fields — and three of them are byproducts of what
+close-out already does, so the real added burden is ≈ one field:
+
+```yaml
+---
+id: 2026-10-16-pump-safety-rule-engine
+kind: feature
+work-kind: refactoring          # feature | refactoring
+status: active
+evidence: confirmed
+created: <UTC>
+updated: <UTC>
+date: <UTC>                      # close-out date — the time axis   (spine)
+touches: [rule-engine, pump-safety]                               # component tags (spine)
+produced: [2026-10-16-state-exposure, 2026-10-16-cqs-scope]       # ids graduated here (spine)
+builds-on: [2026-09-02-rule-engine-core]    # optional, opportunistic
+see: []                                     # optional
+# reference: ./reference.html   # OMIT unless Phase 08 ran — added by Phase 08 if it does
+---
+
+# <feature or refactoring name>
+
+[Index](../../index.md)
+
+---
+
+**What:** <one line>
+**Outcome:** <one line>
+**Origin bundle:** <bundle-ref> (disposable; this node is the durable residue)
+```
+
+- `date` is already stamped; `produced` **is** the list of ids graduation just produced;
+  `work-kind` is one word. Only `touches` is genuinely new input — a tag list the Phase 02 and
+  Phase 05 work already surfaced, not prose.
+- A feature node with only the spine is **complete and valid**. Optional edges (`builds-on`,
+  `depends-on`, `see`) enrich the graph when obvious and cheap; their absence never gates
+  close-out.
+- A rejected-and-reverted bundle that never reaches close-out writes **no** feature node.
+- Direct-capture entries have no feature node; their `produced-by` is empty or `direct`. Not
+  every node is on the timeline.
+
+**The reference is the feature's durable outcome.** The bundle's *process* files
+(`phase.md`, the analysis, the plan) are scaffolding — nobody reads them ten bundles later,
+and they perish with the bundle, correctly. But the Phase 08 **reference** is the *outcome* —
+what the feature is and how it works — and the outcome is what still matters later. Since the
+bundle perishes, a reference left in it is lost; so *when Phase 08 runs*, the reference
+(`reference.html` and its reduced `reference.md`) **moves into the feature's folder** and the
+node's `reference` edge points at it. This is "clean the handoff" across *time*: forward the
+structured outcome to the future reader, drop the in-flight process. The reference is a
+**dated snapshot** bound to this feature's date — not a stay-true entry subject to
+supersede-don't-delete. It goes stale slowly and partially (later work on the same code runs
+its own AGW pass and produces its own reference); a dated, mostly-accurate outcome doc beats
+reconstructing intent from raw code.
+
+**Phase 08 is optional, so most feature nodes have no reference** — that is normal and
+complete. The `reference` edge is present only on features whose work warranted a Phase 08
+pass; it is simply absent otherwise, like any optional edge.
+
+**`timeline.md`** is a **regenerated, oldest-first projection** of the feature nodes (a
+timeline is read as the system's story forward). It is never authored by hand, so it cannot
+drift. It is one rendering of the feature-node dataset; the future CLI/TUI/MCP tooling will
+produce other renderings (charts, dependency graphs, info clouds) from the same nodes and
+edges. Shape:
+
+```markdown
+---
+type: Timeline
+---
+
+# <Project> — Feature & Refactoring Timeline
+
+| Date | Kind | Work | Touches | Produced | Reference |
+|---|---|---|---|---|---|
+| 2026-09-02 | feature | [Rule engine core](./features/2026-09-02-rule-engine-core/node.md) | rule-engine | 2 | — |
+| 2026-10-16 | refactoring | [Pump safety rule engine](./features/2026-10-16-pump-safety-rule-engine/node.md) | rule-engine, pump-safety | 2 | [ref](./features/2026-10-16-pump-safety-rule-engine/reference.html) |
+
+(The Reference column is blank for features with no Phase 08 pass — the common case.)
+```
+
 ### How the phases use the store
 
 - **Phase 02** reads the store as prior art and fence-awareness; a durable lesson is evidence
-  for an evolution-gap structural-blockage indicator.
+  for an evolution-gap structural-blockage indicator, and `timeline.md` + the feature nodes
+  show what was built before and what touched the components now under analysis.
 - **Phase 03** reads Tier-2 ADRs as standing constraints and **enforces** them, and records
   any scoped override (which then graduates at close-out).
 - **Phase 05** tags its deviations and learnings as graduation candidates.
-- **Phase 06** resolves graduation (automatic overrides + proposed promotions) and regenerates
-  the store's `index.md`.
+- **Phase 06** resolves graduation (automatic overrides + proposed promotions), **writes the
+  feature node** (the time-axis node, with its lightweight spine and `produced`/`touches`
+  edges), and regenerates the store's `index.md` and `timeline.md`.
 - **Phases 07/08** read the store as standing context.
 
 ---

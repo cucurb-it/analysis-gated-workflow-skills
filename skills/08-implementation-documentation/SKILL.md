@@ -280,7 +280,19 @@ description: <one-line description>
 **Covers:** [content included, one line]
 ```
 
-### Step 10 — Update workflow state
+### Step 10 — Copy the reference into the durable store
+
+The reference is the feature's durable outcome, so it moves into the store before the bundle
+perishes. If the feature has a node (`features/<id>/node.md` from Phase 06):
+
+- Copy `reference.html` and `reference.md` into `features/<id>/`.
+- Set the node's `reference` edge to `./reference.html`.
+- Regenerate `timeline.md`.
+
+If no feature node exists, leave the reference in the Phase 08 folder and tell the Architect it
+will perish with the bundle unless they preserve it.
+
+### Step 11 — Update workflow state
 
 Update `{{FOLDER_NAME}}/STATE.md`:
 - `Current Phase` → `IMPLEMENTATION DOCUMENTATION PHASE`
@@ -289,7 +301,7 @@ Update `{{FOLDER_NAME}}/STATE.md`:
 
 Then regenerate `index.md` so the Phase 08 files appear.
 
-### Step 11 — Notify the Architect
+### Step 12 — Notify the Architect
 
 > "Implementation Documentation is complete. The reference is at
 > `phase-08-implementation-documentation/reference.html`. Implementation Review is still
@@ -328,5 +340,6 @@ Implementation Documentation Phase is complete when:
 - [ ] The **why** is on the page — rejected-alternatives and/or verdict tables at the key decisions, not only ADR links
 - [ ] Service Contracts and Component APIs are distinguished (or their absence stated), with hosting components noted
 - [ ] `reference.md` is extracted from the HTML as a reduced projection and matches its content
+- [ ] If a feature node exists, the reference is copied into `features/<id>/`, the node's `reference` edge is set, and `timeline.md` is regenerated
 - [ ] `{{SUMMARY_FILE}}` is written and links to both forms
 - [ ] `STATE.md` reflects the completed pass and `index.md` is regenerated
