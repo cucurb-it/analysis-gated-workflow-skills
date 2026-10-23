@@ -164,7 +164,7 @@ If any open questions remain unresolved when assessing Definition of Ready, the 
 create them as **placeholder ADR files** under `{{FOLDER_NAME}}/adrs/`. This is the
 **only** circumstance where the AI may author an ADR file (normally ADRs are Architect-only).
 
-Format for a placeholder ADR file (`adrs/YYYY-MM-DD-<slug>.md`):
+Format for a placeholder ADR file (`adrs/<prefix>.<short_snake_case>.md`):
 
 ```markdown
 ---

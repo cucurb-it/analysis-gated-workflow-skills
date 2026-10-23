@@ -113,7 +113,7 @@ one per feature or refactoring, holding the entire analysis as a set of small ma
 files rather than one growing document. Its shape:
 
 ```
-{{FEATURE_FOLDER}}/
+.analysis-gated-workflow/bundles/<id>/     # one bundle; id e.g. 2026-10-18.pump_safety_rule_engine
 ├── index.md                              # regenerable root listing — links + descriptions, no live state
 ├── STATE.md                              # live workflow state: current phase, status, pending action
 ├── log.md                                # every user prompt, verbatim, date-grouped newest-first
@@ -151,8 +151,12 @@ files rather than one growing document. Its shape:
 │   ├── reference.html                    # layered technical reference (authored source)
 │   └── reference.md                      # reduced Markdown projection of the HTML
 └── adrs/
-    └── YYYY-MM-DD-<slug>.md              # one file per Architecture Decision Record
+    └── <prefix>.<short_snake_case>.md    # one file per Architecture Decision Record
 ```
+
+Every bundle lives at `.analysis-gated-workflow/bundles/<id>/` (a fixed home — AGW derives the
+location, the Architect never names a path), and the id (`YYYY-MM-DD.feature_snake_case`, or an
+issue ref like `WPX-1042.feature_snake_case`) is shared with the feature node it graduates into.
 
 ### Why a bundle instead of one document
 
@@ -231,13 +235,20 @@ store at the repo root:
 
 ```
 .analysis-gated-workflow/
-├── index.md       # regenerable single root index, grouped by kind
-├── timeline.md    # regenerable oldest-first projection of the feature nodes
-├── decisions/     # ADRs — deliberate forks (prescriptive)
-├── lessons/       # experiential knowledge ("X bit us")
-├── notes/         # hiccup-resolutions + small informal decisions (low-ceremony)
-└── features/      # feature/refactoring nodes — the time axis
+├── index.md       # DURABLE · regenerable single root index, grouped by kind
+├── timeline.md    # DURABLE · regenerable oldest-first projection of the feature nodes
+├── decisions/     # DURABLE · ADRs — deliberate forks (prescriptive)
+├── lessons/       # DURABLE · experiential knowledge ("X bit us")
+├── notes/         # DURABLE · hiccup-resolutions + small informal decisions
+├── features/      # DURABLE · feature/refactoring nodes — the time axis
+└── bundles/       # DISPOSABLE · one folder per workflow run, perishes after merge
+    └── <id>/      # a bundle (STATE.md, log.md, phase-NN-.../, adrs/)
 ```
+
+Disposable bundles and the durable store share one root but have opposite lifespans — the
+store persists, bundles perish. Everything under `.analysis-gated-workflow/` is committed to
+git; a bundle is simply **deletable** (`git rm`) once its work has shipped and its durable
+residue has graduated — history keeps it if ever needed.
 
 It is **bundle-like in conventions** (frontmatter, regenerable index, nav bars, relative
 links, one-file-per-entry, never-deleted) but **not in lifecycle** — no STATE/log/phases,

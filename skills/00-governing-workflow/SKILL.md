@@ -1,7 +1,7 @@
 ---
 name: agw-governing-workflow
 description: Governs the Analysis-Gated Workflow for software development and refactoring. Use when starting or resuming a structured analysis session with a Software Architect. Orchestrates all other workflow skills across phases.
-argument-hint": "[for '<feature-name>' in '<folder-path>']"
+argument-hint: "['<feature-name>' — optional; AGW derives the bundle location and asks for anything missing]"
 ---
 
 # Analysis-Gated Workflow — Governing Workflow Skill
@@ -43,13 +43,38 @@ files with YAML frontmatter, cross-linked with bundle-relative links. It is deli
 base. We borrow OKF's *shape* (frontmatter, per-concept files, relative links, an
 `index.md`) and add our own workflow keys freely.
 
-### Folder layout
+### Bundle location and id format
 
-A workflow's output lives entirely inside `{{FOLDER_NAME}}` (the working folder resolved
-in Step 1 of the Session Start Protocol):
+Every bundle has a **fixed home**: `.analysis-gated-workflow/bundles/<id>/`. The Architect
+never names a path — AGW derives the location from the id composed at session start. This
+keeps all AGW output (disposable bundles *and* the durable store) under one predictable root
+instead of sprinkled across arbitrary folders.
+
+**One id format is used everywhere in `.analysis-gated-workflow/`** — bundles and every
+durable-store entry (feature nodes, decisions, lessons, notes):
 
 ```
-{{FOLDER_NAME}}/
+<prefix>.<name_snake_case>
+```
+
+- **`<prefix>`** defaults to the ISO date `YYYY-MM-DD` (e.g. `2026-10-18`) and can be
+  overridden wholesale, e.g. with an issue ref → `WPX-1042`.
+- **`<name_snake_case>`** is the feature/decision name in `lower_snake_case`.
+- A same-day/same-name collision appends `-2`, `-3`.
+- Examples: `2026-10-18.pump_safety_rule_engine`, `WPX-1042.pump_safety_rule_engine`,
+  `2026-10-18.state_exposure`.
+
+Because a bundle and the feature node it graduates share this id, the bundle
+`bundles/2026-10-18.pump_safety_rule_engine/` traces directly to the feature node
+`features/2026-10-18.pump_safety_rule_engine/`.
+
+### Folder layout
+
+A workflow's output (one bundle) lives entirely inside `{{FOLDER_NAME}}` =
+`.analysis-gated-workflow/bundles/<id>` (resolved in Step 1 of the Session Start Protocol):
+
+```
+.analysis-gated-workflow/bundles/<id>/           # {{FOLDER_NAME}} — one bundle, disposable
 ├── index.md                              # type: Index — regenerable root listing, no live state
 ├── STATE.md                              # type: State — live workflow state pointer, never regenerated
 ├── log.md                                # type: Log — verbatim Prompt Log + transition timeline
@@ -86,7 +111,7 @@ in Step 1 of the Session Start Protocol):
 │   ├── summary.md                        # front-door; links to the reference document
 │   └── reference.md                      # type: Reference — the comprehensive technical reference
 └── adrs/
-    └── YYYY-MM-DD-<short-slug>.md         # type: ADR — one file per ADR, never deleted
+    └── <prefix>.<short_snake_case>.md     # type: ADR — one file per ADR, never deleted
 ```
 
 Within a phase folder, `phase.md` sorts before `summary.md` (p < s), so the full content
@@ -221,7 +246,7 @@ description: <one-line description of what this documents>
 ---
 ```
 
-**`adrs/YYYY-MM-DD-<slug>.md`:**
+**`adrs/<prefix>.<short_snake_case>.md`:**
 ```yaml
 ---
 type: ADR
@@ -275,7 +300,7 @@ Phase-specific anchors:
 ADR files emit `<a id="decision"></a>` and `<a id="consequences"></a>`.
 
 Links are always **bundle-relative** so the folder stays portable when moved or zipped:
-`./phase.md#outcome`, `../adrs/2026-06-18-slug.md#decision`.
+`./phase.md#outcome`, `../adrs/2026-06-18.slug.md#decision`.
 
 ### STE-style writing (for all produced documentation)
 
@@ -321,41 +346,45 @@ not STE; it models structure and diagram craft, not prose voice.)
 
 Every session — new or resumed — begins with the same sequence:
 
-### Step 1 — Resolve feature name and folder
+### Step 1 — Resolve the bundle (structured question set)
 
-The skill receives its arguments as: $ARGUMENTS
+Bundles have a **fixed home** — every bundle lives under `.analysis-gated-workflow/bundles/`,
+so the Architect never names a path; AGW derives it (see Bundle & File Naming Conventions).
+Session start gathers a small, structured set of answers, each with a **proposed default** the
+Architect accepts or overrides.
 
-**If arguments are present**, parse them using the natural-language pattern:
-```
-for '<feature-name>' in '<folder-path>'
-```
-Examples that must all be accepted:
-- `for 'Finding all configured countries' in '~/analysis/issues/012-find-configured-countries'`
-- `for "My Feature" in "/absolute/path/to/folder"`
-- `Finding all configured countries ~/analysis/issues/012` *(positional fallback: first quoted/unquoted string = name, last token = folder)*
+Gather these three fields. Present them as a form where the host can (tabs/fields with the
+defaults pre-filled), or as short one-question-at-a-time prompts where it cannot — the skill
+specifies the *information and the proposals*, not the widget. If the values arrive in
+`$ARGUMENTS`, use them and only ask for what is missing.
 
-Extract:
-- `{{FEATURE_NAME}}` from the value after `for` (strip surrounding quotes)
-- `{{FOLDER_NAME}}` from the value after `in` (strip surrounding quotes)
+| Field | Proposed default | Override |
+|---|---|---|
+| **Id prefix** | `<today, YYYY-MM-DD>` (e.g. `2026-10-18`) | replace the whole prefix, e.g. an issue ref `WPX-1042` |
+| **Feature / refactoring name** | — (ask) | the name as the Architect types it |
+| **Work kind** | — (ask) | `feature` or `refactoring` |
 
-**If arguments are absent or incomplete**, ask the user only for the missing piece(s):
-- No arguments at all → ask for both feature name and working folder path
-- Feature name present but no folder → ask only for the working folder path
-- Folder present but no feature name → ask only for the feature name
-
-Do not ask for information already supplied in the arguments. Wait for any missing responses before proceeding.
-
-After all values are resolved, set:
-- `{{FEATURE_NAME}}` = the name provided (use as-is, no normalisation)
-- `{{FOLDER_NAME}}` = the folder provided
-- The bundle root is `{{FOLDER_NAME}}` (see Bundle & File Naming Conventions)
+Then:
+- `{{FEATURE_NAME}}` = the name as given (use as-is in prose — no normalisation).
+- Slug the name to `lower_snake_case` (spaces/punctuation → `_`, lowercased).
+- Compose the **bundle id**: `<prefix>.<feature_snake_case>` — e.g.
+  `2026-10-18.pump_safety_rule_engine` or, with an override, `WPX-1042.pump_safety_rule_engine`.
+  (This same id format is used everywhere in `.analysis-gated-workflow/` — see Bundle & File
+  Naming Conventions.)
+- If `bundles/<id>/` already exists for a **new** session, append `-2`, `-3` to the id.
+- Set `{{FOLDER_NAME}}` = `.analysis-gated-workflow/bundles/<id>` — the bundle root.
+- Show the composed path for confirmation before creating anything.
 
 ### Step 2 — Check if the bundle exists
 
-Check whether `{{FOLDER_NAME}}/STATE.md` exists.
+Check whether `{{FOLDER_NAME}}/STATE.md` (i.e. `.analysis-gated-workflow/bundles/<id>/STATE.md`)
+exists.
 
 - If it **does not exist** → this is a **New Session**. Proceed to New Session Protocol (Step 3).
 - If it **exists** → this is a **Resume Session**. Proceed to Resume Session Protocol (Step 4).
+
+To **resume**, the Architect names the existing bundle id (or AGW lists the bundles under
+`.analysis-gated-workflow/bundles/` to pick from) — no path needed.
 
 ---
 
@@ -535,7 +564,7 @@ file under `adrs/`:
 8. Regenerate `index.md` so the new ADR appears in the **Architecture Decision Records**
    section at the top (date order), not among the phase entries.
 
-Each ADR is one file: `adrs/YYYY-MM-DD-<short-slug>.md`. ADR file body:
+Each ADR is one file: `adrs/<prefix>.<short_snake_case>.md`. ADR file body:
 
 ```markdown
 ---
@@ -642,8 +671,8 @@ type: Index
 
 | ADR | Date | Status | Description |
 |---|---|---|---|
-| [2026-06-18 — some-decision](./adrs/2026-06-18-some-decision.md) | 2026-06-18 | DECIDED | ... |
-| [2026-06-21 — another-decision](./adrs/2026-06-21-another-decision.md) | 2026-06-21 | PENDING | ... |
+| [2026-06-18.some_decision](./adrs/2026-06-18.some_decision.md) | 2026-06-18 | DECIDED | ... |
+| [2026-06-21.another_decision](./adrs/2026-06-21.another_decision.md) | 2026-06-21 | PENDING | ... |
 
 ## Bundle Control
 
@@ -701,23 +730,41 @@ Git (see Timestamps).
 
 ```
 .analysis-gated-workflow/
-├── index.md              # regenerable: single root index, groups all kinds, links into each entry
-├── timeline.md           # regenerable: oldest-first projection of the feature nodes
-├── decisions/            # ADRs — deliberate forks (prescriptive: "do this")
-│   └── YYYY-MM-DD-<slug>.md
-├── lessons/              # experiential knowledge (descriptive: "X bit us")
-│   └── YYYY-MM-DD-<slug>.md
-├── notes/                # hiccup-resolutions + small informal decisions (low-ceremony)
-│   └── YYYY-MM-DD-<slug>.md
-└── features/             # feature/refactoring nodes — the time axis (see Graph model)
-    └── YYYY-MM-DD-<slug>/         # one folder per feature node
-        ├── node.md               # the feature node (spine + edges)
-        ├── reference.html        # the Phase 08 outcome reference, if one was produced
-        └── reference.md          # reduced projection of it
+├── index.md              # DURABLE · regenerable root index, groups all kinds, links each entry
+├── timeline.md           # DURABLE · regenerable oldest-first projection of the feature nodes
+├── decisions/            # DURABLE · ADRs — deliberate forks (prescriptive: "do this")
+│   └── <prefix>.<name_snake_case>.md
+├── lessons/              # DURABLE · experiential knowledge (descriptive: "X bit us")
+│   └── <prefix>.<name_snake_case>.md
+├── notes/                # DURABLE · hiccup-resolutions + small informal decisions
+│   └── <prefix>.<name_snake_case>.md
+├── features/             # DURABLE · feature/refactoring nodes — the time axis (see Graph model)
+│   └── <prefix>.<name_snake_case>/   # one folder per feature node
+│       ├── node.md               # the feature node (spine + edges)
+│       ├── reference.html        # the Phase 08 outcome reference, if one was produced
+│       └── reference.md          # reduced projection of it
+└── bundles/              # DISPOSABLE · one folder per workflow run; perishes after merge
+    └── <id>/             # {{FOLDER_NAME}} — a bundle (STATE.md, log.md, phase-NN-.../, adrs/)
 ```
 
+**Durable vs disposable under one root.** Everything above `bundles/` is the **durable store**
+— permanent, committed, the project's memory. `bundles/` holds the **disposable** working
+state — one folder per run, perishing after the work ships and its durable residue has
+graduated. They share the root so all AGW output is in one predictable place, but they have
+opposite lifespans: the store persists, bundles perish. A bundle's id matches the feature node
+it graduates into, so `bundles/<id>/` traces to `features/<id>/`.
+
+**Bundles are committed to git — and are deletable.** A bundle is committed while the work is
+live, so it travels with the branch, survives machine loss, shows up in PRs, and merges with
+the code. Once the work has shipped and its durable residue has graduated, a bundle may be
+deleted — a plain `git rm` — because nobody needs the in-flight detail any more; git history
+keeps it if anyone ever looks back. "Disposable" means *removable when no longer needed*, not
+*kept out of version control*. Everything under `.analysis-gated-workflow/` — the durable
+store and the bundles alike — is committed.
+
 `index.md` and `timeline.md` are both **regenerable projections** of the entry/feature nodes —
-never hand-authored. The nodes are the source of truth; these two files are views of them.
+never hand-authored. The nodes are the source of truth; these two files are views of them. They
+project the **durable** store only — never the `bundles/` working state.
 
 A **feature is a folder**, not a single file, because it anchors attachments — above all the
 Phase 08 **reference** (the feature's durable *outcome*). A decision/lesson/note is still one
@@ -733,14 +780,14 @@ bundle-relative links, one-file-per-entry, never-deleted. It does **not** adopt 
 
 ### Entry format
 
-One shape for all three kinds. Filename is a human-readable date-slug
-(`2026-10-12-retry-wrapper-stays-synchronous.md`); same-day collisions get a short numeric
-suffix (`...-1.md`). Cross-links target the frontmatter `id`, stable even if the file is
+One shape for all three kinds. Filename is a human-readable id
+(`2026-10-12.retry_wrapper_stays_synchronous.md`); same-day/same-name collisions append a
+short suffix (`-2`, `-3`). Cross-links target the frontmatter `id`, stable even if the file is
 renamed — humans read the pretty filename, links point at the fixed id.
 
 ```markdown
 ---
-id: 2026-10-12-retry-wrapper-stays-synchronous
+id: 2026-10-12.retry_wrapper_stays_synchronous
 kind: decision            # decision | lesson | note
 status: active            # active | superseded | open
 evidence: confirmed       # confirmed | inferred | unknown
@@ -967,7 +1014,7 @@ close-out already does, so the real added burden is ≈ one field:
 
 ```yaml
 ---
-id: 2026-10-16-pump-safety-rule-engine
+id: 2026-10-16.pump_safety_rule_engine
 kind: feature
 work-kind: refactoring          # feature | refactoring
 status: active
@@ -976,8 +1023,8 @@ created: <UTC>
 updated: <UTC>
 date: <UTC>                      # close-out date — the time axis   (spine)
 touches: [rule-engine, pump-safety]                               # component tags (spine)
-produced: [2026-10-16-state-exposure, 2026-10-16-cqs-scope]       # ids graduated here (spine)
-builds-on: [2026-09-02-rule-engine-core]    # optional, opportunistic
+produced: [2026-10-16.state_exposure, 2026-10-16.cqs_scope]       # ids graduated here (spine)
+builds-on: [2026-09-02.rule_engine_core]    # optional, opportunistic
 see: []                                     # optional
 # reference: ./reference.html   # OMIT unless Phase 08 ran — added by Phase 08 if it does
 ---
@@ -1035,8 +1082,8 @@ type: Timeline
 
 | Date | Kind | Work | Touches | Produced | Reference |
 |---|---|---|---|---|---|
-| 2026-09-02 | feature | [Rule engine core](./features/2026-09-02-rule-engine-core/node.md) | rule-engine | 2 | — |
-| 2026-10-16 | refactoring | [Pump safety rule engine](./features/2026-10-16-pump-safety-rule-engine/node.md) | rule-engine, pump-safety | 2 | [ref](./features/2026-10-16-pump-safety-rule-engine/reference.html) |
+| 2026-09-02 | feature | [Rule engine core](./features/2026-09-02.rule_engine_core/node.md) | rule-engine | 2 | — |
+| 2026-10-16 | refactoring | [Pump safety rule engine](./features/2026-10-16.pump_safety_rule_engine/node.md) | rule-engine, pump-safety | 2 | [ref](./features/2026-10-16.pump_safety_rule_engine/reference.html) |
 
 (The Reference column is blank for features with no Phase 08 pass — the common case.)
 ```

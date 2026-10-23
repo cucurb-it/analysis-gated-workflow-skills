@@ -83,13 +83,16 @@ everyone needs all the information all the time — so each phase gets a full `p
 compact `summary.md`, and a resuming reader loads only `STATE.md` plus the current summary.
 
 ```
-<feature-folder>/
+.analysis-gated-workflow/bundles/<id>/   one bundle — id e.g. 2026-10-18.pump_safety_rule_engine
 ├── STATE.md            live workflow state (current phase, pending action)
 ├── log.md              every user prompt, verbatim, newest-first
 ├── index.md            regenerable listing
 ├── phase-01-…/ … phase-08-…/   phase.md + summary.md (+ phase-specific docs)
 └── adrs/               one file per Architecture Decision Record (feature-local, Tier-1)
 ```
+
+Bundles have a fixed home under `.analysis-gated-workflow/bundles/` — AGW derives the location
+from the id composed at session start; the Architect never names a path.
 
 The bundle layout is **OKF-shaped but not OKF-conformant** — it borrows the Open Knowledge
 Format's shape (frontmatter, per-concept files, relative links, a regenerable index) without
@@ -121,13 +124,17 @@ graduate into a permanent, repo-native store at the repo root:
 
 ```
 .analysis-gated-workflow/
-├── index.md       regenerable single root index, grouped by kind
-├── timeline.md    regenerable oldest-first projection of the feature nodes
-├── decisions/     ADRs — deliberate forks (prescriptive)
-├── lessons/       experiential knowledge ("X bit us")
-├── notes/         hiccup-resolutions + small informal decisions (low-ceremony)
-└── features/      feature/refactoring nodes — the time axis
+├── index.md       DURABLE · regenerable single root index, grouped by kind
+├── timeline.md    DURABLE · regenerable oldest-first projection of the feature nodes
+├── decisions/     DURABLE · ADRs — deliberate forks (prescriptive)
+├── lessons/       DURABLE · experiential knowledge ("X bit us")
+├── notes/         DURABLE · hiccup-resolutions + small informal decisions (low-ceremony)
+├── features/      DURABLE · feature/refactoring nodes — the time axis
+└── bundles/       DISPOSABLE · one folder per workflow run (perishes after merge)
 ```
+
+Disposable bundles and the durable store share one root but have opposite lifespans: the store
+persists, bundles perish after their durable residue graduates.
 
 **Scope:** the system under development — why it is built as it is, and what building it
 taught. Never team/process/people knowledge.

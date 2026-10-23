@@ -34,7 +34,7 @@ At the start of Phase 01, the following information has been collected by the
 Governing Workflow skill:
 
 - `{{FEATURE_NAME}}` — the name of the feature or refactoring
-- `{{FOLDER_NAME}}` — the working folder (bundle root) for this analysis
+- `{{FOLDER_NAME}}` — the bundle root, `.analysis-gated-workflow/bundles/<id>` (derived at session start)
 - Specifics provided by the user: class name, pattern, business capability,
   service contract, domain name, or similar
 - The user's description of the required feature or expected refactoring
