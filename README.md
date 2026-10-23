@@ -130,6 +130,8 @@ files rather than one growing document. Its shape:
 ├── phase-04-implementation-planning/
 │   ├── phase.md
 │   ├── summary.md
+│   ├── specification.html                # the complete assembled spec (intent + requirements/scenarios)
+│   ├── specification.md                  # reduced projection of it
 │   ├── doc-executive.md                  # intent seed: business-outcome brief (forward-looking)
 │   └── doc-business.md                   # intent seed: business process & experience (forward-looking)
 ├── phase-05-implementation/
@@ -226,6 +228,24 @@ translation-friendly (STE-styled, not certified). The Phase 04 seeds are frozen 
 phase closes; nothing writes backward. Writing the same work for multiple audiences also
 surfaces gaps: if the business or executive seed can't be filled, the feature's *purpose*
 wasn't fully understood, only its mechanics.
+
+### The specification — the complete spec, assembled at the Phase 04 gate
+
+By the end of Phase 04 the **complete spec** exists — what is being built (Phase 01), what
+already exists (Phase 02), the decisions and constraints (Phase 03), and how it will be built
+(Phase 04) — but spread across the phase files. Phase 04 **assembles** it into one artifact:
+`specification.html` (a depth-layered, STE, C4-structured page, same craft as the Phase 08
+reference) plus a reduced `specification.md`. It is a **projection** of the phase files, not a
+hand-authored source — so it cannot drift. Its verifiable core is a **Requirements & acceptance
+scenarios** section (`SHALL` / `WHEN–THEN`) that defines *done*; the Test Plan tests against it
+and Phase 07 review checks it.
+
+This is AGW's spec-driven artifact — the same family as tools like OpenSpec, but **earned from
+gated analysis** rather than hand-written as the starting point, and sitting inside a full
+gated lifecycle rather than being the whole tool. The specification (intent) and the Phase 08
+reference (outcome) are a matched pair: at close-out the specification graduates to the feature
+node, and if a reference is later produced the two cross-link — "what we set out to build" ↔
+"what we built."
 
 ### The durable store — decisions that outlive the bundle
 

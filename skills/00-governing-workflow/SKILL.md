@@ -741,6 +741,8 @@ Git (see Timestamps).
 ├── features/             # DURABLE · feature/refactoring nodes — the time axis (see Graph model)
 │   └── <prefix>.<name_snake_case>/   # one folder per feature node
 │       ├── node.md               # the feature node (spine + edges)
+│       ├── specification.html    # the Phase 04 intent spec (assembled); graduated at close-out
+│       ├── specification.md      # reduced projection of it
 │       ├── reference.html        # the Phase 08 outcome reference, if one was produced
 │       └── reference.md          # reduced projection of it
 └── bundles/              # DISPOSABLE · one folder per workflow run; perishes after merge
@@ -992,6 +994,7 @@ by tag.
 | `builds-on` | feature → feature | *(tool infers)* | this work builds on earlier work |
 | `depends-on` | feature → feature | *(tool infers)* | this work depends on earlier work |
 | `governs` | decision → component tag | *(tag, no back-edge)* | a component this decision constrains |
+| `specification` | feature → its attached specification doc | *(file in the folder)* | the Phase 04 intent spec for this feature (graduated at close-out) |
 | `reference` | feature → its attached reference doc | *(file in the folder)* | the Phase 08 outcome reference for this feature |
 | `see` | any → any | `see` (symmetric) | weak, untyped lateral relation |
 
@@ -1026,6 +1029,7 @@ touches: [rule-engine, pump-safety]                               # component ta
 produced: [2026-10-16.state_exposure, 2026-10-16.cqs_scope]       # ids graduated here (spine)
 builds-on: [2026-09-02.rule_engine_core]    # optional, opportunistic
 see: []                                     # optional
+specification: ./specification.html   # the Phase 04 intent spec (present at close-out)
 # reference: ./reference.html   # OMIT unless Phase 08 ran — added by Phase 08 if it does
 ---
 
@@ -1067,6 +1071,16 @@ reconstructing intent from raw code.
 complete. The `reference` edge is present only on features whose work warranted a Phase 08
 pass; it is simply absent otherwise, like any optional edge.
 
+**The specification is the feature's durable intent** — the matched pair of the reference.
+Phase 04 assembles it (`specification.html` + reduced `specification.md`) as the complete,
+verifiable spec: what was to be built, the decisions it honours, and the requirements +
+acceptance scenarios that define done. Unlike the reference it **already exists at close-out**,
+so it graduates *then* (the feature node's `specification` edge is set at Phase 06, not later).
+Like the reference it is a **dated snapshot** — intent as of the build, not a stay-true entry.
+When a feature has both, they **cross-link**: `specification` (intent, "what we set out to
+build") ↔ `reference` (outcome, "what we built"), so a reader can compare promise against
+result.
+
 **`timeline.md`** is a **regenerated, oldest-first projection** of the feature nodes (a
 timeline is read as the system's story forward). It is never authored by hand, so it cannot
 drift. It is one rendering of the feature-node dataset; the future CLI/TUI/MCP tooling will
@@ -1080,12 +1094,12 @@ type: Timeline
 
 # <Project> — Feature & Refactoring Timeline
 
-| Date | Kind | Work | Touches | Produced | Reference |
-|---|---|---|---|---|---|
-| 2026-09-02 | feature | [Rule engine core](./features/2026-09-02.rule_engine_core/node.md) | rule-engine | 2 | — |
-| 2026-10-16 | refactoring | [Pump safety rule engine](./features/2026-10-16.pump_safety_rule_engine/node.md) | rule-engine, pump-safety | 2 | [ref](./features/2026-10-16.pump_safety_rule_engine/reference.html) |
+| Date | Kind | Work | Touches | Produced | Spec | Reference |
+|---|---|---|---|---|---|---|
+| 2026-09-02 | feature | [Rule engine core](./features/2026-09-02.rule_engine_core/node.md) | rule-engine | 2 | [spec](./features/2026-09-02.rule_engine_core/specification.html) | — |
+| 2026-10-16 | refactoring | [Pump safety rule engine](./features/2026-10-16.pump_safety_rule_engine/node.md) | rule-engine, pump-safety | 2 | [spec](./features/2026-10-16.pump_safety_rule_engine/specification.html) | [ref](./features/2026-10-16.pump_safety_rule_engine/reference.html) |
 
-(The Reference column is blank for features with no Phase 08 pass — the common case.)
+(Every feature has a Spec; the Reference column is blank for features with no Phase 08 pass — the common case.)
 ```
 
 ### How the phases use the store
@@ -1098,7 +1112,8 @@ type: Timeline
 - **Phase 05** tags its deviations and learnings as graduation candidates.
 - **Phase 06** resolves graduation (automatic overrides + proposed promotions), **writes the
   feature node** (the time-axis node, with its lightweight spine and `produced`/`touches`
-  edges), and regenerates the store's `index.md` and `timeline.md`.
+  edges), **graduates the Phase 04 specification** into the feature folder (the durable intent),
+  and regenerates the store's `index.md` and `timeline.md`.
 - **Phases 07/08** read the store as standing context.
 
 ### Concurrent team use and reconciliation

@@ -287,6 +287,9 @@ perishes. If the feature has a node (`features/<id>/node.md` from Phase 06):
 
 - Copy `reference.html` and `reference.md` into `features/<id>/`.
 - Set the node's `reference` edge to `./reference.html`.
+- If the node has a `specification` (the Phase 04 intent, graduated at close-out), **cross-link
+  the pair**: the reference points back to the specification ("what we set out to build") and
+  the specification forward to the reference ("what was actually built"). Intent ↔ outcome.
 - Regenerate `timeline.md`.
 
 If no feature node exists, leave the reference in the Phase 08 folder and tell the Architect it

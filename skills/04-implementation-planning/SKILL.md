@@ -1,6 +1,6 @@
 ---
 name: agw-implementation-planning
-description: the Implementation Planning Phase of the Analysis-Gated Workflow. Use when producing a detailed, phase-structured Implementation Plan based on completed analysis, together with forward-looking executive and business stakeholder seeds. No code is written. Requires explicit Architect go signal to advance to implementation.
+description: the Implementation Planning Phase of the Analysis-Gated Workflow. Use when producing a detailed, phase-structured Implementation Plan based on completed analysis, assembling the complete specification (intent + requirements/acceptance scenarios), together with forward-looking executive and business stakeholder seeds. No code is written. Requires explicit Architect go signal to advance to implementation.
 ---
 
 # Analysis-Gated Workflow — Implementation Planning Skill
@@ -334,11 +334,72 @@ Keep both as brief as the feature warrants — stub a heading with one line if t
 little to say. They exist so a business or executive stakeholder can review and sanity-check
 the **intent** while it is still cheap to change, before any code is written.
 
-### Step 7 — Write the summary file
+### Step 7 — Assemble the specification
+
+At the end of Phase 04, the **complete spec** exists — what is being changed (Phase 01),
+what already exists (Phase 02), the decisions and constraints (Phase 03 ADRs), and how it
+will be designed and built (this phase). It exists, but **distributed** across the phase
+files. This step **assembles** it into one artifact: `{{PHASE_DIR}}/specification.html` (the
+authored source) and `{{PHASE_DIR}}/specification.md` (a reduced Markdown projection of it).
+
+The specification is the **intent** counterpart to the Phase 08 `reference` (the **outcome**):
+the spec is "what we set out to build and how we'll know it's done," assembled *before* code;
+the reference is "what we actually built," assembled *after*. The two are a matched pair.
+
+**Assembled, not authored.** The specification is a **projection** that consolidates the
+01–04 phase files — never a fifth place the Architect writes content. The phase files remain
+the source of truth; the specification is their assembled, readable view, so it cannot drift.
+(This is the opposite of spec-driven tools where the spec is the hand-authored source of
+truth; in AGW the spec is *earned* from gated analysis.)
+
+**Same machinery as the Phase 08 reference.** Produce it exactly as
+`skills/08-implementation-documentation/SKILL.md` produces its reference: a self-contained,
+**depth-layered HTML** page (C4 progressive disclosure, delta-highlighting, argument-diagrams,
+verify every diagram renders), in **STE**, with `specification.md` extracted as a reduced
+projection. Study the same reference example (`examples/pump-safety-rules-refactor.html`) for
+the structure and craft; do not imitate its non-STE prose voice.
+
+**Content — assembled from the phases, plus the requirements section:**
+
+- **What is being built** — from Phase 01: the capability, scope, domain, terminology.
+- **What already exists** — from Phase 02: the current-state architecture the change meets
+  (the C4 context/containers the reader needs to understand the change).
+- **Decisions & constraints** — from Phase 03 ADRs: the settled decisions the design honours.
+- **How it will be built** — from this phase: the design, proposed changes, target-state
+  execution flow, the implementation approach (summarised — the full plan stays in `phase.md`).
+- **Requirements & acceptance scenarios** — see below. This is the **verifiable** core.
+
+**Requirements & acceptance scenarios (the verifiable spec).** A dedicated section stating
+each requirement and the concrete scenario that proves it — the `SHALL` / `WHEN–THEN` shape
+(EARS / OpenSpec style). These are the **acceptance criteria**: they define *done*. The Phase
+04 Test Plan tests against them, and Phase 07 review checks them. Format:
+
+```markdown
+## Requirements & acceptance scenarios
+
+### Requirement: <short title>
+The system SHALL <the required, testable behaviour>.
+
+#### Scenario: <what this proves>
+- WHEN <condition / trigger>
+- THEN <the observable, checkable outcome>
+
+(repeat per requirement; cover the error/failure behaviour and edges, not only the happy path)
+```
+
+Keep requirements grounded in Phase 01's intent and Phase 03's decisions — do not invent
+scope. If a requirement cannot be stated testably, that is a gap to flag to the Architect, not
+to paper over.
+
+The specification is **cleanly linked**: it carries the `[Index]` nav bar, internal anchors,
+and bundle-relative links, the same as every bundle document. At close-out it graduates to the
+feature node and cross-links with the reference (see Phase 06 and the Graph model).
+
+### Step 8 — Write the summary file
 
 Write `{{SUMMARY_FILE}}` (`type: Summary`, `phase: "04 — Implementation Planning"`,
 `status: AWAITING ARCHITECT REVIEW`, `phase_file: ./phase.md`, one-line `description`).
-The front-door links the plan and both stakeholder seeds:
+The front-door links the plan, the specification, and both stakeholder seeds:
 
 ```markdown
 ---
@@ -359,6 +420,9 @@ description: <one-line outcome>
 
 **Outcome:** [selected strategy, one line] → [full detail](./phase.md#implementation-plan)
 
+**Specification (the complete, assembled spec — intent + requirements/scenarios):**
+- [specification.html](./specification.html) — full, authoritative (reduced view: [specification.md](./specification.md))
+
 **Stakeholder seeds (intent — expansion seeds, not for verbatim external sharing):**
 - Executive → [doc-executive.md](./doc-executive.md)
 - Business → [doc-business.md](./doc-business.md)
@@ -366,13 +430,13 @@ description: <one-line outcome>
 **Open items carried forward:** [residual risks, or "none"] → [detail](./phase.md#open-items)
 ```
 
-### Step 8 — Update workflow state
+### Step 9 — Update workflow state
 
 Update `{{FOLDER_NAME}}/STATE.md`:
 - `Phase Status` → `AWAITING ARCHITECT REVIEW`
 - `Pending Architect Action` → `Review Implementation Plan. Add ADR annotations if corrections needed. Signal go for Phase 05 to begin implementation.`
 
-### Step 9 — Notify the Architect
+### Step 10 — Notify the Architect
 
 > "Implementation Planning Phase is complete. The Implementation Plan is ready for review in
 > `phase-04-implementation-planning/`, together with forward-looking executive and business
@@ -390,6 +454,8 @@ Update `{{FOLDER_NAME}}/STATE.md`:
 - Does not fabricate TCO, cost, or budget figures in the executive seed
 - Does not write the stakeholder seeds as polished prose — they are terse, forward-looking seeds
 - Does not treat the stakeholder seeds as an approval gate — the Architect's go signal alone unlocks Phase 05
+- Does not author the specification independently — it is an assembled projection of the phase files, so it cannot drift
+- Does not invent requirements or scope in the specification beyond Phase 01 intent and Phase 03 decisions
 - Does not advance to Phase 05 without an explicit Architect go signal
 
 ---
@@ -410,5 +476,8 @@ Phase 04 output is complete when:
 - [ ] Both stakeholder seeds are written in STE-style (short active sentences, plain consistent vocabulary)
 - [ ] Executive seed keeps TCO out of scope (no fabricated figures)
 - [ ] Deviations protocol is stated
-- [ ] `{{SUMMARY_FILE}}` is written and links to the plan and both stakeholder seeds
+- [ ] `specification.html` is assembled (projection of the 01–04 phase files, STE, depth-layered) with `specification.md` extracted as its reduced projection
+- [ ] The specification includes a **Requirements & acceptance scenarios** section (`SHALL` / `WHEN–THEN`), covering error/edge behaviour, not only the happy path
+- [ ] Specification diagrams were verified to render
+- [ ] `{{SUMMARY_FILE}}` is written and links to the plan, the specification, and both stakeholder seeds
 - [ ] `STATE.md` reflects `AWAITING ARCHITECT REVIEW`

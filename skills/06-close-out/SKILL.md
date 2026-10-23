@@ -260,6 +260,14 @@ write the inverse `produced-by` edge back to this feature. A node with only the 
 complete — optional edges never gate close-out. If the bundle was rejected and reverted (no
 shipped work), write **no** feature node.
 
+**Graduate the specification.** Phase 04 assembled a `specification.html` (+ reduced
+`specification.md`) — the feature's durable **intent**, and unlike the reference it already
+exists at close-out. Copy both into the feature folder
+(`features/<id>/specification.html` + `.md`) and set the node's `specification` edge to
+`./specification.html`. (The `reference` edge stays omitted — Phase 08 adds it later if that
+optional pass runs. When both exist, they cross-link: intent ↔ outcome.) If no specification
+was produced, omit the edge.
+
 **Regenerate** the store's `index.md` (grouped by kind: Decisions / Lessons / Notes /
 Features) **and** `timeline.md` (the feature nodes, oldest-first) from node frontmatter.
 
@@ -371,4 +379,5 @@ Close-out Phase is complete when:
 - [ ] `{{SUMMARY_FILE}}` is written and links to all three audience documents
 - [ ] Durable-store graduation resolved: overrides graduated automatically (both cross-links written); project-wide candidates proposed to and decided by the Architect — or explicitly nothing to graduate
 - [ ] Feature node written (lightweight spine: `work-kind`, `date`, `touches`, `produced`; `produced-by` inverse on each graduated entry), unless the bundle was reverted; store `index.md` and `timeline.md` regenerated
+- [ ] The Phase 04 specification is graduated into the feature folder and the node's `specification` edge is set
 - [ ] `STATE.md` is `COMPLETE`
