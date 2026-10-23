@@ -237,9 +237,12 @@ Phase 03.
 
 2. **Discretionary — promotions.** For the remaining candidates, **propose** to the Architect
    which look genuinely project-wide (with the evidence for each), and let the Architect
-   decide. Promote only those the Architect approves. Default is *stays local* — a
-   feature-specific ADR, deviation, or lesson that isn't project-wide is **not** graduated; it
-   remains in the bundle and dies with it. This keeps the store clean and intentional.
+   decide. Put the choice through the **`AskUserQuestion` tool** (see Structured questions in
+   the governing skill) — one multi-select question listing the candidates, not a prose list —
+   falling back to plain text if the tool is unavailable or returns empty. Promote only those
+   the Architect approves. Default is *stays local* — a feature-specific ADR, deviation, or
+   lesson that isn't project-wide is **not** graduated; it remains in the bundle and dies with
+   it. This keeps the store clean and intentional.
 
 **Write graduated entries** following the Durable Store entry format exactly: correct `kind`
 (decision / lesson / note), `evidence`, `weight`, UTC `created`/`updated`, `origin:
@@ -344,6 +347,12 @@ or neither:
   Completed via Analysis-Gated Workflow
   See the analysis bundle for full analysis and implementation details
   ```
+- **No AI attribution in the commit — ever.** The message is only the lines above: no
+  `Co-Authored-By:` trailer, no "Generated with"/"Co-authored" line, no mention of the AI, the
+  model, or Anthropic. The Architect is the sole author (governing skill, Invariant 6). Commit
+  with the message passed literally and add no trailer. If anything would append an AI
+  co-author or attribution line, **remove it before the commit is finalised**. A commit with AI
+  attribution must never be created.
 - If any check fails, notify the Architect:
   > "Implementation complete but not committed. Please commit manually or enable git."
 - This creates the final snapshot of all code changes ready for review, PR, or handoff

@@ -340,6 +340,34 @@ analytical writing needs the nuance and hedging STE removes, and the log is reco
 (The reference example `examples/pump-safety-rules-refactor.html` was built outside AGW and is
 not STE; it models structure and diagram craft, not prose voice.)
 
+### Structured questions
+
+Wherever a skill asks the Architect a **structured, multiple-choice question** — the session-
+start bundle fields (Step 1), an ADR gate, a Phase 06 graduation proposal, or any "pick one of
+these" moment — it uses the **`AskUserQuestion` tool**, not prose and not a markdown table.
+
+Name the tool and give the exact call; do not say "present it as a form where the host can",
+because a skill steers only with words and "where the host can" is read as optional, so it
+drifts to prose. Naming the tool and the call shape removes the choice.
+
+The tool's real constraints (Claude Code):
+- **1–4 questions per call, 2–4 options each.** Batch related questions into one call.
+- The tool **adds "Other" (free-text) and "Chat about this" automatically** — never add an
+  "Other" option yourself. A value typed through "Other" is the answer. "Chat about this" is a
+  request to discuss and re-ask, not a refusal.
+- **Headers ≤ 12 characters** (they are the tab labels).
+- For a field that is really free text, offer one real option plus an "I'll type it" prompt —
+  free text only comes back through "Other".
+
+**Two failure modes to guard against, always:**
+- **Empty answer.** `AskUserQuestion` can return an empty answer — notably when called right
+  after a skill loads (a known Claude Code issue). **Never proceed on assumed or fabricated
+  selections.** If the answer is empty, fall back to a short plain-text question and wait for a
+  real reply.
+- **Tool unavailable.** AGW also targets Copilot CLI and other hosts that may not have the
+  tool. The **prose fallback** (one short plain-text question per field) is the portable path —
+  keep it, but it is the fallback, not the default.
+
 ---
 
 ## Session Start Protocol
@@ -353,16 +381,39 @@ so the Architect never names a path; AGW derives it (see Bundle & File Naming Co
 Session start gathers a small, structured set of answers, each with a **proposed default** the
 Architect accepts or overrides.
 
-Gather these three fields. Present them as a form where the host can (tabs/fields with the
-defaults pre-filled), or as short one-question-at-a-time prompts where it cannot — the skill
-specifies the *information and the proposals*, not the widget. If the values arrive in
-`$ARGUMENTS`, use them and only ask for what is missing.
+Gather these three fields with **one call to the `AskUserQuestion` tool** — the structured,
+tabbed question UI (see **Structured questions** in the conventions). Do not ask in prose and
+do not render a markdown table when the tool is available; a vague "present it as a form"
+instruction gets read as optional and drifts to prose. Skip any field already supplied in
+`$ARGUMENTS` and ask only for the missing ones.
 
-| Field | Proposed default | Override |
-|---|---|---|
-| **Id prefix** | `<today, YYYY-MM-DD>` (e.g. `2026-10-18`) | replace the whole prefix, e.g. an issue ref `WPX-1042` |
-| **Feature / refactoring name** | — (ask) | the name as the Architect types it |
-| **Work kind** | — (ask) | `feature` or `refactoring` |
+The call — one `AskUserQuestion` call, three single-select questions, in this order:
+
+1. header `Id prefix`
+   - `<today, YYYY-MM-DD> (Recommended)` — the default prefix (e.g. `2026-10-18`)
+   - `Issue ref` — "Select Other and type a ref such as WPX-1042; it replaces the date prefix"
+2. header `Name`
+   - `Use name from arguments` — *only if `$ARGUMENTS` contains a name*
+   - `I'll type it` — "Select Other and type the exact feature/refactoring name"
+   - (never propose invented names as options)
+3. header `Work kind`
+   - `feature`
+   - `refactoring`
+
+Rules (from the tool's real constraints — Claude Code `AskUserQuestion`: 1–4 questions, 2–4
+options each):
+- The tool **adds "Other" and "Chat about this" itself** — never add an "Other" option.
+- Free text only arrives via "Other", so the Name question is one real option plus "I'll type
+  it"; treat the Other-typed value as the name.
+- If the Architect picks "Chat about this", discuss and re-ask — it is not a refusal.
+- Headers are ≤ 12 characters (they are the tab labels).
+
+**Empty-answer guard (important).** `AskUserQuestion` can return an **empty answer** —
+notably when it is called right after a skill loads (a known Claude Code issue), and on hosts
+without the tool (e.g. some Copilot CLI setups). If the answer comes back empty or the tool is
+unavailable, **do not proceed on assumed values and never fabricate the selections** — fall
+back to a short plain-text question per missing field, and wait for the real answer. Proceeding
+on a hallucinated selection would create the wrong bundle.
 
 Then:
 - `{{FEATURE_NAME}}` = the name as given (use as-is in prose — no normalisation).
@@ -477,6 +528,14 @@ When the Architect signals a phase transition:
      ```
      chore: complete [COMPLETED_PHASE_NAME] PHASE [skip ci]
      ```
+   - **The commit message is exactly the line above — nothing else.** The commit carries **no
+     AI attribution of any kind**: no `Co-Authored-By:` trailer, no "Generated with" line, no
+     mention of the AI, the model, or Anthropic. The Architect is the sole author (Invariant 6).
+     Commit with the message passed literally — e.g.
+     `git commit -m "chore: complete [COMPLETED_PHASE_NAME] PHASE [skip ci]"` — and add no
+     trailer. If anything (the host CLI's default behaviour, a template) would append an AI
+     co-author or attribution line, **remove it before the commit is finalised** (amend the
+     message to the exact text above). A commit with AI attribution must never be created.
    - If any check fails, continue silently without committing (no error, no interruption)
    - This creates an automatic checkpoint at each phase boundary for audit trail
 6. Regenerate `index.md` from the current frontmatter of all bundle files, following the
@@ -806,19 +865,34 @@ decided: 2026-10-09T16:40:00Z   # UTC — OPTIONAL; only when the event predates
 
 ---
 
-**What:** <the decision / lesson / hiccup-resolution>
-**Why:** <reasoning — the fence's sign>
-**Alternatives:** <what was genuinely in contention and why it lost; "unknown"; or "n/a" for notes>
+|     | Info |
+| --- | --- |
+| **What** | <the decision / lesson / hiccup-resolution> |
+| **Why** | <reasoning — the fence's sign> |
+| **Alternatives** | <what was genuinely in contention and why it lost; "unknown"; or "n/a" for notes> |
 
-<!-- relationship links — included only when they apply -->
-**Supersedes:** <id> — <why>
-**Superseded by:** <id> — <why>
-**Overrides:** <id> — scope: <feature> — parent still valid elsewhere
-**Has exception:** <id> — <feature>        # on the overridden project-level entry
-**Triggered by:** <id>                      # the lesson/note that prompted this
-**Led to:** <id>                            # forward link from a lesson/note to its decision
-**See:** <id> — <short why related>         # lateral links
+<!-- Related — a second table, only the rows that apply. Every id is a real markdown link. -->
+| Related | |
+| --- | --- |
+| **Supersedes** | [<id>](../decisions/<id>.md) — <why> |
+| **Superseded by** | [<id>](../decisions/<id>.md) — <why> |
+| **Overrides** | [<id>](../decisions/<id>.md) — scope: <feature>, parent still valid elsewhere |
+| **Has exception** | [<id>](../decisions/<id>.md) — <feature> |
+| **Triggered by** | [<id>](../lessons/<id>.md) <!-- or ../notes/<id>.md --> |
+| **Led to** | [<id>](../decisions/<id>.md) |
+| **Produced by** | [<id>](../features/<id>/node.md) — the feature that created this entry |
+| **See** | [<id>](../decisions/<id>.md) — <short why related> |
 ```
+
+**The body is a table, and every cross-reference is a real link.** The content fields
+(What / Why / Alternatives) go in a two-column `|  | Info |` table — never run-on bold-label
+prose. The relationship edges go in a second **Related** table, and **every `<id>` is written
+as a markdown link to that node's file** (`[<id>](../<kind>/<id>.md)`, or
+`../features/<id>/node.md` for a feature), so the graph is navigable by a human on plain
+GitHub — not a dead string. Include only the Related rows that apply; omit the table entirely
+if there are none. (The frontmatter keeps the same ids as plain YAML — that is the machine
+layer a tool parses; this body table is the human-navigable layer. The two always agree.)
+Component tags (`touches`, `governs`) are **not** linked — no node exists for a tag.
 
 A `weight: brief` entry is a title plus one or two lines; it does **not** force an
 Alternatives section — proportional depth made structural, so a small informal decision has a
@@ -1039,10 +1113,27 @@ specification: ./specification.html   # the Phase 04 intent spec (present at clo
 
 ---
 
-**What:** <one line>
-**Outcome:** <one line>
-**Origin bundle:** <bundle-ref> (disposable; this node is the durable residue)
+|     | Info |
+| --- | --- |
+| **What** | <one line> |
+| **Outcome** | <one line> |
+| **Touches** | rule-engine, pump-safety <!-- component tags, not linked --> |
+| **Origin bundle** | <bundle-ref> (disposable; this node is the durable residue) |
+
+| Related | |
+| --- | --- |
+| **Specification** | [specification.html](./specification.html) — intent |
+| **Reference** | [reference.html](./reference.html) — outcome <!-- only if Phase 08 produced one --> |
+| **Produced** | [<id>](../../decisions/<id>.md), [<id>](../../lessons/<id>.md) — decisions & lessons from this feature |
+| **Builds on** | [<id>](../<id>/node.md) |
+| **See** | [<id>](../../decisions/<id>.md) — <why> |
 ```
+
+The feature-node body is a table too, and its reference cells are real links: `produced` ids
+link to `../../decisions/<id>.md` / `../../lessons/<id>.md`; `builds-on` to the sibling
+feature's `../<id>/node.md`; `specification`/`reference` to the files in this folder. Omit the
+Related rows that do not apply. `touches` tags stay plain (no node for a tag). The frontmatter
+keeps the plain ids; this table is the human-navigable view, and the two always agree.
 
 - `date` is already stamped; `produced` **is** the list of ids graduation just produced;
   `work-kind` is one word. Only `touches` is genuinely new input — a tag list the Phase 02 and
@@ -1156,8 +1247,11 @@ These rules apply across all phases and all skills:
 4. ADRs are permanent. Their files are never overwritten, summarised away, or deleted — in the
    bundle `adrs/` or in the durable store. Durable entries are superseded, never deleted.
 5. `log.md` captures every user prompt verbatim before any response is written.
-6. The AI never refers to itself as the author of any bundle file or durable-store entry; the
-   Architect is the author and authority throughout.
+6. The AI never refers to itself as the author of any bundle file, durable-store entry, or
+   **git commit**; the Architect is the author and authority throughout. Commits carry **no AI
+   attribution** — no `Co-Authored-By:` trailer, no "Generated with"/"Co-authored" line, no
+   mention of the AI, the model, or Anthropic. If the host CLI adds such a trailer by default,
+   strip it before committing.
 7. The AI never refers to sprints, timelines, or durations except in the Implementation Plan phases.
 8. Every session ends with `STATE.md` and the current phase's `summary.md` updated to
    reflect current reality.
