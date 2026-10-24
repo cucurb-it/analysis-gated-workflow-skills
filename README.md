@@ -94,13 +94,24 @@ installs automatically when team members trust the project folder:
 
 ## How to Start
 
-Load the Governing Workflow skill at the start of every session:
+On Claude Code, use the shortcut command:
+
+```
+/analysis-gated-workflow:agw-start
+```
+
+(Type `agw-start` in the command picker to filter to it. It takes an optional feature name;
+the workflow asks for anything missing.) The command is a thin shortcut — it defers to the
+Governing Workflow skill, which is the single source of truth.
+
+On any host, or without the command, start by loading the skill directly:
 
 ```
 Read skills/00-governing-workflow/SKILL.md and follow its Session Start Protocol.
 ```
 
-The Governing Workflow skill handles everything from there — new session or resume.
+Either way, the Governing Workflow skill handles everything from there — new session or
+resume.
 
 ---
 
